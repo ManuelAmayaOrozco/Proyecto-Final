@@ -1,0 +1,337 @@
+.main__user-index {
+
+    min-height: 80vh;
+    background-color: rgb(255, 255, 255);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    font-size: larger;
+    padding: 2em;
+
+}
+
+.user-index__table {
+
+    width: 50%;
+
+}
+
+/* Estilo principal para el contenedor de los posts */
+.main__posts-index {
+    min-height: 80vh;
+    background-color: #ffffff; /* Un color de fondo oscuro, similar al de la versión de usuario */
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    
+    font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
+    padding: 2em;
+}
+
+/* Estilo para cada caja de post */
+.post-box {
+    width: 80%;
+    background-color: #333; /* Un fondo oscuro para que resalten los textos */
+    margin-bottom: 1.5em;
+    padding: 1.5em;
+    border-radius: 8px; /* Bordes redondeados para un aspecto más moderno */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agrega una sombra sutil */
+    cursor: pointer;
+}
+
+/* Título del post */
+.post-title {
+    font-size: 1.8em;
+    color: #fff; /* Blanco para el título */
+    margin-bottom: 1em;
+    font-weight: bold; /* Resaltar el título */
+}
+
+/* Caja del separador de texto */
+.post-separator-box {
+    border-top: 2px solid #444; /* Línea separadora fina */
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+/* Descripción del post */
+.post-text {
+    font-size: 1em;
+    color: #ddd; /* Color gris claro para el texto */
+    line-height: 1.5;
+}
+
+/* Estilo para la sección de likes */
+.likes-text {
+    font-size: 1.2em;
+    color: #e0e0e0; /* Gris claro para el texto de los likes */
+    margin-top: 1em;
+    font-weight: 500;
+}
+
+/* Estilo para el botón de Like */
+.btn-like {
+    background-color: #f50087; /* Un color cálido para el botón de Like */
+    color: white;
+    padding: 0.2em 1.23em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-bottom:1em; 
+}
+
+/*PROFILE SECTION*/
+
+/* Estilo para el contenedor principal de la página de usuario */
+.main__profile-index {
+    min-height: 80vh;
+    background-color: #ffffff; /* Fondo oscuro similar al estilo anterior */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    padding: 2em;
+}
+
+/* Estilo para el contenedor de los datos del usuario */
+.box__user {
+    background-color: #93D866; /* Fondo oscuro para resaltar el contenido */
+    padding: 2em;
+    border-style: solid;
+    border-width: 5px;
+    border-color: #0B6600;
+    border-radius: 8px; /* Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    text-align: center; /* Alineación central para los textos */
+    width: 60%; /* Ancho moderado */
+    margin: 2em 0; /* Espaciado superior e inferior */
+}
+
+/* Estilo para el nombre de usuario */
+.username__text {
+    font-size: 2em;
+    color: #000000; /* Blanco para el nombre de usuario */
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+/* Estilo para los datos del usuario */
+.userdata__text {
+    font-size: 1.2em;
+    color: #000000; /* Gris claro para los datos del usuario */
+    margin-bottom: 1.5em;
+}
+
+/* Estilo para el botón de comentar */
+.btn-comment {
+    background-color: #4534db; /* Azul para el botón de comentar */
+    color: white;
+    padding: 0.5em 1.5em;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top: 1em;
+}
+
+.btn-comment:hover {
+    background-color: #2980b9; /* Color más oscuro al pasar el ratón */
+}
+
+/* Estilo para la caja de comentarios */
+.comment-box {
+    width: 80%;
+    background-color: #444; /* Fondo más claro que el del post */
+    padding: 1.5em;
+    border-radius: 8px;
+    margin-top: 1.5em;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilo para el nombre del usuario que comenta */
+.comment-user {
+    font-size: 1.4em;
+    color: #fff; /* Blanco para el nombre del usuario */
+    font-weight: bold;
+    margin-bottom: 1em;
+}
+
+/* Estilo para el separador dentro del comentario */
+.comment-separator-box {
+    border-top: 2px solid #555;
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+/* Estilo para el texto del comentario */
+.comment-text {
+    font-size: 1em;
+    color: #ddd;
+    line-height: 1.5;
+}
+
+/* Estilo para la fecha de publicación del comentario */
+.comment-date {
+    font-size: 0.9em;
+    color: #aaa; /* Gris claro para la fecha */
+    margin-top: 1em;
+    font-style: italic;
+}
+
+/* Estilo para los botones dentro de los comentarios (por si acaso) */
+.comment-box .btn-like,
+.comment-box .btn-danger,
+.comment-box .btn-comment {
+    margin-top: 0.5em;
+}
+
+/*PROFILE SECTION*/
+
+/* Estilo para la sección de la foto del perfil */
+.profile-picture-display {
+    margin-bottom: 1.5em;
+}
+
+/* Estilo para la imagen del perfil */
+.profile-picture {
+    width: 250px; /* Tamaño moderado para la imagen */
+    height: 250px;
+    border-radius: 50%; /* Imagen redonda */
+    object-fit: cover; /* Ajuste adecuado de la imagen */
+    border: 4px solid #0B6600; /* Borde blanco para resaltar la imagen */
+}
+
+/* Estilo para la imagen de la publicación */
+.post-picture-display {
+    margin-bottom: 1.5em;
+}
+
+.post-picture {
+    max-width: 1500px;
+    max-height: 500px;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
+}
+
+/*WELCOME SECTION*/
+
+/* Sección de bienvenida */
+.welcome-section {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 10%;
+    width: 100%;
+    max-width: 1227px;
+    align-self: center;
+    flex-wrap: wrap; /* Añadido para permitir que los elementos se ajusten en pantallas pequeñas */
+  }
+  
+  /* Contenedor de la sección de bienvenida */
+  .welcome-content {
+    display: flex;
+    gap: 20px;
+    width: 100%; /* Asegura que ocupe todo el ancho disponible */
+    flex-wrap: wrap; /* Añadido para que los elementos se envuelvan en pantallas más pequeñas */
+  }
+  
+  /* Texto de bienvenida */
+  .welcome-text {
+    width: 44%;
+    color: #000;
+    letter-spacing: -0.43px;
+    padding: 0 10px; /* Añadido padding para ajustar en pantallas más pequeñas */
+  }
+  
+  /* Título de bienvenida */
+  .welcome-heading {
+    font: 900 60px/1 Geologica, sans-serif;
+    text-align: center;
+    margin-bottom: 31px;
+    font-size: 2.5rem; /* Cambiado para hacerlo más flexible */
+  }
+  
+  /* Descripción de bienvenida */
+  .welcome-description {
+    font: 400 20px/22px Gothic A1, sans-serif;
+    position: relative;
+    padding: 20px;
+  }
+  
+  /* Contenedor imagen de bienvenida */
+  .welcome-image {
+    width: 56%;
+    padding: 0 10px; /* Añadido padding para ajustar en pantallas más pequeñas */
+  }
+  
+  /* Imagen de bienvenida */
+  .welcome-illustration {
+    aspect-ratio: 2.16;
+    object-fit: contain;
+    width: 100%;
+    margin-top: 129px;
+  }
+  
+  /* Medias Queries para pantallas pequeñas */
+  
+  /* Pantallas de 768px o menos (tablets y dispositivos móviles pequeños) */
+  @media (max-width: 768px) {
+    .welcome-section {
+      flex-direction: column;
+      margin-bottom: 5%;
+    }
+  
+    .welcome-content {
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    .welcome-text {
+      width: 100%;
+      text-align: center; /* Centramos el texto en pantallas pequeñas */
+    }
+  
+    .welcome-heading {
+      font-size: 2rem; /* Tamaño más pequeño para títulos */
+      margin-bottom: 15px;
+    }
+  
+    .welcome-description {
+      font-size: 1rem; /* Ajuste de tamaño de fuente */
+      padding: 15px; /* Menos padding para pantallas pequeñas */
+    }
+  
+    .welcome-image {
+      width: 100%; /* Imagen ocupa el 100% del ancho */
+      margin-top: 20px; /* Ajuste de espaciado */
+    }
+  
+    .welcome-illustration {
+      margin-top: 20px; /* Reducido el margen superior */
+    }
+  }
+  
+  /* Pantallas de 480px o menos (móviles muy pequeños) */
+  @media (max-width: 480px) {
+    .welcome-heading {
+      font-size: 1.8rem; /* Ajuste adicional para móviles pequeños */
+    }
+  
+    .welcome-description {
+      font-size: 0.9rem; /* Ajuste adicional para una lectura cómoda */
+    }
+  
+    .welcome-illustration {
+      margin-top: 10px; /* Reducir margen superior para pantallas pequeñas */
+    }
+  }
+  

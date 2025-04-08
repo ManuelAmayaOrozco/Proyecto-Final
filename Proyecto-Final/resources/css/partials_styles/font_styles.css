@@ -1,0 +1,21 @@
+*, h1, h2, h3, h4, h5, p, div {
+    font-family: "Geologica", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    color: #000000;
+}
+
+/*
+color para letra #fdf0d5
+color estándar #fdf0d5
+
+color para fondo main #003049
+color para fondo main contraste #669bbc
+
+color fondo alternativo #fb8500
+color fondo alternativo contraste #ffb703
+
+color fondo alternativo 2 #780000
+color fondo alternativo 2 contraste #c1121f
+*/
