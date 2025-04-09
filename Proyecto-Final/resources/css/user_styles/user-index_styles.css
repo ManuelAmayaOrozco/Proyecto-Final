@@ -36,7 +36,10 @@
 /* Estilo para cada caja de post */
 .post-box {
     width: 80%;
-    background-color: #333; /* Un fondo oscuro para que resalten los textos */
+    border-style: solid;
+    border-width: 5px;
+    border-color: #0B6600;
+    background-color: #93D866; /* Un fondo oscuro para que resalten los textos */
     margin-bottom: 1.5em;
     padding: 1.5em;
     border-radius: 8px; /* Bordes redondeados para un aspecto más moderno */
@@ -47,7 +50,7 @@
 /* Título del post */
 .post-title {
     font-size: 1.8em;
-    color: #fff; /* Blanco para el título */
+    color: #000000; /* Blanco para el título */
     margin-bottom: 1em;
     font-weight: bold; /* Resaltar el título */
 }
@@ -62,21 +65,21 @@
 /* Descripción del post */
 .post-text {
     font-size: 1em;
-    color: #ddd; /* Color gris claro para el texto */
+    color: #000000; /* Color gris claro para el texto */
     line-height: 1.5;
 }
 
 /* Estilo para la sección de likes */
 .likes-text {
     font-size: 1.2em;
-    color: #e0e0e0; /* Gris claro para el texto de los likes */
+    color: #000000; /* Gris claro para el texto de los likes */
     margin-top: 1em;
     font-weight: 500;
 }
 
 /* Estilo para el botón de Like */
 .btn-like {
-    background-color: #f50087; /* Un color cálido para el botón de Like */
+    background-color: #1f5f16; /* Un color cálido para el botón de Like */
     color: white;
     padding: 0.2em 1.23em;
     border: none;
@@ -132,7 +135,7 @@
 
 /* Estilo para el botón de comentar */
 .btn-comment {
-    background-color: #4534db; /* Azul para el botón de comentar */
+    background-color: #1aa153; /* Azul para el botón de comentar */
     color: white;
     padding: 0.5em 1.5em;
     border: none;
@@ -144,13 +147,16 @@
 }
 
 .btn-comment:hover {
-    background-color: #2980b9; /* Color más oscuro al pasar el ratón */
+    background-color: #29b948; /* Color más oscuro al pasar el ratón */
 }
 
 /* Estilo para la caja de comentarios */
 .comment-box {
     width: 80%;
-    background-color: #444; /* Fondo más claro que el del post */
+    border-style: solid;
+    border-width: 2px;
+    border-color: #0B6600;
+    background-color: #93D866; /* Fondo más claro que el del post */
     padding: 1.5em;
     border-radius: 8px;
     margin-top: 1.5em;
@@ -160,7 +166,7 @@
 /* Estilo para el nombre del usuario que comenta */
 .comment-user {
     font-size: 1.4em;
-    color: #fff; /* Blanco para el nombre del usuario */
+    color: #000000; /* Blanco para el nombre del usuario */
     font-weight: bold;
     margin-bottom: 1em;
 }
@@ -175,14 +181,14 @@
 /* Estilo para el texto del comentario */
 .comment-text {
     font-size: 1em;
-    color: #ddd;
+    color: #000000;
     line-height: 1.5;
 }
 
 /* Estilo para la fecha de publicación del comentario */
 .comment-date {
     font-size: 0.9em;
-    color: #aaa; /* Gris claro para la fecha */
+    color: #000000; /* Gris claro para la fecha */
     margin-top: 1em;
     font-style: italic;
 }
@@ -335,3 +341,22 @@
     }
   }
   
+  .submit_post {
+    background-color: #44AB00;
+    height: 100%;
+    min-width: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-left: 1em;
+    padding-right: 1em;
+    min-width: 50%;
+    border-right: 2px solid #44AB00;
+    border-left: 2px solid #44AB00;
+    border-radius: 4px;
+    margin-bottom: 3%;
+
+    text-decoration: none;
+    color: inherit;
+    transition: all .2s ease-in;
+}

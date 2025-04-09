@@ -9,7 +9,7 @@
         <a href="{{ route('user.showRegister') }}" class="navigation__a">
             REGISTER
         </a>
-        <a class="navigation__a">
+        <a href="{{ route('post.showPosts') }}" class="navigation__a">
             POSTS
         </a>
     </nav>

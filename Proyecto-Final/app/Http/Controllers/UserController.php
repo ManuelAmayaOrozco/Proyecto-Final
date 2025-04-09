@@ -95,7 +95,7 @@ class UserController extends Controller
         );
 
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('profiles');
+            $photo = $request['photo']->store('profiles', 'public');
         } else {
             $photo = null;
         }
