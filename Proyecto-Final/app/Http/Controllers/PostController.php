@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -99,6 +100,10 @@ class PostController extends Controller
         $comments->delete();
 
         $post = Post::find($id);
+
+        $image = $post->photo;
+        Storage::disk('public')->delete($image);
+
         $post->delete();
 
         return redirect()->route('home');

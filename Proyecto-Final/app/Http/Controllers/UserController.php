@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -161,6 +162,10 @@ class UserController extends Controller
         $comments->delete();
 
         $user = User::find($id);
+
+        $image = $user->photo;
+        Storage::disk('public')->delete($image);
+
         $user->delete();
 
         return redirect()->route('home');

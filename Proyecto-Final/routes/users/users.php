@@ -13,6 +13,7 @@ Route::post('/register', [UserController::class, 'doRegister'])->name('user.doRe
 Route::middleware(['auth'])->group(function(){
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.showProfile');
+    Route::delete('/profile', [UserController::class, 'showDeleteProfile'])->name('user.showDeleteProfile');
 
     Route::delete('/logout/{id}', [UserController::class, 'logout'])->name('user.logout');
 
