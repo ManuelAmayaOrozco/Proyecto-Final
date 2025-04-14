@@ -5,6 +5,7 @@
 
         <h2 class="post-title">{{ $post->title }}</h2>
         <h3 class="post-user">{{ $post_user }}</h3>
+        <h4 class="post-insect">{{ $post_insect }}</h3>
         <div class="post-separator-box">
         <div class="post-picture-display">
             <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture">

@@ -16,7 +16,7 @@ class InsectSeeder extends Seeder
     {
         DB::table('insects')->insert([
             [
-                'registered_by' => 4,
+                'registered_by' => 1,
                 'name' => 'Abeja Europea',
                 'scientificName' => 'Apis mellifera',
                 'family' => 'Apidae',
@@ -29,7 +29,7 @@ class InsectSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'registered_by' => 4,
+                'registered_by' => 1,
                 'name' => 'Hormiga Carpintera',
                 'scientificName' => 'Camponotus Mus',
                 'family' => 'Formicidae',
@@ -42,7 +42,7 @@ class InsectSeeder extends Seeder
                 'updated_at' => Carbon::now(),
             ],
             [
-                'registered_by' => 4,
+                'registered_by' => 1,
                 'name' => 'Mantis Religiosa',
                 'scientificName' => 'Mantis Religiosa',
                 'family' => 'Mantidae',

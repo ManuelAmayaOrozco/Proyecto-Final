@@ -13,6 +13,13 @@
             @error('description') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
+            <select name="insect" id="insect">
+                @foreach ($insects as $insect)
+                    <option value="{{ $insect->id }}">{{ $insect->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group">
             <label for="photo">Profile Picture</label>
             <input type="file" class="form-control" id="input_photo" name="photo" accept="image/*">
             @error('photo') <small class="register_form__error">{{ $message }}</small> @enderror

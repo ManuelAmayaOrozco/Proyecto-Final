@@ -60,17 +60,33 @@ class PostController extends Controller
 
         }
 
+        $post_insect = null;
+
+        $insects = DB::table('insects')->get();
+
+        foreach ($insects as $insect) {
+
+            if ($insect->id == $post->related_insect) {
+
+                $post_insect = $insect->name;
+
+            }
+
+        }
+
         //$comments = DB::table('comments')->where("post_id", $id);
         $comments = $post->comments()->get();
 
 
         $current_user_id = Auth::id();
 
-        return view('user_views.fullPost', compact('post', 'post_user', 'comments', 'users', 'current_user_id'));
+        return view('user_views.fullPost', compact('post', 'post_user', 'post_insect', 'comments', 'users', 'current_user_id'));
     }
 
     public function showRegisterPost() {
-        return view('user_views.insertPosts');
+        $insects = DB::table('insects')->get();
+
+        return view('user_views.insertPosts', compact('insects'));
     }
 
     public function updateLike($id) {
@@ -118,11 +134,13 @@ class PostController extends Controller
             [
                 "title"=>"required",
                 "description"=> "required",
-                "photo"=>"required"
+                "photo"=>"required",
+                "insect"=>"required"
             ],[
                 "title.required" => "The :attribute is required.",
                 "description.required" => "The :attribute is required.",
-                "photo.required" => "The :attribute is required."
+                "photo.required" => "The :attribute is required.",
+                "insect.required" => "The :attribute is required."
             ]
         );
     
@@ -152,6 +170,7 @@ class PostController extends Controller
         $post->publish_date = date('d-m-y h:i:s');
         $post->n_likes = 0;
         $post->belongs_to = Auth::id();
+        $post->related_insect = $datosPost['insect'];
         $post->photo = $photo;
         $post->save();
 
