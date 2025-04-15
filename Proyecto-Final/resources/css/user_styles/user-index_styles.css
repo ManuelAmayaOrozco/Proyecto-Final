@@ -360,3 +360,61 @@
     color: inherit;
     transition: all .2s ease-in;
 }
+
+/*INSECTS*/
+
+.main__insect-index,
+.main__insects-index {
+    min-height: 80vh;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2em;
+    padding: 2em;
+}
+
+.insect-box {
+    width: 80%;
+    border: 5px solid #0B6600;
+    background-color: #93D866;
+    margin-bottom: 2em;
+    padding: 1.5em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.insect-name {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 0.5em;
+}
+
+.insect-scientificName,
+.insect-user {
+    font-size: 1.2em;
+    color: #000;
+    margin-bottom: 0.5em;
+}
+
+.insect-info,
+.insect-text {
+    font-size: 1em;
+    color: #000;
+    line-height: 1.5;
+}
+
+.insect-picture-display {
+    margin-bottom: 1em;
+    text-align: center;
+}
+
+.insect-picture {
+    max-width: 100%;
+    max-height: 400px;
+    border-radius: 8px;
+    object-fit: cover;
+}

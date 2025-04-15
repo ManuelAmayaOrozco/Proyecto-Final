@@ -7,11 +7,13 @@
 }
 .register__register_form {
 
-    width: 20%;
+    width: 30%;
     aspect-ratio: 5/1;
     background-color: #93D866;
     border-radius: 10%;
     border: 2px solid #0B6600;
+    margin-top: 2em;
+    margin-bottom: 2em;
     padding: 2em;
     row-gap: 2em;
 
@@ -28,4 +30,87 @@
 .register_form__error {
     position: absolute;
     color: #780000;
+}
+
+/* Estilo general para el checkbox */
+.form-checkbox {
+    margin-left: 0.5em;
+    transform: scale(2);
+    cursor: pointer;
+    accent-color: #0B6600; /* color personalizado para navegadores que lo soporten */
+}
+
+/* Label que contiene el checkbox */
+label[for="protectedSpecies"] {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+    font-size: 1em;
+}
+
+/* Media query para pantallas medianas o menores */
+@media (max-width: 768px) {
+    .form-checkbox {
+        transform: scale(1.1);
+        margin-left: 0.3em;
+    }
+
+    label[for="protectedSpecies"] {
+        font-size: 0.95em;
+        flex-wrap: wrap;
+    }
+}
+
+/* Para móviles muy pequeños */
+@media (max-width: 480px) {
+    .form-checkbox {
+        transform: scale(1);
+    }
+
+    label[for="protectedSpecies"] {
+        font-size: 0.9em;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Estilo base para el select */
+.form-select {
+    width: 100%;
+    padding: 0.6em 1em;
+    font-size: 1em;
+    border: 2px solid #0B6600;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #000000;
+    appearance: none; /* Elimina estilos por defecto del navegador */
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg fill='black' height='20' viewBox='0 0 24 24' width='20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7em center;
+    background-size: 1em;
+}
+
+/* Ajustes visuales para el contenedor del select */
+.form-group select:focus {
+    outline: none;
+    border-color: #44AB00;
+    box-shadow: 0 0 5px rgba(68, 171, 0, 0.5);
+}
+
+/* Media query para pantallas medianas (tablets) */
+@media (max-width: 768px) {
+    .form-select {
+        font-size: 0.95em;
+        padding: 0.5em 0.8em;
+    }
+}
+
+/* Media query para móviles */
+@media (max-width: 480px) {
+    .form-select {
+        font-size: 0.9em;
+        padding: 0.4em 0.7em;
+        background-position: right 0.5em center;
+    }
 }

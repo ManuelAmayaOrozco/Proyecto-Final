@@ -12,5 +12,8 @@
         <a href="{{ route('post.showPosts') }}" class="navigation__a">
             POSTS
         </a>
+        <a href="{{ route('insect.showInsects') }}" class="navigation__a">
+            INSECTS
+        </a>
     </nav>
 </header>
