@@ -11,6 +11,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/register', [InsectController::class, 'showRegisterInsect'])->name('insect.showRegisterInsect');
     Route::post('/register', [InsectController::class, 'doRegisterInsect'])->name('insect.doRegisterInsect');
 
+    Route::get('/update/{id}', [InsectController::class, 'showUpdateInsect'])->name('insect.showUpdateInsect');
+    Route::put('/update/{id}', [InsectController::class, 'updateInsect'])->name('insect.updateInsect');
+
     Route::delete('/delete/{id}', [InsectController::class, 'deleteInsect'])->name('insect.deleteInsect');
 
 });

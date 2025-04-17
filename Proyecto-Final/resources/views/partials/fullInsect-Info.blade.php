@@ -18,6 +18,12 @@
         <p class="insect-text">{{ $insect->description }}</p>
         </div>
 
+        <form action="{{ route('insect.showUpdateInsect', ['id' => $insect->id]) }}" method="POST">
+            @csrf
+            @method('GET')
+            <button type="submit" class="btn success">Actualizar Insecto</button>
+        </form>
+
         <div x-data="{}">
             <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Insecto</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">

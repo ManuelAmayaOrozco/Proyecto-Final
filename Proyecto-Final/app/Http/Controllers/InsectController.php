@@ -151,6 +151,25 @@ class InsectController extends Controller
 
     }
 
+    public function showUpdateInsect($id) {
+
+        $insect = null;
+
+        $insects = Insect::all();
+
+        foreach ($insects as $insecto) {
+
+            if ($insecto->id == $id) {
+
+                $insect = $insecto;
+
+            }
+
+        }
+
+        return view('user_views.updateInsects', compact('insect'));
+    }
+
     public function updateInsect(Request $request, $id) {
     
         // VALIDAR DATOS DE ENTRADA.
@@ -197,7 +216,9 @@ class InsectController extends Controller
         if ($request->hasFile('photo')) {
             $photo = $request['photo']->store('posts', 'public');
             $oldImage = $insect->photo;
-            Storage::disk('public')->delete($oldImage);
+            if ($oldImage != null) {
+                Storage::disk('public')->delete($oldImage);
+            }
         } else {
             $photo = $insect->photo;
         }
