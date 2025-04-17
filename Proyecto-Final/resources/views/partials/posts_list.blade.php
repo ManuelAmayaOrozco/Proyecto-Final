@@ -9,9 +9,16 @@
 
     @foreach($posts as $post)
 
-        <div class="post-box" onclick="location.href=`{{ route('post.showFullPost', ['id' => $post->id]) }}`">
+        <div class="post-box">
 
-            <h2 class="post-title">{{ $post->title }}</h2>
+            <h2 class="post-title" onclick="location.href=`{{ route('post.showFullPost', ['id' => $post->id]) }}`">{{ $post->title }}</h2>
+            @foreach ($insects as $insect)
+
+                @if($insect->id == $post->related_insect) 
+            <h4 class="post-insect" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">{{ $insect->name }}</h4>
+                @endif 
+
+            @endforeach
             <h3 class="post-user">@foreach ($users as $user)
 
                                     @if($user->id == $post->belongs_to) 
@@ -23,7 +30,7 @@
                                   @endforeach
                                 </h3>
             <div class="post-separator-box">
-            <div class="post-picture-display">
+            <div class="post-picture-display" onclick="location.href=`{{ route('post.showFullPost', ['id' => $post->id]) }}`">
                 <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture">
             </div>
             <p class="post-text">{{ $post->description }}</p>

@@ -1,4 +1,4 @@
-@vite('resources/css/user_styles/user-index_styles.css')
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
 <main class="main__insect-index">
 
     <div class="insect-box">
