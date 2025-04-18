@@ -172,4 +172,73 @@ class UserController extends Controller
 
     }
 
+    public function showUpdateUser($id) {
+
+        $user = null;
+
+        $users = User::all();
+
+        foreach ($users as $usero) {
+
+            if ($usero->id == $id) {
+
+                $user = $usero;
+
+            }
+
+        }
+
+        return view('user_views.updateUsers', compact('user'));
+    }
+
+    public function updateUser(Request $request, $id) {
+
+        // VALIDAR DATOS DE ENTRADA. LAS REGLAS DE VALIDACIÓN SON LAS SIGUIENTES:
+        /*
+            -> nombre es obligatorio, debe ser un string y debe ser menor de 20 carácteres
+            -> email es obligatorio, debe seguir un formato estándar, debe ser único en la base de datos
+            -> password es obligatoria, debe ser mayor de 5 carácteres, menor de 20 carácteres, debe contener una minúscula, una mayúscula y al menos un dígito
+            -> password_repeat es obligatoria y debe ser igual a password
+        */
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "name"=>"required|string|max:20",
+                "email"=> "required|email:rfc,dns",
+            ],[
+                "name.required" => "The :attribute is required.",
+                "name.string" => "The :attribute must be string.",
+                "name.max" => "The :attribute can't be longer than 20 characters.",
+                "email.required" => "The :attribute is required.",
+                "email.email" => "The :attribute must have the correct format.",
+            ]
+        );
+
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $user = Auth::user();
+
+        if ($request->hasFile('photo')) {
+            $photo = $request['photo']->store('posts', 'public');
+            $oldImage = $user->photo;
+            if ($oldImage != null) {
+                Storage::disk('public')->delete($oldImage);
+            }
+        } else {
+            $photo = $user->photo;
+        }
+
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
+        $datosUsuario = $request->all();
+        $user->name = $datosUsuario['name'];
+        $user->email = $datosUsuario['email'];
+        $user->photo = $photo;
+        $user->save();
+
+        return redirect()->route('home');
+    }
+
 }

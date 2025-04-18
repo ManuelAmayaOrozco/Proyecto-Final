@@ -34,6 +34,12 @@
             </dialog>
         </div>
 
+        <form action="{{ route('user.showUpdateUser', ['id' => $current_user->id]) }}" method="POST">
+            @csrf
+            @method('GET')
+            <button type="submit" class="btn btn-success">Actualizar Usuario</button>
+        </form>
+
         <div x-data="{}">
             <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
@@ -58,5 +64,3 @@
     </div>
 
 </main>
-
-<<!{{ route('user.delete', ['id' => $current_user->id]) }}>>

@@ -1,4 +1,4 @@
-@vite('resources/css/user_styles/user-index_styles.css')
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
 <main class="main__posts-index">
 
     @if(Auth::check()) 
@@ -46,11 +46,26 @@
             </form>
 
             @if ($post->belongs_to == $current_user_id)
-            <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
+            <div x-data="{}">
+                <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Post</button>
+                <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
+                
+                    <h2>¿Estas seguro de que quieres eliminar este post?</h2>
+
+                    <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-success">Sí, Eliminar Post</button>
+                    </form>
+
+                    <form method="dialog">
+
+                        <button class="btn btn-danger">Cancelar</button>
+
+                    </form>
+
+                </dialog>
+            </div>
             @endif
         </div>
 

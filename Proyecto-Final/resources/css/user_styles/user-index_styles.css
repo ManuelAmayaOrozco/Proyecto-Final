@@ -431,3 +431,11 @@
   padding-top: 0.5em;
   flex-wrap: wrap;
 }
+
+.post-box dialog form {
+  display: flex;
+  justify-content: center;
+  gap: 1rem; /* Espacio entre los botones */
+  padding-top: 0.5em;
+  flex-wrap: wrap;
+}

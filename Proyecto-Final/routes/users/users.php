@@ -15,6 +15,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.showProfile');
     Route::delete('/profile', [UserController::class, 'showDeleteProfile'])->name('user.showDeleteProfile');
 
+    Route::get('/update/{id}', [UserController::class, 'showUpdateUser'])->name('user.showUpdateUser');
+    Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('user.updateUser');
+
     Route::delete('/logout/{id}', [UserController::class, 'logout'])->name('user.logout');
 
     Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
