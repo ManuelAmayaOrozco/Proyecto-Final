@@ -14,6 +14,11 @@
     padding-right: 70vh;
 }
 
+.header__logo {
+    height:9vh;
+    width:18vh;
+}
+
 .header__navigation {
 
     display: flex;

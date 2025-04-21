@@ -14,10 +14,12 @@
         </div>
         <div class="form-group">
             <select class="form-select" name="insect" id="insect">
+                    <option value="" disabled selected>Elige un insecto</option>
                 @foreach ($insects as $insect)
                     <option value="{{ $insect->id }}">{{ $insect->name }}</option>
                 @endforeach
             </select>
+            @error('insect') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="photo">Profile Picture</label>

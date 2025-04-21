@@ -1,6 +1,6 @@
 <header class="body__header">
     <div onclick="location.href=`{{ route('home') }}`" class="header__div_logo">
-        LOGO HOME
+    <img src="{{ asset('storage/imagenesBugs/BugBuds.png') }}" alt="Logo BugBuds" class="header__logo"/>
     </div>
     <nav class="header__navigation">
         <a href="{{ Auth::check() ? route('user.showProfile') : route('login')  }}" class="navigation__a">
