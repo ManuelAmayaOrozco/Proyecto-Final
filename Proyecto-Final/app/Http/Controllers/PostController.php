@@ -16,11 +16,19 @@ class PostController extends Controller
 {
 
     public function showPosts() {
-        $posts = DB::table('posts')->get();
+
+        $query = DB::table('posts');
         $users = DB::table('users')->get();
         $insects = DB::table('insects')->get();
 
         $current_user_id = Auth::id();
+
+        if (request()->has('search')) {
+            $query = $query->where('description','like', '%' . request()->get('search','') . '%');
+        }
+
+        $posts = $query->get();
+
         return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user_id'));
     }
 

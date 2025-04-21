@@ -16,4 +16,10 @@
             INSECTS
         </a>
     </nav>
+    <div class="header__searchbar">
+        <form action="{{ route('post.showPosts') }}" method="GET">
+            <input name="search" placeholder="..." class="search-bar" type="text">
+            <button class="search-button">Buscar</button>
+        </form>
+    </div>
 </header>

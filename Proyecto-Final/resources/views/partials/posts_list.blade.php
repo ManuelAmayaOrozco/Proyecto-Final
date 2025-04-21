@@ -7,7 +7,7 @@
     </a>
     @endif
 
-    @foreach($posts as $post)
+    @forelse($posts as $post)
 
         <div class="post-box">
 
@@ -68,7 +68,8 @@
             </div>
             @endif
         </div>
-
-    @endforeach
+    @empty
+        <h2>Vaya no se encontraron posts, vuelve a intentarlo.</h2>
+    @endforelse
 
 </main>
