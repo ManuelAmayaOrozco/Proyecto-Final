@@ -7,10 +7,46 @@
     border-top: 3px solid #0B6600;
 }
 
-.footer__div_logo {
-
+.footer__div_contactos,
+.footer__div_redes,
+.footer__div_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #0B6600;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    padding: 1em;
 }
 
-.footer__div_info {
+.footer__div_redes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
 
+.footer__div_redes li {
+    margin: 0.3em 0;
+}
+
+.footer__div_redes a {
+    text-decoration: none;
+    color: #0B6600;
+    font-weight: bold;
+    transition: color 0.2s ease-in;
+}
+
+.footer__div_redes a:hover {
+    color: #44AB00;
+}
+
+.body__footer h5 {
+    margin-bottom: 0.5em;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    color: #0B6600;
+    border-bottom: 1px solid #0B6600;
+    padding-bottom: 0.2em;
+    width: fit-content;
 }
