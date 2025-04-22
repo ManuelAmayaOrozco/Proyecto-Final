@@ -23,7 +23,21 @@ class PostController extends Controller
 
         $current_user_id = Auth::id();
 
-        if (request()->has('search')) {
+        if (request()->has('searchtype') && request()->get('searchtype','') == 'user' && request()->has('search')) {
+            $userIds = DB::table('users')
+                ->where('name', 'like', '%' . request()->get('search', '') . '%')
+                ->pluck('id'); // devuelve colección de IDs
+            
+            $query = $query->whereIn('belongs_to', $userIds);
+        }
+        else if (request()->has('searchtype') && request()->get('searchtype','') == 'insect' && request()->has('search')) {
+            $insectIds = DB::table('insects')
+                ->where('name', 'like', '%' . request()->get('search', '') . '%')
+                ->pluck('id'); // devuelve colección de IDs
+            
+            $query = $query->whereIn('related_insect', $insectIds);
+        }
+        else if (request()->has('search')) {
             $query = $query->where('description','like', '%' . request()->get('search','') . '%');
         }
 

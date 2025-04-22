@@ -18,6 +18,11 @@
     </nav>
     <div class="header__searchbar">
         <form action="{{ route('post.showPosts') }}" method="GET">
+            <select class="search-select" name="searchtype" id="searchtype">
+                    <option value="" disabled selected>Opción de búsqueda</option>
+                    <option value="user">Usuario</option>
+                    <option value="insect">Insecto</option>
+            </select>
             <input name="search" placeholder="..." class="search-bar" type="text">
             <button class="search-button">Buscar</button>
         </form>

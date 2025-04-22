@@ -11,7 +11,7 @@
 
 .header__div_logo {
     cursor: pointer;
-    padding-right: 70vh;
+    padding-right: 50vh;
 }
 
 .header__logo {
@@ -84,4 +84,26 @@
 
 .search-button:hover {
     background-color: #0B6600;
+}
+
+.search-select {
+    height: 2.5em;
+    padding: 0 0.5em;
+    border: 2px solid #0B6600;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-right: 0.5em;
+    background-color: white;
+    color: #0B6600;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in, color 0.2s ease-in;
+}
+
+.search-select:focus {
+    outline: none;
+    background-color: #E6FBD3;
+}
+
+.search-select:hover {
+    background-color: #D2F5B0;
 }
