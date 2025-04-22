@@ -33,6 +33,19 @@
     padding: 2em;
 }
 
+.main__welcome {
+  min-height: 80vh;
+  background-color: #ffffff; /* Un color de fondo oscuro, similar al de la versión de usuario */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
+  padding: 2em;
+}
+
 /* Estilo para cada caja de post */
 .post-box {
     width: 80%;
@@ -438,4 +451,71 @@
   gap: 1rem; /* Espacio entre los botones */
   padding-top: 0.5em;
   flex-wrap: wrap;
+}
+
+.main__contact {
+  min-height: 80vh;
+  background-color: #ffffff; /* Un color de fondo oscuro, similar al de la versión de usuario */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
+  padding: 2em;
+}
+
+.contact-section {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10%;
+  width: 100%;
+  max-width: 1227px;
+  align-self: center;
+  flex-wrap: wrap; /* Añadido para permitir que los elementos se ajusten en pantallas pequeñas */
+}
+
+/* Contenedor de la sección de bienvenida */
+.contact-content {
+  display: flex;
+  width: 80%; /* Asegura que ocupe todo el ancho disponible */
+  flex-wrap: wrap; /* Añadido para que los elementos se envuelvan en pantallas más pequeñas */
+}
+
+/* Texto de bienvenida */
+.contact-text {
+  width: 44%;
+  color: #000;
+  letter-spacing: -0.43px;
+  padding: 0 10px; /* Añadido padding para ajustar en pantallas más pequeñas */
+}
+
+/* Título de bienvenida */
+.contact-title {
+  font: 900 60px/1 Geologica, sans-serif;
+  text-align: center;
+  margin-bottom: 31px;
+  font-size: 2.5rem; /* Cambiado para hacerlo más flexible */
+}
+
+/* Descripción de bienvenida */
+.contact-description {
+  font: 400 20px/22px Gothic A1, sans-serif;
+  position: relative;
+  padding: 20px;
+}
+
+/* Contenedor imagen de bienvenida */
+.contact-image {
+  width: 56%;
+  padding: 0 10px; /* Añadido padding para ajustar en pantallas más pequeñas */
+}
+
+/* Imagen de bienvenida */
+.contact-illustration {
+  aspect-ratio: 2;
+  object-fit: contain;
+  width: 100%;
+  margin-top: 129px;
 }

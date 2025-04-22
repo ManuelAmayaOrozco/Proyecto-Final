@@ -1,5 +1,5 @@
 @vite('resources/css/user_styles/user-index_styles.css')
-<main class="main__posts-index">
+<main class="main__welcome">
 
     <section class="welcome-section">
 

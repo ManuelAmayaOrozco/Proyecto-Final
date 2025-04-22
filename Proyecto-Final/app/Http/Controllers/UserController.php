@@ -241,4 +241,8 @@ class UserController extends Controller
         return redirect()->route('home');
     }
 
+    public function showContact() {
+        return view('user_views.contact');
+    }
+
 }

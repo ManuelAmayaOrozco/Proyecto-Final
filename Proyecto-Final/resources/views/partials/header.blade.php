@@ -17,6 +17,9 @@
         <a href="{{ route('insect.showInsects') }}" class="navigation__a">
             INSECTS
         </a>
+        <a href="{{ route('user.showContact') }}" class="navigation__a">
+            CONTACT US
+        </a>
     </nav>
     <div class="header__searchbar">
         <form action="{{ route('post.showPosts') }}" method="GET">

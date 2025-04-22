@@ -10,6 +10,8 @@ Route::get('/register', [UserController::class, 'showRegister'])->name('user.sho
 Route::post('/login', [UserController::class, 'doLogin'])->name('user.doLogin');
 Route::post('/register', [UserController::class, 'doRegister'])->name('user.doRegister');
 
+Route::get('/contact', [UserController::class, 'showContact'])->name('user.showContact'); // IMPORTANTE PARA LARAVEL
+
 Route::middleware(['auth'])->group(function(){
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.showProfile');
