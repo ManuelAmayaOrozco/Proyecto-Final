@@ -5,13 +5,13 @@
 
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     border-bottom: 3px solid #0B6600;
 }
 
 .header__div_logo {
     cursor: pointer;
-    padding-right: 50vh;
+    padding: 1vh;
 }
 
 .header__logo {
@@ -23,7 +23,7 @@
 
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: center;
     background-color: black;
     
     height: 100%;
@@ -106,4 +106,21 @@
 
 .search-select:hover {
     background-color: #D2F5B0;
+}
+
+@media (max-width: 768px) {
+    .body__header {
+        flex-direction: column;
+        height: auto;
+        padding: 1em;
+    }
+
+    .header__navigation {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .header__searchbar {
+        margin-top: 1em;
+    }
 }
