@@ -54,7 +54,7 @@
             </script>
         </div>
         <div class="form-group">
-            <label for="photo">Profile Picture</label>
+            <label for="photo">Insect Picture</label>
             <input type="file" class="form-control" id="input_photo" name="photo" accept="image/*">
             @error('photo') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>

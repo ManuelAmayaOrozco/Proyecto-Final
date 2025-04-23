@@ -519,3 +519,28 @@
   width: 100%;
   margin-top: 129px;
 }
+
+.post-tags {
+  font-size: 1em;
+  color: #0B6600; /* Verde oscuro usado en otros elementos */
+  font-weight: 500;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.tag {
+  border: 3px solid #0B6600;
+  background-color: #93D866; /* Un verde claro que contraste */
+  color: #0B6600; /* Verde oscuro para el texto */
+  padding: 0.2em 0.6em;
+  margin-right: 0.4em;
+  border-radius: 4px;
+  font-weight: 500;
+  display: inline-block;
+  transition: all .2s ease-in;
+}
+
+.tag:hover {
+  background-color: #0B6600;
+  color: #93D866;
+}

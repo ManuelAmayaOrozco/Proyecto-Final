@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\TagController;
 
 class PostController extends Controller
 {
 
     public function showPosts() {
 
-        $query = DB::table('posts');
+        $query = Post::with('tags');
         $users = DB::table('users')->get();
         $insects = DB::table('insects')->get();
 
@@ -197,6 +198,20 @@ class PostController extends Controller
         $post->related_insect = $datosPost['insect'];
         $post->photo = $photo;
         $post->save();
+
+        //CREACIÓN DE TAGS
+        $tags = strtolower($datosPost['tags']);
+        $listaTags = array_map('trim', explode(',', $tags));
+
+        foreach ($listaTags as $tag) {
+
+            TagController::registerTag($tag);
+
+            $tagId = TagController::getTag($tag);
+
+            $post->tags()->attach($tagId);
+
+        }
 
         return redirect()->route('home');
 

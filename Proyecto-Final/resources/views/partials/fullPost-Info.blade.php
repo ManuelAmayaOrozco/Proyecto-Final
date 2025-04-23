@@ -10,6 +10,11 @@
         <div class="post-picture-display">
             <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture">
         </div>
+        <p class="post-tags">
+                @foreach ($post->tags as $tag)
+                    <span class="tag">{{ ucfirst($tag->name) }}</span>
+                @endforeach
+        </p>
         <p class="post-text">{{ $post->description }}</p>
         <p class="post-date">{{ $post->publish_date }}</p>
         </div>
