@@ -253,7 +253,6 @@
 .welcome-section {
     display: flex;
     flex-direction: row;
-    margin-bottom: 10%;
     width: 100%;
     max-width: 1227px;
     align-self: center;
@@ -544,4 +543,21 @@
 .tag:hover {
   background-color: #0B6600;
   color: #93D866;
+}
+
+.featured-section {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 1227px;
+    align-self: center;
+    flex-wrap: wrap; /* Añadido para permitir que los elementos se ajusten en pantallas pequeñas */
+    margin-left: 10%;
+}
+
+/* Título destacado de la sección */
+.featured-heading {
+  font-size: 2.5em;
+  color: #0B6600; /* Verde oscuro para que resalte */
+  font-weight: bold;
 }

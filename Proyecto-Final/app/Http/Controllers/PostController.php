@@ -58,9 +58,26 @@ class PostController extends Controller
     public function showHome() {
         $posts = DB::table('posts')->get();
         $users = DB::table('users')->get();
+        $insects = DB::table('insects')->get();
 
         $current_user_id = Auth::id();
-        return view('home', compact('posts', 'users', 'current_user_id'));
+
+        $dailyPost = Post::where('dailyPost', true)->first();
+
+        // Si no hay dailyPost, forzar creación de uno nuevo
+        if (!$dailyPost) {
+            Post::where('dailyPost', true)->update(['dailyPost' => false]);
+
+            $postIds = Post::pluck('id');
+            if ($postIds->isNotEmpty()) {
+                $randomPostId = $postIds->random();
+                $dailyPost = Post::find($randomPostId);
+                $dailyPost->dailyPost = true;
+                $dailyPost->save();
+            }
+        }
+
+        return view('home', compact('posts', 'users', 'insects', 'current_user_id', 'dailyPost'));
     }
 
     public function showFullPost($id) {
@@ -230,6 +247,26 @@ class PostController extends Controller
         }
 
         return redirect()->route('home');
+
+    }
+
+    public static function updateDailyPost() {
+
+        // Resetear todos
+        Post::where('dailyPost', true)->update(['dailyPost' => false]);
+
+        // Obtener todos los IDs
+        $postIds = Post::pluck('id');
+
+        if ($postIds->isNotEmpty()) {
+            $randomPostId = $postIds->random();
+            $post = Post::find($randomPostId);
+            $post->update(['dailyPost' => true]);
+
+            return response()->json(['status' => 'updated', 'post_id' => $randomPostId]);
+        }
+
+        return response()->json(['status' => 'no_posts']);
 
     }
 

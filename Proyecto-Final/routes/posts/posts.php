@@ -18,3 +18,5 @@ Route::middleware(['auth'])->group(function(){
 });
 
 Route::get('/fullPost/{id}', [PostController::class, 'showFullPost'])->name('post.showFullPost');
+
+Route::post('/update-daily-post', [PostController::class, 'updateDailyPost'])->name('post.updateDaily');

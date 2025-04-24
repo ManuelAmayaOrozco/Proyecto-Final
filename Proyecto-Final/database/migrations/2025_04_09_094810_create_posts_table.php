@@ -22,6 +22,7 @@ return new class extends Migration
             $table->unsignedBigInteger('related_insect');
             $table->foreign('related_insect')->references('id')->on('insects');
             $table->string('photo', 255)->nullable();
+            $table->boolean('dailyPost')->default(false);
             $table->timestamps();
         });
     }
