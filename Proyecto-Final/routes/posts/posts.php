@@ -4,7 +4,7 @@ use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
 // RUTA PARA ENRUTAR /post/
-Route::get('/postlist', [PostController::class, 'showPosts'])->name('post.showPosts'); // IMPORTANTE PARA LARAVEL
+Route::get('/postlist/{tagId?}', [PostController::class, 'showPosts'])->name('post.showPosts');
 
 Route::middleware(['auth'])->group(function(){
 

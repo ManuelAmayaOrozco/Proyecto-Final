@@ -21,7 +21,7 @@
         <form action="{{ route('insect.showUpdateInsect', ['id' => $insect->id]) }}" method="POST">
             @csrf
             @method('GET')
-            <button type="submit" class="btn btn-success">Actualizar Insecto</button>
+            <button type="submit" class="btn btn-like">Actualizar Insecto</button>
         </form>
 
         <div x-data="{}">

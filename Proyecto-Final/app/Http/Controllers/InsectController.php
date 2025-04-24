@@ -115,7 +115,7 @@ class InsectController extends Controller
         );
     
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('posts', 'public');
+            $photo = $request['photo']->store('insects', 'public');
         } else {
             $photo = null;
         }
@@ -214,7 +214,7 @@ class InsectController extends Controller
         }
 
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('posts', 'public');
+            $photo = $request['photo']->store('insects', 'public');
             $oldImage = $insect->photo;
             if ($oldImage != null) {
                 Storage::disk('public')->delete($oldImage);

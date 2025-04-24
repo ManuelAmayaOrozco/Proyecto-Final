@@ -35,7 +35,7 @@
             </div>
             <p class="post-tags">
                 @foreach ($post->tags as $tag)
-                    <span class="tag">{{ ucfirst($tag->name) }}</span>
+                    <span class="tag" onclick="location.href=`{{ route('post.showPosts', ['tagId' => $tag->id]) }}`">{{ ucfirst($tag->name) }}</span>
                 @endforeach
             </p>
             <p class="post-text">{{ $post->description }}</p>

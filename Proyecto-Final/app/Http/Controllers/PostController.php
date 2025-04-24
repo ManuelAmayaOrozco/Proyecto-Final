@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Tag;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use App\Http\Controllers\TagController;
 class PostController extends Controller
 {
 
-    public function showPosts() {
+    public function showPosts($tagId = null) {
 
         $query = Post::with('tags');
         $users = DB::table('users')->get();
@@ -24,7 +25,14 @@ class PostController extends Controller
 
         $current_user_id = Auth::id();
 
-        if (request()->has('searchtype') && request()->get('searchtype','') == 'user' && request()->has('search')) {
+        if ($tagId != null) {
+            $postTagIds = DB::table('post_tag')
+                            ->where('tag_id', '=', $tagId)
+                            ->pluck('post_id'); // devuelve colección de IDs
+
+            $query = $query->whereIn('id', $postTagIds);
+        }
+        else if (request()->has('searchtype') && request()->get('searchtype','') == 'user' && request()->has('search')) {
             $userIds = DB::table('users')
                 ->where('name', 'like', '%' . request()->get('search', '') . '%')
                 ->pluck('id'); // devuelve colección de IDs
@@ -144,6 +152,14 @@ class PostController extends Controller
 
         $image = $post->photo;
         Storage::disk('public')->delete($image);
+
+        $uniqueTags = TagController::getAllUniqueTags($id);
+
+        DB::table('post_tag')->where('post_id', $id)->delete();
+
+        if ($uniqueTags->isNotEmpty()) {
+            Tag::whereIn('id', $uniqueTags)->delete();
+        }
 
         $post->delete();
 
