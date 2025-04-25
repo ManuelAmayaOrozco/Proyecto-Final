@@ -5,6 +5,15 @@
     align-items: center;
     justify-content: space-evenly;
 }
+
+.contact-form {
+    background-color: #ffffff;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
 .register__register_form {
 
     width: 30%;

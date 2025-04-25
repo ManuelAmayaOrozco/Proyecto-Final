@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ContactMailable;
 
 class UserController extends Controller
 {
@@ -243,6 +245,38 @@ class UserController extends Controller
 
     public function showContact() {
         return view('user_views.contact');
+    }
+
+    public function doContact(Request $request) {
+
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "name"=>"required",
+                "surnames"=>"required",
+                "email"=> "required|email:rfc,dns",
+                "phonenumber"=>"required",
+                "company"=>"nullable",
+                "message"=>"required"
+            ],[
+                "name.required" => "El nombre es obligatorio.",
+                "surnames.required" => "Los apellidos son obligatorios.",
+                "email.required" => "El email es obligatorio.",
+                "email.email" => "El email debe tener el formato correcto.",
+                "phonenumber.required" => "El número de teléfono es obligatorio.",
+                "message.required" => "El mensaje es obligatorio."
+            ]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        Mail::to('manuamayaorozco@gmail.com')->send(new ContactMailable($request->all()));
+
+        session()->flash('info', 'Correo enviado con éxito.');
+
+        return redirect()->route('user.showContact');
     }
 
 }

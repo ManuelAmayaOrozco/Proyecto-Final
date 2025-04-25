@@ -468,7 +468,7 @@
 .contact-section {
   display: flex;
   flex-direction: row;
-  margin-bottom: 10%;
+  margin-bottom: 50%;
   width: 100%;
   max-width: 1227px;
   align-self: center;
@@ -561,3 +561,40 @@
   color: #0B6600; /* Verde oscuro para que resalte */
   font-weight: bold;
 }
+
+.contact-form {
+  background-color: #ffffff;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.contact__register_form {
+
+  width: 30%;
+  aspect-ratio: 5/1;
+  background-color: #93D866;
+  border-radius: 10%;
+  border: 2px solid #0B6600;
+  margin-top: 2em;
+  margin-bottom: 2em;
+  padding: 2em;
+  row-gap: 2em;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
+
+.contact__register_form-error {
+  border: 2px solid #78002e;
+}
+
+.contact_form__error {
+  position: absolute;
+  color: #780000;
+}
+

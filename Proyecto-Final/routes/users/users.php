@@ -10,7 +10,7 @@ Route::get('/register', [UserController::class, 'showRegister'])->name('user.sho
 Route::post('/login', [UserController::class, 'doLogin'])->name('user.doLogin');
 Route::post('/register', [UserController::class, 'doRegister'])->name('user.doRegister');
 
-Route::get('/contact', [UserController::class, 'showContact'])->name('user.showContact'); // IMPORTANTE PARA LARAVEL
+Route::get('/contact', [UserController::class, 'showContact'])->name('user.showContact');
 
 Route::middleware(['auth'])->group(function(){
 
@@ -23,5 +23,7 @@ Route::middleware(['auth'])->group(function(){
     Route::delete('/logout/{id}', [UserController::class, 'logout'])->name('user.logout');
 
     Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('user.delete');
+
+    Route::post('/contact', [UserController::class, 'doContact'])->name('user.doContact');
 
 });

@@ -9,7 +9,7 @@
         </div>
         <div class="form-group">
             <label for="description">Description:</label>
-            <input class="form-control" type="text" name="description" placeholder="Enter description">
+            <textarea rows="4" class="form-control" name="description" placeholder="Enter description"></textarea>
             @error('description') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
