@@ -94,23 +94,27 @@ class InsectController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                "name"=>"required",
-                "scientificName"=>"required",
+                "name"=>"required||unique:App\Models\Insect,name",
+                "scientificName"=>"required|unique:App\Models\Insect,scientificName",
                 "family"=>"required",
                 "diet"=>"required",
                 "description"=> "required",
-                "n_spotted"=>"required",
-                "maxSize"=>"required",
+                "n_spotted"=>"required|min:1",
+                "maxSize"=>"required|min:0.01",
                 "photo"=>"required"
             ],[
-                "name.required" => "The :attribute is required.",
-                "scientificName.required" => "The :attribute is required.",
-                "family.required" => "The :attribute is required.",
-                "diet.required" => "The :attribute is required.",
-                "description.required" => "The :attribute is required.",
-                "n_spotted.required" => "The :attribute is required.",
-                "maxSize.required" => "The :attribute is required.",
-                "photo.required" => "The :attribute is required.",
+                "name.required" => "El nombre es obligatorio.",
+                "name.unique" => "Ese nombre ya está en uso.",
+                "scientificName.required" => "El nombre científico es obligatorio.",
+                "scientificName.unique" => "Ese nombre científico ya está en uso.",
+                "family.required" => "El nombre de la familia es obligatorio.",
+                "diet.required" => "El tipo de dieta es obligatorio.",
+                "description.required" => "La descripción es obligatoria.",
+                "n_spotted.required" => "El número de ejemplares vistos es obligatorio.",
+                "n_spotted.min" => "El número de ejemplares vistos no puede ser menor que 1.",
+                "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
+                "maxSize.min" => "El tamaño máximo documentado no puede ser menor a 0.01cm.",
+                "photo.required" => "La foto es obligatoria.",
             ]
         );
     

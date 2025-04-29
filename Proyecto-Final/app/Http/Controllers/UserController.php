@@ -91,9 +91,18 @@ class UserController extends Controller
                 "password"=>"required|min:5|max:20|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/",
                 "password_repeat"=>"required|same:password"
             ],[
-                "password.min" => "La contraseña debe contener 5 carácteres mínimo",
-                "password.max" => "La contraseña debe contener 20 carácteres máximo",
+                "name.required"=> "El nombre es obligatorio.",
+                "name.string"=> "El nombre ha de ser un String",
+                "name.max"=> "El nombre debe contener 20 carácteres como máximo.",
+                "email.required"=> "El email es obligatorio.",
+                "email.email"=> "El email ha de tener el formato correcto.",
+                "email.unique"=> "Ese email ya está en uso.",
+                "password.required" => "La contraseña es obligatoria.",
+                "password.min" => "La contraseña debe contener 5 carácteres mínimo.",
+                "password.max" => "La contraseña debe contener 20 carácteres máximo.",
                 "password.regex" => "La contraseña debe contener una minúscula, una mayúscula y un dígito",
+                "password_repeat.required" => "La contraseña repetida es obligatoria.",
+                "password_repeat.same" => "La contraseña repetida ha de ser igual a la contraseña original.",
             ]
         );
 

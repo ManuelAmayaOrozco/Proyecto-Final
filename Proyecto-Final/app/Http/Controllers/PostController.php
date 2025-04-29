@@ -190,15 +190,17 @@ class PostController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                "title"=>"required",
+                "title"=>"required|min:1|max:50",
                 "description"=> "required",
                 "photo"=>"required",
                 "insect"=>"required"
             ],[
-                "title.required" => "The :attribute is required.",
-                "description.required" => "The :attribute is required.",
-                "photo.required" => "The :attribute is required.",
-                "insect.required" => "The :attribute is required."
+                "title.required" => "El título es obligatorio.",
+                "title.min" => "El título ha de tener por lo menos un carácter.",
+                "title.max" => "El título no puede tener más de 50 carácteres.",
+                "description.required" => "La descripción es obligatoria.",
+                "photo.required" => "La imagen es obligatoria.",
+                "insect.required" => "El insecto relacionado es obligatorio."
             ]
         );
     

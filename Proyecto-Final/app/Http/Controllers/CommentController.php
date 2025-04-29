@@ -27,7 +27,7 @@ class CommentController extends Controller
             [
                 "comment"=>"required"
             ],[
-                "comment.required" => "The :attribute is required."
+                "comment.required" => "El comentario es obligatorio."
             ]
         );
     
