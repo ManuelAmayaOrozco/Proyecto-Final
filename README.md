@@ -175,3 +175,28 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **DELETE** `{posts/delete/{id}}`: Endpoint utilizado para eliminar un post en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+     
+4. **Endpoints para Comentarios**
+    - **GET** `{comments/register/{id}}`: Endpoint utilizado para llamar a la vista del registro de comentarios y mostrarla por pantalla, junto con el ID de su post correspondiente.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **POST** `{comments/register/{id}}`: Endpoint utilizado para registrar un comentario en la base de datos junto con el ID de su post correspondiente, devolviendo el usuario al post actualizado justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+
+## **Lógica de negocio**
+
+1. **Tabla Usuario**
+
+| Campo                   | Regla de Validación                                                       | Código HTTP  | Mensaje de Error                                                       |
+|-------------------------|---------------------------------------------------------------------------|--------------|------------------------------------------------------------------------|
+| `name`                  | No puede estar vacío.                                                     | 400          | "El nombre es obligatorio."                                            |
+| `name`                  | Ha de ser String.                                                         | 400          | "El nombre ha de ser un String"                                        |
+| `name`                  | No puede ser de más de 20 carácteres.                                     | 400          | "El nombre debe contener 20 carácteres máximo."                        |
+| `email`                 | No puede estar vacío.                                                     | 400          | "El email es obligatorio."                                             |
+| `email`                 | Ha de tener el formato correcto.                                          | 400          | "El email ha de tener el formato correcto."                            |
+| `email`                 | Ha de ser único.                                                          | 400          | "Ese email ya está en uso."                                            |
+| `password`              | No puede estar vacía.                                                     | 400          | "La contraseña es obligatoria."                                        |
+| `password`              | Ha de tener por lo menos 5 carácteres.                                    | 400          | "La contraseña debe contener 5 carácteres mínimo."                     |
+| `password`              | No puede ser de más de 20 carácteres.                                     | 400          | "La contraseña debe contener 20 carácteres máximo."                    |
+| `password`              | Ha de contener los carácteres correctos.                                  | 400          | "La contraseña debe contener una minúscula, una mayúscula y un dígito" |
+| `password_repeat`       | No puede estar vacía.                                                     | 400          | "La contraseña repetida es obligatoria."                               |
+| `password_repeat`       | Ha de ser igual a `password`.                                             | 400          | "La contraseña repetida ha de ser igual a la contraseña original."     |
