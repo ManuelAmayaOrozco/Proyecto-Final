@@ -124,7 +124,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 1. **Endpoints para Usuarios**
     - **GET** `{users/login}`: Endpoint utilizado para llamar a la vista del login y mostrarla por pantalla.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
-    - **GET** `{users/register}`: Endpoint utilizado para llamar a la vista del registro y mostrarla por pantalla.
+    - **GET** `{users/register}`: Endpoint utilizado para llamar a la vista del registro de usuarios y mostrarla por pantalla.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **POST** `{users/login}`: Endpoint utilizado para realizar el login e iniciar sesión con un usuario en particular, enviando al usuario de vuelta a la página principal una vez realizado.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
@@ -142,4 +142,20 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
     - **DELETE** `{users/delete/{id}}`: Endpoint utilizado para eliminar el usuario actual de la base de datos, devolviéndolo a la página principal justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **POST** `{users/contact}`: Endpoint utilizado para mandar el correo de contacto a el email correspondiente.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+
+2. **Endpoints para Insectos**
+    - **GET** `{insects/insectlist}`: Endpoint utilizado para llamar a la vista de la lista de los insectos y mostrarla por pantalla.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{insects/fullInsect/{id}}`: Endpoint utilizado para llamar a la vista de los datos completos de un insecto en específico y mostrarla por pantalla.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{insects/register}`: Endpoint utilizado para llamar a la vista del registro de insectos y mostrarla por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **POST** `{insects/register}`: Endpoint utilizado para registrar un insecto en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **GET** `{insects/update/{id}}`: Endpoint utilizado para llamar a la vista para actualizar un insecto específico y mostrarla por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{insects/update/{id}}`: Endpoint utilizado para actualizar un insecto en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **DELETE** `{insects/delete/{id}}`: Endpoint utilizado para eliminar un insecto en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
