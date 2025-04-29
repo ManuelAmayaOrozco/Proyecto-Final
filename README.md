@@ -184,7 +184,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 
 ## **Lógica de negocio**
 
-1. **Tabla Usuario**
+1. **Tabla Users**
 
 | Campo                   | Regla de Validación                                                       | Código HTTP  | Mensaje de Error                                                       |
 |-------------------------|---------------------------------------------------------------------------|--------------|------------------------------------------------------------------------|
@@ -200,3 +200,37 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | `password`              | Ha de contener los carácteres correctos.                                  | 400          | "La contraseña debe contener una minúscula, una mayúscula y un dígito" |
 | `password_repeat`       | No puede estar vacía.                                                     | 400          | "La contraseña repetida es obligatoria."                               |
 | `password_repeat`       | Ha de ser igual a `password`.                                             | 400          | "La contraseña repetida ha de ser igual a la contraseña original."     |
+
+2. **Tabla Insects**
+
+| Campo                   | Regla de Validación                                                       | Código HTTP  | Mensaje de Error                                            |
+|-------------------------|---------------------------------------------------------------------------|--------------|-------------------------------------------------------------|
+| `name`                  | No puede estar vacío.                                                     | 400          | "El nombre es obligatorio."                                 |
+| `name`                  | Ha de ser único.                                                          | 400          | "Ese nombre ya está en uso."                                |
+| `scientificName`        | No puede estar vacío.                                                     | 400          | "El nombre científico es obligatorio."                      |
+| `scientificName`        | Ha de ser único.                                                          | 400          | "Ese nombre científico ya está en uso."                     |
+| `family`                | No puede estar vacía.                                                     | 400          | "El nombre de la familia es obligatorio."                   |
+| `diet`                  | No puede estar vacía.                                                     | 400          | "El tipo de dieta es obligatorio."                          |
+| `description`           | No puede estar vacía.                                                     | 400          | "La descripción es obligatoria."                            |
+| `n_spotted`             | No puede estar vacío.                                                     | 400          | "El número de ejemplares vistos es obligatorio."            |
+| `n_spotted`             | Ha de ser por lo menos 1.                                                 | 400          | "El número de ejemplares vistos no puede ser menor que 1."  |
+| `maxSize`               | No puede estar vacío.                                                     | 400          | "El tamaño máximo documentado es obligatorio."              |
+| `maxSize`               | Ha de ser por lo menos 0.01.                                              | 400          | "El tamaño máximo documentado no puede ser menor a 0.01cm." |
+| `photo`                 | No puede estar vacía.                                                     | 400          | "La imagen es obligatoria."                                 |
+
+3. **Tabla Posts**
+
+| Campo                   | Regla de Validación                                                       | Código HTTP  | Mensaje de Error                                    |
+|-------------------------|---------------------------------------------------------------------------|--------------|-----------------------------------------------------|
+| `title`                 | No puede estar vacío.                                                     | 400          | "El título es obligatorio."                         |
+| `title`                 | Ha de tener por lo menos 1 carácter.                                      | 400          | "El título ha de tener por lo menos un carácter."   |
+| `title`                 | No puede ser de más de 50 carácteres.                                     | 400          | "El título no puede tener más de 50 carácteres."    |
+| `description`           | No puede estar vacía.                                                     | 400          | "La descripción es obligatoria."                    |
+| `photo`                 | No puede estar vacía.                                                     | 400          | "La imagen es obligatoria."                         |
+| `insect`                | No puede estar vacío.                                                     | 400          | "El insecto relacionado es obligatorio."            |
+
+4. **Tabla Comments**
+
+| Campo                   | Regla de Validación                                                       | Código HTTP  | Mensaje de Error                                    |
+|-------------------------|---------------------------------------------------------------------------|--------------|-----------------------------------------------------|
+| `comment`               | No puede estar vacío.                                                     | 400          | "El comentario es obligatorio."                     |
