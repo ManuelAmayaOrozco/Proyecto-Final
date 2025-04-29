@@ -29,7 +29,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
                 - Ha de ser único.
         - `email_verified_at` **(Tipo: Timestamp)**: Instancia en la que el email fue verificado por última vez.
         - `password` **(Tipo: String)**: La contraseña del usuario, se guarda hasheada en la base de datos.
-            **RESTRICCIÓN:**
+            **RESTRICCIONES:**
                 - No puede estar vacía.
                 - Ha de tener por lo menos 5 carácteres.
                 - No puede tener más de 20 carácteres.
@@ -42,6 +42,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
     - Representa un insecto, cuya información es almacenada en la base de datos. Los usuarios han de apuntar a alguno de estos insectos en sus posts.
     - Propiedades:
         - `id` **(Tipo: Long)**: El ID del insecto correspondiente, autogenerado por la base de datos.
+        - `registered_by` **(Tipo: Long)**: El ID del usuario que registró este insecto originalmente.
         - `name` **(Tipo: String)**: El nombre del insecto.
             **RESTRICCIONES:**
                 - No puede estar vacío.
@@ -68,6 +69,29 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
                 - No puede estar vacío.
                 - No puede ser menor que 0.01.
         - `protectedSpecies` **(Tipo: Boolean)**: Define si el insecto está en peligro de extinción (true) o no (false).
-        - `photo` **(Tipo: String)**: La dirección en donde se guarda una foto del insecto dentro de los archivos del programa.
+        - `photo` **(Tipo: String)**: La dirección en donde se guarda una imagen del insecto dentro de los archivos del programa.
             **RESTRICCIONES:**
                 - No puede estar vacío.
+
+3. **Tabla Posts**
+    - Representa un post/blog publicado por un usuario específico.
+    - Propiedades:
+        - `id` **(Tipo: Long)**: El ID del post correspondiente, autogenerado por la base de datos.
+        - `title` **(Tipo: String)**: El título del post.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+                - Ha de tener por lo menos 1 carácter.
+                - No puede tener más de 50 carácteres.
+        - `description` **(Tipo: String)**: Una la descripción o texto principal del post.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+        - `publish_date` **(Tipo: Timestamp)**: La fecha en la que el post fue publicada originalmente.
+        - `n_likes` **(Tipo: Int)**: El número de likes que tiene el post.
+        - `belongs_to` **(Tipo: Long)**: El ID del usuario al que le pertence este post.
+        - `related_insect` **(Tipo: Long)**: El ID del insecto al que este post hace referencia.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+        - `photo` **(Tipo: String)**: La dirección en donde se guarda la imagen del post dentro de los archivos del programa.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+        - `dailyPost` **(Tipo: Boolean)**: Decide si este post es elegido como post del día (true) o no (false). Por defecto está puesto como 'false'.
