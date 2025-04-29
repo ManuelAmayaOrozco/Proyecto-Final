@@ -123,6 +123,23 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 
 1. **Endpoints para Usuarios**
     - **GET** `{users/login}`: Endpoint utilizado para llamar a la vista del login y mostrarla por pantalla.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **GET** `{users/register}`: Endpoint utilizado para llamar a la vista del registro y mostrarla por pantalla.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **POST** `{users/login}`: Endpoint utilizado para realizar el login e iniciar sesión con un usuario en particular, enviando al usuario de vuelta a la página principal una vez realizado.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **POST** `{users/login}`: Endpoint utilizado para registrar un nuevo usuario en la base de datos, enviando al usuario a la página del login una vez realizado.
+    - **GET** `{users/contact}`: Endpoint utilizado para llamar a la vista de contacto de la compañia y mostrarla por pantalla.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{users/profile}`: Endpoint utilizado para llamar a la vista del perfil del usuario actual y mostrarla por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **GET** `{users/update/{id}}`: Endpoint utilizado para llamar a la vista para actualizar un usuario específico.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{users/update/{id}}`: Endpoint utilizado para actualizar un usuario específico, enviando al usuario de vuelta a su perfil una vez el usuario ha sido actualizado.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **DELETE** `{users/logout/{id}}`: Endpoint utilizado para salir de la sesión del usuario actual, devolviéndolo a la página principal justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **DELETE** `{users/delete/{id}}`: Endpoint utilizado para eliminar el usuario actual de la base de datos, devolviéndolo a la página principal justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **POST** `{users/contact}`: Endpoint utilizado para mandar el correo de contacto a el email correspondiente.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
