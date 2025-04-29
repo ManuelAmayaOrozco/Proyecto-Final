@@ -128,7 +128,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **POST** `{users/login}`: Endpoint utilizado para realizar el login e iniciar sesión con un usuario en particular, enviando al usuario de vuelta a la página principal una vez realizado.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
-    - **POST** `{users/login}`: Endpoint utilizado para registrar un nuevo usuario en la base de datos, enviando al usuario a la página del login una vez realizado.
+    - **POST** `{users/register}`: Endpoint utilizado para registrar un nuevo usuario en la base de datos, enviando al usuario a la página del login una vez realizado.
     - **GET** `{users/contact}`: Endpoint utilizado para llamar a la vista de contacto de la compañia y mostrarla por pantalla.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **GET** `{users/profile}`: Endpoint utilizado para llamar a la vista del perfil del usuario actual y mostrarla por pantalla.
@@ -234,3 +234,55 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | Campo                   | Regla de Validación                                                       | Código HTTP  | Mensaje de Error                                    |
 |-------------------------|---------------------------------------------------------------------------|--------------|-----------------------------------------------------|
 | `comment`               | No puede estar vacío.                                                     | 400          | "El comentario es obligatorio."                     |
+
+## **Códigos de Respuesta**
+
+Operaciones exitosas:
+
+- **201 Created**: Creación de recursos exitosos (POST excepto Login).
+- **200 OK**: Consultas y actualizaciones exitosas (GET, PUT, Login POST)
+- **204 No Content**: Eliminación de recursos exitosos (DELETE)
+
+Operaciones fallidas:
+
+- **400 Bad Request**: Errores de validación de la lógica de negocio.
+- **401 Not Authorized Exception**: Errores de autorización si no tiene los roles adecuados.
+- **404 Not Found**: Recursos inexistentes de la lógica de negocio.
+- **500 Internal Server Error**: Cualquier otro error que ocurra dentro del servidor.
+
+## **Restricciones de Seguridad**
+
+1. **Usuarios:**
+    - **GET** `{users/login}`: Cualquiera puede acceder login ya que es necesario para acceder a la aplicación.
+    - **GET** `{users/register}`: Cualquiera puede acceder registro ya que es necesario para acceder a la aplicación.
+    - **POST** `{users/login}`: Cualquiera puede hacer login ya que es necesario para acceder a la aplicación.
+    - **POST** `{users/register}`: Cualquiera puede registrarse ya que es necesario para acceder a la aplicación si no tienes una cuenta creada.
+    - **GET** `{users/contact}`: Cualquiera puede ver la página de contactos solo para informarse, aunque solo se puede usar el formulario si has hecho login previamente.
+    - **GET** `{users/profile}`: Solo puedes acceder a tu perfil si tienes una sesión activa ya que se requiere para saber cuál es tu usuario.
+    - **GET** `{users/update/{id}}`: Solo se puede acceder desde el perfil de usuario, el cuál requiere una sesión activa para saber cuál es el usuario.
+    - **PUT** `{users/update/{id}}`: Solo se puede usar desde el perfil de usuario, el cuál requiere una sesión activa para saber cuál es el usuario.
+    - **DELETE** `{users/logout/{id}}`: Solo puedes cerrar sesión si tienes una sesión abierta anteriormente por obvios motivos.
+    - **DELETE** `{users/delete/{id}}`: Solo puedes eliminar tu propio usuario si tienes una sesión abierta para saber cuál es tu usuario.
+    - **POST** `{users/contact}`: Solo puedes mandar un correo de contacto si tienes la sesión iniciada para saber cuál es el usuario que lo está haciendo.
+
+2. **Insectos:**
+    - **GET** `{insects/insectlist}`: Cualquiera puede mirar la lista de insectos para informarse sobre ellos.
+    - **GET** `{insects/fullInsect/{id}}`: Cualquiera puede mirar la información detallada de un insecto específico para informarse sobre este.
+    - **GET** `{insects/register}`: Solo los administradores que hayan iniciado sesión pueden acceder para registrar nuevos insectos ya que ellos son los que se encargan de modificar la lista de insectos.
+    - **POST** `{insects/register}`: Solo los administradores que hayan iniciado sesión pueden registrar nuevos insectos ya que ellos son los que se encargan de modificar la lista de insectos.
+    - **GET** `{insects/update/{id}}`: Solo los administradores que hayan iniciado sesión pueden acceder para actualizar insectos ya que ellos son los que se encargan de modificar la lista de insectos.
+    - **PUT** `{insects/update/{id}}`: Solo los administradores que hayan iniciado sesión pueden actualizar insectos ya que ellos son los que se encargan de modificar la lista de insectos.
+    - **DELETE** `{insects/delete/{id}}`: Solo los administradores que hayan iniciado sesión pueden eliminar insectos ya que ellos son los que se encargan de modificar la lista de insectos.
+  
+3. **Posts:**
+    - **GET** `{posts/postlist/{tagId?}}`: Cualquiera puede mirar la lista de posts y buscar con los diferentes filtros.
+    - **GET** `{posts/fullPost/{id}}`: Cualquiera puede mirar un post completo.
+    - **GET** `{insects/update-daily-post}`: El post del día se actualiza por si solo de manera pública.
+    - **GET** `{posts/register}`: Solo los usuarios que han iniciado sesión pueden acceder para registrar posts para así saber a cuál usuario le pertence el post.
+    - **POST** `{posts/register}`: Solo los usuarios que han iniciado sesión pueden registrar posts para así saber a cuál usuario le pertence el post.
+    - **PUT** `{posts/like/{id}}`: Solo los usuarios que han iniciado sesión pueden dar likes a los posts para así saber a cuál usuario le ha dado like a cada post.
+    - **DELETE** `{posts/delete/{id}}`: Solo el usuario autenticado que ha creado un post puede eliminar su propio post.
+
+4. **Comentarios:**
+    - **GET** `{comments/register/{id}}`: Solo los usuarios que han iniciado sesión pueden acceder para registrar comentarios para así saber a cuál usuario le pertence el comentario.
+    - **GET** `{comments/register/{id}}`: Solo los usuarios que han iniciado sesión pueden registrar comentarios para así saber a cuál usuario le pertence el comentario.
