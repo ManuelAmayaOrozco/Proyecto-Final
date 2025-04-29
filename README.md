@@ -119,3 +119,10 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
         - `post_id` **(Tipo: Long)**: El ID del post en el que aparece esta etiqueta.
         - `tag_id` **(Tipo: Long)**: El ID de la etiqueta que aparece en este post.
 
+## **Endpoints**
+
+1. **Endpoints para Usuarios**
+    - **GET** `{users/login}`: Endpoint utilizado para llamar a la vista del login y mostrarla por pantalla.
+    - **GET** `{users/register}`: Endpoint utilizado para llamar a la vista del registro y mostrarla por pantalla.
+    - **POST** `{users/login}`: Endpoint utilizado para realizar el login e iniciar sesión con un usuario en particular, enviando al usuario de vuelta a la página principal una vez realizado.
+    - **POST** `{users/login}`: Endpoint utilizado para registrar un nuevo usuario en la base de datos, enviando al usuario a la página del login una vez realizado.
