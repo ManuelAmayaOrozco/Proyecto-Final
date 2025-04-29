@@ -159,3 +159,19 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **DELETE** `{insects/delete/{id}}`: Endpoint utilizado para eliminar un insecto en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+
+3. **Endpoints para Posts**
+    - **GET** `{posts/postlist/{tagId?}}`: Endpoint utilizado para llamar a la vista de la lista de los posts y mostrarla por pantalla, incluye un parámetro opcional del ID de una etiqueta en caso de que se busque a través de una.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{posts/fullPost/{id}}`: Endpoint utilizado para llamar a la vista de los datos completos de un post en específico y mostrarla por pantalla.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{insects/update-daily-post}`: Endpoint utilizado para actualizar el post del día, llamado automáticamente diariamente.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{posts/register}`: Endpoint utilizado para llamar a la vista del registro de posts y mostrarla por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **POST** `{posts/register}`: Endpoint utilizado para registrar un post en la base de datos, devolviendo el usuario a la lista actualizada de posts justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{posts/like/{id}}`: Endpoint utilizado para actualizar un el contador de likes de un post, recarga la página justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **DELETE** `{posts/delete/{id}}`: Endpoint utilizado para eliminar un post en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
