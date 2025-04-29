@@ -13,11 +13,11 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 
 ## **Tablas**
 
-1. **Tabla Usuario**
+1. **Tabla Users (Usuarios)**
     - Representa un usuario que podrá publicar posts, comentarios e insectos (si es administrador) e interaccionar con los diversos elementos de la web abiertamente.
     - Propiedades:
         - `id` **(Tipo: Long)**: El ID del usuario correspondiente, autogenerado por la base de datos.
-        - `nombre` **(Tipo: String)**: El nombre del usuario.
+        - `name` **(Tipo: String)**: El nombre del usuario.
             **RESTRICCIONES:**
                 - No puede estar vacío.
                 - Debe ser de tipo String.
@@ -38,3 +38,36 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
         - `photo` **(Tipo: String)**: La dirección en donde se guarda la foto de perfil del usuario dentro de los archivos del programa, puede ser null ya que la foto de perfil es opcional.
 
 
+2. **Tabla Insects (Insectos)**
+    - Representa un insecto, cuya información es almacenada en la base de datos. Los usuarios han de apuntar a alguno de estos insectos en sus posts.
+    - Propiedades:
+        - `id` **(Tipo: Long)**: El ID del insecto correspondiente, autogenerado por la base de datos.
+        - `name` **(Tipo: String)**: El nombre del insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+                - Ha de ser único.
+        - `scientificName` **(Tipo: String)**: El nombre científico del insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+                - Ha de ser único.
+        - `family` **(Tipo: String)**: La familia taxonómica a la que pertenece el insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacía.
+        - `diet` **(Tipo: String)**: El tipo de dieta del insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacía.
+        - `description` **(Tipo: String)**: Una breve descripción del insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+        - `n_spotted` **(Tipo: Int)**: El número de instancias documentadas del insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+                - No puede ser menor que 1.
+        - `maxSize` **(Tipo: Double)**: El tamaño máximo documentado del insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+                - No puede ser menor que 0.01.
+        - `protectedSpecies` **(Tipo: Boolean)**: Define si el insecto está en peligro de extinción (true) o no (false).
+        - `photo` **(Tipo: String)**: La dirección en donde se guarda una foto del insecto dentro de los archivos del programa.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
