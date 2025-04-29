@@ -95,3 +95,27 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
             **RESTRICCIONES:**
                 - No puede estar vacío.
         - `dailyPost` **(Tipo: Boolean)**: Decide si este post es elegido como post del día (true) o no (false). Por defecto está puesto como 'false'.
+
+4. **Tabla Comments (Comentarios)**
+    - Representa el comentario dentro de un post, normalmente utilizado para añadir sugerencias o discutir algo del post.
+    - Propiedades:
+        - `id` **(Tipo: Long)**: El ID del comentario correspondiente, autogenerado por la base de datos.
+         - `comment` **(Tipo: String)**: El texto principal del post.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+         - `publish_date` **(Tipo: Timestamp)**: La fecha en la que el comentario fue publicado originalmente.
+         - `user_id` **(Tipo: Long)**: El ID del usuario al que le pertence este comentario.
+         - `post_id` **(Tipo: Long)**: El ID del post en el que aparece este comentario.
+
+5. **Tabla Tags (Etiquetas)**
+    - Representa una etiqueta utilizada por uno o varios posts, utilizadas para una búsqueda más fácil de posts específicos.
+    - Propiedades:
+        - `id` **(Tipo: Long)**: El ID de la etiqueta correspondiente, autogenerado por la base de datos.
+        - `title` **(Tipo: String)**: El nombre de la etiqueta.
+
+6. **Tabla Post_Tag**
+    - Se trata de una tabla intermediaria usada en la relación de muchos a muchos entre las tablas de los posts y la tablas de las tags (etiquetas).
+    - Propiedades:
+        - `post_id` **(Tipo: Long)**: El ID del post en el que aparece esta etiqueta.
+        - `tag_id` **(Tipo: Long)**: El ID de la etiqueta que aparece en este post.
+
