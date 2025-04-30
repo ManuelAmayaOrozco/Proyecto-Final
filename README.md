@@ -123,8 +123,8 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
     - Representa una instancia en la que un usuario ha añadido como favorito un post.
     - Propiedades:
         - `id` **(Tipo: Long)**: El ID de la instancia en la que el usuario añade el post como favorito.
-        - `id_post` **(Tipo: Long)**: El ID del post que ha sido marcado como favorito.
-        - `id_user` **(Tipo: Long)**: El ID del usuario que ha marcado al post como favorito.
+        - `id_post` **(Tipo: String)**: El ID del post que ha sido marcado como favorito.
+        - `id_user` **(Tipo: String)**: El ID del usuario que ha marcado al post como favorito.
 
 ## **Endpoints**
 
