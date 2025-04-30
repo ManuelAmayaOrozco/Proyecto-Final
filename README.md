@@ -119,6 +119,13 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
         - `post_id` **(Tipo: Long)**: El ID del post en el que aparece esta etiqueta.
         - `tag_id` **(Tipo: Long)**: El ID de la etiqueta que aparece en este post.
 
+7. **Tabla Favorites (Favoritos)**
+    - Representa una instancia en la que un usuario ha añadido como favorito un post.
+    - Propiedades:
+        - `id` **(Tipo: Long)**: El ID de la instancia en la que el usuario añade el post como favorito.
+        - `id_post` **(Tipo: Long)**: El ID del post que ha sido marcado como favorito.
+        - `id_user` **(Tipo: Long)**: El ID del usuario que ha marcado al post como favorito.
+
 ## **Endpoints**
 
 1. **Endpoints para Usuarios**
@@ -172,6 +179,10 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
     - **POST** `{posts/register}`: Endpoint utilizado para registrar un post en la base de datos, devolviendo el usuario a la lista actualizada de posts justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **PUT** `{posts/like/{id}}`: Endpoint utilizado para actualizar un el contador de likes de un post, recarga la página justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{posts/newFavorite/{id}}`: Endpoint utilizado para actualizar la tabla de favoritos y crear una nueva instancia de un favorito.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{posts/removeFavorite/{id}}`: Endpoint utilizado para actualizar la tabla de favoritos y eliminar una instancia de un favorito.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **DELETE** `{posts/delete/{id}}`: Endpoint utilizado para eliminar un post en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
@@ -281,6 +292,8 @@ Operaciones fallidas:
     - **GET** `{posts/register}`: Solo los usuarios que han iniciado sesión pueden acceder para registrar posts para así saber a cuál usuario le pertence el post.
     - **POST** `{posts/register}`: Solo los usuarios que han iniciado sesión pueden registrar posts para así saber a cuál usuario le pertence el post.
     - **PUT** `{posts/like/{id}}`: Solo los usuarios que han iniciado sesión pueden dar likes a los posts para así saber a cuál usuario le ha dado like a cada post.
+    - **PUT** `{posts/newFavorite/{id}}`: Solo los usuarios que han iniciado sesión pueden marcar posts como favoritos para saber cuál usuario lo ha marcado.
+    - **PUT** `{posts/removeFavorite/{id}}`: Solo los usuarios que han iniciado sesión pueden desmarcar posts como favoritos para saber cuál usuario lo ha desmarcado.
     - **DELETE** `{posts/delete/{id}}`: Solo el usuario autenticado que ha creado un post puede eliminar su propio post.
 
 4. **Comentarios:**
