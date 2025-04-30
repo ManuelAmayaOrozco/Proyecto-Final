@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Tag;
+use App\Models\Favorite;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -22,37 +23,62 @@ class PostController extends Controller
         $query = Post::with('tags');
         $users = DB::table('users')->get();
         $insects = DB::table('insects')->get();
+        $favorites = DB::table('favorites')->get();
 
         $current_user_id = Auth::id();
 
         if ($tagId != null) {
+            // Búsqueda por etiqueta
             $postTagIds = DB::table('post_tag')
-                            ->where('tag_id', '=', $tagId)
-                            ->pluck('post_id'); // devuelve colección de IDs
-
+                ->where('tag_id', $tagId)
+                ->pluck('post_id');
             $query = $query->whereIn('id', $postTagIds);
         }
-        else if (request()->has('searchtype') && request()->get('searchtype','') == 'user' && request()->has('search')) {
+        
+        $searchType = request()->get('searchtype');
+        $search = request()->get('search');
+        
+        if ($searchType === 'user' && $search) {
             $userIds = DB::table('users')
-                ->where('name', 'like', '%' . request()->get('search', '') . '%')
-                ->pluck('id'); // devuelve colección de IDs
-            
+                ->where('name', 'like', '%' . $search . '%')
+                ->pluck('id');
             $query = $query->whereIn('belongs_to', $userIds);
         }
-        else if (request()->has('searchtype') && request()->get('searchtype','') == 'insect' && request()->has('search')) {
+        
+        if ($searchType === 'insect' && $search) {
             $insectIds = DB::table('insects')
-                ->where('name', 'like', '%' . request()->get('search', '') . '%')
-                ->pluck('id'); // devuelve colección de IDs
-            
+                ->where('name', 'like', '%' . $search . '%')
+                ->pluck('id');
             $query = $query->whereIn('related_insect', $insectIds);
         }
-        else if (request()->has('search')) {
-            $query = $query->where('description','like', '%' . request()->get('search','') . '%');
+
+        if ($searchType === 'tag' && $search) {
+            $tagIds = DB::table('tags')
+                ->where('name', 'like', '%' . $search . '%')
+                ->pluck('id');
+        
+            $postTagIds = DB::table('post_tag') // tabla de relación
+                ->whereIn('tag_id', $tagIds)
+                ->pluck('post_id');
+        
+            $query = $query->whereIn('id', $postTagIds);
+        }
+        
+        if ($searchType === 'favorites') {
+            $favoritesIds = DB::table('favorites')
+                ->where('id_user', $current_user_id)
+                ->pluck('id_post');
+            $query = $query->whereIn('id', $favoritesIds);
+        }
+        
+        // Si no hay tipo específico pero hay búsqueda por texto
+        if (!$searchType && $search) {
+            $query = $query->where('description', 'like', '%' . $search . '%');
         }
 
         $posts = $query->get();
 
-        return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user_id'));
+        return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user_id', 'favorites'));
     }
 
     public function showHome() {
@@ -130,7 +156,12 @@ class PostController extends Controller
 
         $current_user_id = Auth::id();
 
-        return view('user_views.fullPost', compact('post', 'post_user', 'post_insect', 'post_insect_id', 'comments', 'users', 'current_user_id'));
+        $isFavorite = DB::table('favorites')
+                        ->where('id_post', $id)
+                        ->where('id_user', $current_user_id)
+                        ->first();
+
+        return view('user_views.fullPost', compact('post', 'post_user', 'post_insect', 'post_insect_id', 'comments', 'users', 'current_user_id', 'isFavorite'));
     }
 
     public function showRegisterPost() {
@@ -144,6 +175,31 @@ class PostController extends Controller
         $post = Post::find($id);
 
         $post->increment('n_likes');
+
+        return redirect()->back();
+
+    }
+
+    public function newFavorite($id) {
+    
+        $post = Post::find($id);
+
+        $current_user_id = Auth::id();
+
+        $createFavorite = new Favorite();
+        $createFavorite->id_post = $id;
+        $createFavorite->id_user = $current_user_id;
+        $createFavorite->save();
+
+        return redirect()->back();
+
+    }
+
+    public function removeFavorite($id) {
+
+        $current_user_id = Auth::id();
+
+        DB::table('favorites')->where('id_post', $id)->where('id_user', $current_user_id)->delete();
 
         return redirect()->back();
 

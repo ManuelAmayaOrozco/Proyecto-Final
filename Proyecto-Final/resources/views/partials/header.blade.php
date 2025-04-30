@@ -21,15 +21,34 @@
             CONTACT US
         </a>
     </nav>
+
     <div class="header__searchbar">
         <form action="{{ route('post.showPosts') }}" method="GET">
             <select class="search-select" name="searchtype" id="searchtype">
                     <option value="" disabled selected>Opción de búsqueda</option>
                     <option value="user">Usuario</option>
                     <option value="insect">Insecto</option>
+                    <option value="tag">Etiqueta</option>
+                    <option value="favorites">Favoritos</option>
             </select>
             <input name="search" placeholder="..." class="search-bar" type="text">
             <button class="search-button">Buscar</button>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const searchType = document.getElementById('searchtype');
+            const searchInput = document.querySelector('.search-bar');
+
+            searchType.addEventListener('change', function () {
+                if (this.value === 'favorites') {
+                    searchInput.disabled = true;
+                    searchInput.value = ''; // limpia el campo si estaba escrito algo
+                } else {
+                    searchInput.disabled = false;
+                }
+            });
+        });
+    </script>
 </header>

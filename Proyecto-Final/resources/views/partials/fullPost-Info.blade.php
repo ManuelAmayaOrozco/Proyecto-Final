@@ -28,6 +28,22 @@
             <button type="submit" class="btn btn-like">Like</button>
         </form>
 
+        @if ($isFavorite == null)
+        <form action="{{ route('post.newFavorite', ['id' => $post->id]) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <button type="submit" class="btn btn-warning btn-lg mb-3"><i class="bi bi-star"></i> Agregar a Favoritos</button>
+        </form>
+        @endif
+
+        @if ($isFavorite != null)
+        <form action="{{ route('post.removeFavorite', ['id' => $post->id]) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <button type="submit" class="btn btn-warning btn-lg mb-3"><i class="bi bi-star-fill"></i> Quitar de Favoritos</button>
+        </form>
+        @endif
+
         @if ($post->belongs_to == $current_user_id)
         <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
             @csrf

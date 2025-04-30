@@ -22,6 +22,7 @@
 
     </section>
 
+    @if ($dailyPost != null)
     <section class="featured-section" x-data 
                                         x-init="
                                             setInterval(() => {
@@ -87,5 +88,6 @@
         </div>
 
     </section>
+    @endif
 
 </main>

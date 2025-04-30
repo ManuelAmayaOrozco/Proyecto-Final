@@ -50,6 +50,32 @@
                 <button type="submit" class="btn btn-like">Like</button>
             </form>
 
+            @php
+                $isFavorite = $favorites->contains(function ($favorite) use ($current_user_id, $post) {
+                    return $favorite->id_user == $current_user_id && $favorite->id_post == $post->id;
+                });
+            @endphp
+
+            @if (!$isFavorite)
+                <form action="{{ route('post.newFavorite', ['id' => $post->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-warning btn-lg mb-3">
+                        <i class="bi bi-star"></i> Agregar a Favoritos
+                    </button>
+                </form>
+            @endif
+
+            @if ($isFavorite)
+                <form action="{{ route('post.removeFavorite', ['id' => $post->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-warning btn-lg mb-3">
+                        <i class="bi bi-star-fill"></i> Quitar de Favoritos
+                    </button>
+                </form>
+            @endif
+
             @if ($post->belongs_to == $current_user_id)
             <div x-data="{}">
                 <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Post</button>
