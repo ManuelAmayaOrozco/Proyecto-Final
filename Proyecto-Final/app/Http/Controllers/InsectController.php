@@ -16,7 +16,7 @@ class InsectController extends Controller
 {
 
     public function showInsects() {
-        $insects = DB::table('insects')->get();
+        $insects = Insect::with('photos')->get();
         $users = DB::table('users')->get();
 
         $current_user_id = Auth::id();
@@ -79,8 +79,10 @@ class InsectController extends Controller
 
         $insect = Insect::find($id);
 
-        $image = $insect->photo;
-        Storage::disk('public')->delete($image);
+        foreach ($insect->photos as $photo) {
+            Storage::disk('public')->delete($photo->path); // elimina del disco
+            $photo->delete(); // elimina de la base de datos
+        }
 
         $insect->delete();
 
@@ -101,7 +103,8 @@ class InsectController extends Controller
                 "description"=> "required",
                 "n_spotted"=>"required|min:1",
                 "maxSize"=>"required|min:0.01",
-                "photo"=>"required"
+                "photo" => "required|array",
+                "photo.*" => "image|mimes:jpeg,png,jpg|max:2048",
             ],[
                 "name.required" => "El nombre es obligatorio.",
                 "name.unique" => "Ese nombre ya está en uso.",
@@ -115,13 +118,21 @@ class InsectController extends Controller
                 "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
                 "maxSize.min" => "El tamaño máximo documentado no puede ser menor a 0.01cm.",
                 "photo.required" => "La foto es obligatoria.",
+                "photo.array" => "La foto ha de ser en formato array.",
+                "photo.*.image" => "La foto ha de ser una imagen.",
+                "photo.*.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.*.max" => "La foto no puede ser mayor de 2048px."
             ]
         );
     
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('insects', 'public');
+            $photos = [];
+            foreach ($request->file('photo') as $uploadedPhoto) {
+                $path = $uploadedPhoto->store('insects', 'public');
+                $photos[] = $path;
+            }
         } else {
-            $photo = null;
+            $photos = [];
         }
 
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
@@ -148,8 +159,11 @@ class InsectController extends Controller
         $insect->n_spotted = $datosPost['n_spotted'];
         $insect->maxSize = $datosPost['maxSize'];
         $insect->protectedSpecies = $datosPost['protectedSpecies'];
-        $insect->photo = $photo;
         $insect->save();
+
+        foreach ($photos as $path) {
+            $insect->photos()->create(['path' => $path]);
+        }
 
         return redirect()->route('home');
 
@@ -180,22 +194,33 @@ class InsectController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                "name" => "required",
-                "scientificName" => "required",
-                "family" => "required",
-                "diet" => "required",
-                "description" => "required",
-                "n_spotted" => "required",
-                "maxSize" => "required"
+                "name"=>"required",
+                "scientificName"=>"required",
+                "family"=>"required",
+                "diet"=>"required",
+                "description"=> "required",
+                "n_spotted"=>"required|min:1",
+                "maxSize"=>"required|min:0.01",
+                "photo" => "required|array",
+                "photo.*" => "image|mimes:jpeg,png,jpg|max:2048",
             ],
             [
-                "name.required" => "The :attribute is required.",
-                "scientificName.required" => "The :attribute is required.",
-                "family.required" => "The :attribute is required.",
-                "diet.required" => "The :attribute is required.",
-                "description.required" => "The :attribute is required.",
-                "n_spotted.required" => "The :attribute is required.",
-                "maxSize.required" => "The :attribute is required.",
+                "name.required" => "El nombre es obligatorio.",
+                "name.unique" => "Ese nombre ya está en uso.",
+                "scientificName.required" => "El nombre científico es obligatorio.",
+                "scientificName.unique" => "Ese nombre científico ya está en uso.",
+                "family.required" => "El nombre de la familia es obligatorio.",
+                "diet.required" => "El tipo de dieta es obligatorio.",
+                "description.required" => "La descripción es obligatoria.",
+                "n_spotted.required" => "El número de ejemplares vistos es obligatorio.",
+                "n_spotted.min" => "El número de ejemplares vistos no puede ser menor que 1.",
+                "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
+                "maxSize.min" => "El tamaño máximo documentado no puede ser menor a 0.01cm.",
+                "photo.required" => "La foto es obligatoria.",
+                "photo.array" => "La foto ha de ser en formato array.",
+                "photo.*.image" => "La foto ha de ser una imagen.",
+                "photo.*.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.*.max" => "La foto no puede ser mayor de 2048px."
             ]
         );
 
@@ -218,13 +243,13 @@ class InsectController extends Controller
         }
 
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('insects', 'public');
-            $oldImage = $insect->photo;
-            if ($oldImage != null) {
-                Storage::disk('public')->delete($oldImage);
+            $photos = [];
+            foreach ($request->file('photo') as $uploadedPhoto) {
+                $path = $uploadedPhoto->store('insects', 'public');
+                $photos[] = $path;
             }
         } else {
-            $photo = $insect->photo;
+            $photos = [];
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
@@ -237,8 +262,16 @@ class InsectController extends Controller
         $insect->n_spotted = $datosPost['n_spotted'];
         $insect->maxSize = $datosPost['maxSize'];
         $insect->protectedSpecies = $datosPost['protectedSpecies'];
-        $insect->photo = $photo;
         $insect->save();
+
+        foreach ($insect->photos as $photo) {
+            Storage::disk('public')->delete($photo->path); // elimina del disco
+            $photo->delete(); // elimina de la base de datos
+        }
+
+        foreach ($photos as $path) {
+            $insect->photos()->create(['path' => $path]);
+        }
 
         return redirect()->route('home');
 

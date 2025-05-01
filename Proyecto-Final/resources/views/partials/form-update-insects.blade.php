@@ -55,7 +55,7 @@
         </div>
         <div class="form-group">
             <label for="photo">Profile Picture</label>
-            <input type="file" class="form-control" id="input_photo" name="photo" accept="image/*" value="{{ asset('storage/' . $insect->photo) }}">
+            <input type="file" class="form-control" id="input_photo" name="photo[]" accept="image/*" multiple>
             @error('photo') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group d-flex justify-content-center gap-3">

@@ -9,9 +9,9 @@
 
     @foreach($insects as $insect)
 
-        <div class="insect-box" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">
+        <div class="insect-box">
 
-            <h2 class="insect-name">{{ $insect->name }}</h2>
+            <h2 class="insect-name" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">{{ $insect->name }}</h2>
             <h3 class="insect-scientificName">{{ $insect->scientificName }}</h2>
             <h3 class="insect-user">@foreach ($users as $user)
 
@@ -25,7 +25,9 @@
                                 </h3>
             <div class="insect-separator-box">
             <div class="insect-picture-display">
-                <img src="{{ asset('storage/' . $insect->photo) }}" class="insect-picture">
+                @foreach ($insect->photos as $photo)
+                    <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto de {{ $insect->name }}" class="insect-picture" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">
+                @endforeach
             </div>
             <p class="insect-info">Familia: {{ $insect->family }}</p>
             <p class="insect-info">Dieta: {{ $insect->diet }}</p>

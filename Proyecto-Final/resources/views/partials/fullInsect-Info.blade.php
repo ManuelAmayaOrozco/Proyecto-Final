@@ -8,7 +8,9 @@
         <h3 class="insect-user">{{ $insect_user }}</h3>
         <div class="insect-separator-box">
         <div class="insect-picture-display">
-            <img src="{{ asset('storage/' . $insect->photo) }}" class="insect-picture">
+            @foreach ($insect->photos as $photo)
+                <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto de {{ $insect->name }}" class="insect-picture">
+            @endforeach
         </div>
         <p class="insect-info">Familia: {{ $insect->family }}</p>
         <p class="insect-info">Dieta: {{ $insect->diet }}</p>

@@ -16,4 +16,8 @@ class Insect extends Model
         return $this->hasMany(Post::class, 'insect_id', 'id');
     }
 
+    public function photos(): HasMany {
+        return $this->hasMany(InsectPhoto::class);
+    }
+
 }

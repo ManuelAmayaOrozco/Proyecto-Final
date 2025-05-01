@@ -23,7 +23,6 @@ return new class extends Migration
             $table->integer('n_spotted');
             $table->double('maxSize');
             $table->boolean('protectedSpecies');
-            $table->string('photo', 255)->nullable();
             $table->timestamps();
         });
     }
