@@ -22,6 +22,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
                 - No puede estar vacío.
                 - Debe ser de tipo String.
                 - No puede tener más de 20 carácteres.
+                - Ha de ser único.
         - `email` **(Tipo: String)**: El email del usuario.
             **RESTRICCIONES:**
                 - No puede estar vacío.
@@ -202,6 +203,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | `name`                  | No puede estar vacío.                                                     | 400          | "El nombre es obligatorio."                                            |
 | `name`                  | Ha de ser String.                                                         | 400          | "El nombre ha de ser un String"                                        |
 | `name`                  | No puede ser de más de 20 carácteres.                                     | 400          | "El nombre debe contener 20 carácteres máximo."                        |
+| `name`                  | Ha de ser único.                                                          | 400          | "Ese nombre ya está en uso."                                           |
 | `email`                 | No puede estar vacío.                                                     | 400          | "El email es obligatorio."                                             |
 | `email`                 | Ha de tener el formato correcto.                                          | 400          | "El email ha de tener el formato correcto."                            |
 | `email`                 | Ha de ser único.                                                          | 400          | "Ese email ya está en uso."                                            |
