@@ -86,7 +86,7 @@ class UserController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                "name"=>"required|string|max:20",
+                "name"=>"required|string|max:20|unique:App\Models\User,name",
                 "email"=> "required|email:rfc,dns|unique:App\Models\User,email",
                 "password"=>"required|min:5|max:20|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/",
                 "password_repeat"=>"required|same:password"
@@ -94,6 +94,7 @@ class UserController extends Controller
                 "name.required"=> "El nombre es obligatorio.",
                 "name.string"=> "El nombre ha de ser un String",
                 "name.max"=> "El nombre debe contener 20 carácteres como máximo.",
+                "name.unique"=> "Ese nombre ya está en uso.",
                 "email.required"=> "El email es obligatorio.",
                 "email.email"=> "El email ha de tener el formato correcto.",
                 "email.unique"=> "Ese email ya está en uso.",

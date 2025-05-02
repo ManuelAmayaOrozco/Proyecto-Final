@@ -1,7 +1,7 @@
 @vite('resources/css/user_styles/user-index_styles.css')
 <main class="main__insects-index">
 
-    @if(Auth::check()) 
+    @if(Auth::check() && $current_user->isAdmin) 
     <a href="{{ route('insect.showRegisterInsect') }}" class="submit_post">
         REGISTER INSECT
     </a>

@@ -19,8 +19,8 @@ class InsectController extends Controller
         $insects = Insect::with('photos')->get();
         $users = DB::table('users')->get();
 
-        $current_user_id = Auth::id();
-        return view('user_views.insects', compact('insects', 'users', 'current_user_id'));
+        $current_user = Auth::user();
+        return view('user_views.insects', compact('insects', 'users', 'current_user'));
     }
 
     public function showFullInsect($id) {
