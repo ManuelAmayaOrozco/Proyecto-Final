@@ -40,6 +40,8 @@
             <button type="submit" class="btn btn-success">Actualizar Usuario</button>
         </form>
 
+        <a href="{{ route('user.showAdminMenu') }}" class="btn btn-success">Menú Administrador</a>
+
         <div x-data="{}">
             <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">

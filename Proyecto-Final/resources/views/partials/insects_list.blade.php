@@ -7,7 +7,7 @@
     </a>
     @endif
 
-    @foreach($insects as $insect)
+    @forelse($insects as $insect)
 
         <div class="insect-box">
 
@@ -38,7 +38,8 @@
             </div>
 
         </div>
-
-    @endforeach
+    @empty
+        <h2>Vaya no se encontraron insectos, vuelve a intentarlo.</h2>
+    @endforelse
 
 </main>

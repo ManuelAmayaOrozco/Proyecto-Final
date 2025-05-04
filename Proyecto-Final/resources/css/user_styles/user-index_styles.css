@@ -212,7 +212,6 @@
 
 /* Estilo para los botones dentro de los comentarios (por si acaso) */
 .comment-box .btn-like,
-.comment-box .btn-danger,
 .comment-box .btn-comment {
     margin-top: 0.5em;
 }
@@ -600,4 +599,72 @@
 .contact_form__error {
   position: absolute;
   color: #780000;
+}
+
+/* Contenedor individual de usuario */
+.user-box {
+  width: 80%;
+  background-color: #93D866;
+  border: 5px solid #0B6600;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin-bottom: 1.5em;
+  padding: 1.5em;
+  text-align: center;
+}
+
+/* Nombre del usuario */
+.user-name {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #000000;
+  margin-bottom: 1em;
+}
+
+/* Imagen de perfil pequeña */
+.profile-picture-display-small {
+  margin-bottom: 1.5em;
+}
+
+.profile-picture-display-small .profile-picture {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #0B6600;
+}
+
+/* Botón peligroso */
+.btn-danger {
+  background-color: #cc0000;
+  color: white;
+  margin-top: 0.5em;
+  padding: 0.4em 1.5em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-danger:hover {
+  background-color: #a60000;
+  transform: scale(1.05);
+}
+
+.btn-success {
+  background-color: #089c39;
+  color: white;
+  margin-top: 0.5em;
+  padding: 0.4em 1.5em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-success:hover {
+  background-color: #2fa600;
+  transform: scale(1.05);
 }

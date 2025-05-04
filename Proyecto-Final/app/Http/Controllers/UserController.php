@@ -135,6 +135,12 @@ class UserController extends Controller
         return view('user_views.profile', compact('current_user'));
     }
 
+    public function showAdminMenu() {
+        $users = User::all();
+        $current_user = Auth::user();
+        return view('user_views.adminMenu', compact('users', 'current_user'));
+    }
+
     public function logout($id) {
 
         $validator = Validator::make(
@@ -287,6 +293,18 @@ class UserController extends Controller
         session()->flash('info', 'Correo enviado con éxito.');
 
         return redirect()->route('user.showContact');
+    }
+
+    public function makeAdmin($id) {
+    
+        $user = User::find($id);
+
+        $user->isAdmin = true;
+
+        $user->save();
+
+        return redirect()->back();
+
     }
 
 }
