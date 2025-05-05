@@ -40,6 +40,52 @@
             <h4>Este usuario ya es Administrador.</h4>
             @endif
 
+            @if(!$user->isAdmin && $user->id != $current_user->id && !$user->banned)
+            <div x-data="{}">
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Banear Usuario</button>
+            <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
+            
+                <h2>¿Estas seguro de que quieres banear este usuario?</h2>
+
+                <form action="{{ route('user.banUser', ['id' => $user->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success">Sí, Banear Usuario</button>
+                </form>
+
+                <form method="dialog">
+
+                    <button class="btn btn-danger">Cancelar</button>
+
+                </form>
+
+            </dialog>
+            </div>
+            @endif
+
+            @if(!$user->isAdmin && $user->id != $current_user->id && $user->banned)
+            <div x-data="{}">
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success">Desbanear Usuario</button>
+            <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
+            
+                <h2>¿Estas seguro de que quieres desbanear este usuario?</h2>
+
+                <form action="{{ route('user.unbanUser', ['id' => $user->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success">Sí, Desbanear Usuario</button>
+                </form>
+
+                <form method="dialog">
+
+                    <button class="btn btn-danger">Cancelar</button>
+
+                </form>
+
+            </dialog>
+            </div>
+            @endif
+
             @if(!$user->isAdmin && $user->id != $current_user->id)
             <div x-data="{}">
             <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Usuario</button>

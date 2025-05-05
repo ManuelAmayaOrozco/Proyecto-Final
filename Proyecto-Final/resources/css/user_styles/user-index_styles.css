@@ -137,7 +137,7 @@
 
 /* Estilo para el nombre de usuario */
 .username__text {
-    font-size: 2em;
+    font-size: 3.5em;
     color: #000000; /* Blanco para el nombre de usuario */
     font-weight: bold;
     margin-bottom: 1em;
@@ -145,7 +145,7 @@
 
 /* Estilo para los datos del usuario */
 .userdata__text {
-    font-size: 1.2em;
+    font-size: 0.5em;
     color: #000000; /* Gris claro para los datos del usuario */
     margin-bottom: 1.5em;
 }
@@ -667,4 +667,12 @@
 .btn-success:hover {
   background-color: #2fa600;
   transform: scale(1.05);
+}
+
+.box__user .btn-danger,
+.box__user .btn-success {
+  margin-top: 1em;
+  font-size: 0.5em;    /* Tamaño de texto más pequeño */
+  padding: 0.4em 1.5em;   /* Menor espacio interior */
+  min-width: auto;    /* Elimina anchura mínima si existe */
 }

@@ -40,7 +40,9 @@
             <button type="submit" class="btn btn-success">Actualizar Usuario</button>
         </form>
 
+        @if ($current_user->isAdmin)
         <a href="{{ route('user.showAdminMenu') }}" class="btn btn-success">Menú Administrador</a>
+        @endif
 
         <div x-data="{}">
             <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Usuario</button>

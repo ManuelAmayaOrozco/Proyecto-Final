@@ -307,4 +307,28 @@ class UserController extends Controller
 
     }
 
+    public function banUser($id) {
+    
+        $user = User::find($id);
+
+        $user->banned = true;
+
+        $user->save();
+
+        return redirect()->back();
+
+    }
+
+    public function unbanUser($id) {
+    
+        $user = User::find($id);
+
+        $user->banned = false;
+
+        $user->save();
+
+        return redirect()->back();
+
+    }
+
 }

@@ -18,6 +18,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/adminMenu', [UserController::class, 'showAdminMenu'])->name('user.showAdminMenu');
     Route::put('/makeAdmin/{id}', [UserController::class, 'makeAdmin'])->name('user.makeAdmin');
+    Route::put('/ban/{id}', [UserController::class, 'banUser'])->name('user.banUser');
+    Route::put('/unban/{id}', [UserController::class, 'unbanUser'])->name('user.unbanUser');
 
     Route::get('/update/{id}', [UserController::class, 'showUpdateUser'])->name('user.showUpdateUser');
     Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('user.updateUser');

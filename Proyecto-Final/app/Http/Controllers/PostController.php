@@ -25,7 +25,7 @@ class PostController extends Controller
         $insects = DB::table('insects')->get();
         $favorites = DB::table('favorites')->get();
 
-        $current_user_id = Auth::id();
+        $current_user = Auth::user();
 
         if ($tagId != null) {
             // Búsqueda por etiqueta
@@ -78,7 +78,7 @@ class PostController extends Controller
 
         $posts = $query->get();
 
-        return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user_id', 'favorites'));
+        return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user', 'favorites'));
     }
 
     public function showHome() {
@@ -86,7 +86,7 @@ class PostController extends Controller
         $users = DB::table('users')->get();
         $insects = DB::table('insects')->get();
 
-        $current_user_id = Auth::id();
+        $current_user = Auth::user();
 
         $dailyPost = Post::where('dailyPost', true)->first();
 
@@ -103,7 +103,7 @@ class PostController extends Controller
             }
         }
 
-        return view('home', compact('posts', 'users', 'insects', 'current_user_id', 'dailyPost'));
+        return view('home', compact('posts', 'users', 'insects', 'current_user', 'dailyPost'));
     }
 
     public function showFullPost($id) {

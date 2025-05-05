@@ -31,7 +31,7 @@
                     <option value="tag">Etiqueta</option>
                     <option value="favorites">Favoritos</option>
             </select>
-            <input name="search" placeholder="..." class="search-bar" type="text">
+            <input name="search" placeholder="Busca un Post" class="search-bar" type="text">
             <button class="search-button">Buscar</button>
         </form>
     </div>
