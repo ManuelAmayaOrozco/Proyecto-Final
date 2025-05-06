@@ -23,32 +23,44 @@
     </nav>
 
     <div class="header__searchbar">
-        <form action="{{ route('post.showPosts') }}" method="GET">
-            <select class="search-select" name="searchtype" id="searchtype">
+        <form action="{{ route('post.showPosts') }}" method="GET" id="post-search-form">
+            <select class="search-select" name="searchtype" id="post-searchtype">
                     <option value="" disabled selected>Opción de búsqueda</option>
                     <option value="user">Usuario</option>
                     <option value="insect">Insecto</option>
                     <option value="tag">Etiqueta</option>
                     <option value="favorites">Favoritos</option>
+                    <option value="date">Fecha</option>
             </select>
-            <input name="search" placeholder="Busca un Post" class="search-bar" type="text">
+            <input name="search" placeholder="Busca un Post" class="search-bar" type="text" id="post-search-input">
             <button class="search-button">Buscar</button>
         </form>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const searchType = document.getElementById('searchtype');
-            const searchInput = document.querySelector('.search-bar');
+            const searchType = document.getElementById('post-searchtype');
+            const searchInput = document.getElementById('post-search-input');
 
             searchType.addEventListener('change', function () {
-                if (this.value === 'favorites') {
+                const selected = this.value;
+
+                if (selected === 'favorites') {
                     searchInput.disabled = true;
-                    searchInput.value = ''; // limpia el campo si estaba escrito algo
+                    searchInput.value = '';
+                    searchInput.placeholder = 'No se requiere búsqueda';
+                    searchInput.type = 'text';
+                } else if (selected === 'date') {
+                    searchInput.disabled = false;
+                    searchInput.type = 'date';
+                    searchInput.placeholder = '';
                 } else {
                     searchInput.disabled = false;
+                    searchInput.type = 'text';
+                    searchInput.placeholder = 'Busca un Post';
                 }
             });
         });
     </script>
+
 </header>

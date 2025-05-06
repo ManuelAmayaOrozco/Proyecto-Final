@@ -22,7 +22,7 @@
 
     </section>
 
-    @if(!$current_user->banned)
+    @if(!$current_user || !$current_user->banned)
 
         @if ($dailyPost != null)
         <section class="featured-section" x-data 

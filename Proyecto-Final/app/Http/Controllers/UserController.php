@@ -28,6 +28,11 @@ class UserController extends Controller
             [
                 "email" => "required|email:rfc,dns|exists:App\Models\User,email",
                 "password" => "required",
+            ],[
+                "email.required"=> "El email es obligatorio.",
+                "email.email"=> "El email ha de tener el formato correcto.",
+                "email.exists"=> "Ese email no está registrado.",
+                "password.required"=> "La contraseña es obligatoria.",
             ]
         );
 
@@ -42,7 +47,7 @@ class UserController extends Controller
         $user = User::where('email', $userEmail)->first();
         if(!password_verify($userPassword, $user->password)) {
             $validator->errors()->add('credentials', 'Credenciales incorrectas');
-            return redirect()->route('user_views.login')->withErrors($validator)->withInput();
+            return redirect()->route('login')->withErrors($validator)->withInput();
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL LOGIN ES CORRECTO) CARGAR LA VISTA PRINCIPAL DEL USUARIO.

@@ -676,3 +676,7 @@
   padding: 0.4em 1.5em;   /* Menor espacio interior */
   min-width: auto;    /* Elimina anchura mínima si existe */
 }
+
+.insect__searchbar {
+  padding-bottom: 1em;
+}

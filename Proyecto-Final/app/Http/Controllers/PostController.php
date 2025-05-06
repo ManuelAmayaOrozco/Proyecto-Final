@@ -71,9 +71,13 @@ class PostController extends Controller
             $query = $query->whereIn('id', $favoritesIds);
         }
         
+        if ($searchType === 'date' && $search) {
+            $query = $query->whereDate('created_at', $search);
+        }
+
         // Si no hay tipo específico pero hay búsqueda por texto
         if (!$searchType && $search) {
-            $query = $query->where('description', 'like', '%' . $search . '%');
+            $query = $query->where('name', 'like', '%' . $search . '%');
         }
 
         $posts = $query->get();

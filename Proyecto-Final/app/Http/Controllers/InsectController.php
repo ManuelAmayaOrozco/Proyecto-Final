@@ -16,10 +16,43 @@ class InsectController extends Controller
 {
 
     public function showInsects() {
-        $insects = Insect::with('photos')->get();
+        $query = Insect::with('photos');
         $users = DB::table('users')->get();
 
         $current_user = Auth::user();
+
+        $searchType = request()->get('searchtype');
+        $search = request()->get('search');
+
+        if ($searchType === 'user' && $search) {
+            $userIds = DB::table('users')
+                ->where('name', 'like', '%' . $search . '%')
+                ->pluck('id');
+            $query = $query->whereIn('registered_by', $userIds);
+        }
+
+        if ($searchType === 'scientificName' && $search) {
+            $query = $query->where('scientificName', 'like', '%' . $search . '%');
+        }
+
+        if ($searchType === 'family' && $search) {
+            $query = $query->where('family', 'like', '%' . $search . '%');
+        }
+
+        if ($searchType === 'diet' && $search) {
+            $query = $query->where('diet', 'like', '%' . $search . '%');
+        }
+
+        if ($searchType === 'inDanger') {
+            $query = $query->where('protectedSpecies', true); // o 1
+        }
+
+        if (!$searchType && $search) {
+            $query = $query->where('name', 'like', '%' . $search . '%');
+        }
+
+        $insects = $query->get();
+
         return view('user_views.insects', compact('insects', 'users', 'current_user'));
     }
 
