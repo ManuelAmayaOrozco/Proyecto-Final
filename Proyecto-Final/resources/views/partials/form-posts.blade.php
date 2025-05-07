@@ -1,4 +1,4 @@
-@vite('resources/css/user_styles/register_styles.css')
+@vite(['resources/css/user_styles/register_styles.css', 'resources/js/editor.js','resources/css/editor.css'])
 <main class="main__register">
     <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('post.doRegisterPost') }}" method="post" enctype="multipart/form-data">
         @csrf
@@ -7,7 +7,7 @@
             <input class="form-control" type="text" name="title" placeholder="Enter title">
             @error('title') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
-        <div class="form-group">
+        <div class="form-group" id="editor">
             <label for="description">Description:</label>
             <textarea rows="4" class="form-control" name="description" placeholder="Enter description"></textarea>
             @error('description') <small class="register_form__error">{{ $message }}</small> @enderror
@@ -35,4 +35,6 @@
             <button type="reset" class="btn btn-danger">Reset</button>
         </div>
     </form>
+
+    <!--<div id="editor">-->
 </main>
