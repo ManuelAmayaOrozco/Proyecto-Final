@@ -33,6 +33,19 @@
     padding: 2em;
 }
 
+.main__full-posts-index {
+  min-height: 80vh;
+  background-color: #ffffff; /* Un color de fondo oscuro, similar al de la versión de usuario */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
+  padding: 2em;
+}
+
 .main__welcome {
   min-height: 80vh;
   background-color: #ffffff; /* Un color de fondo oscuro, similar al de la versión de usuario */
@@ -66,10 +79,32 @@
     margin-bottom: 1em;
     font-weight: bold; /* Resaltar el título */
     cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.post-title:hover {
+  color: #179e0b;
+  transform: scale(1.01);
 }
 
 .post-insect {
     cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.post-insect:hover {
+  color: #179e0b;
+  transform: scale(1.01);
+}
+
+.main__full-posts-index .post-title {
+  cursor:initial;
+}
+
+.main__full-posts-index .post-title:hover {
+  transition:none;
+  transform:none;
+  color: #000;
 }
 
 /* Caja del separador de texto */
@@ -96,15 +131,22 @@
 
 /* Estilo para el botón de Like */
 .btn-like {
-    background-color: #1f5f16; /* Un color cálido para el botón de Like */
+    background-color: #089c39;
     color: white;
-    padding: 0.2em 1.23em;
+    margin-top: 0.5em;
+    padding: 0.4em 1.5em;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-bottom:1em; 
+    margin-bottom: 0.5em;
+}
+
+.btn-like:hover {
+  color: white;
+  background-color: #11bd19;
+  transform: scale(1.05);
 }
 
 /*PROFILE SECTION*/
@@ -152,18 +194,20 @@
 
 /* Estilo para el botón de comentar */
 .btn-comment {
-    background-color: #1aa153; /* Azul para el botón de comentar */
+    background-color: #0bcf6d;
     color: white;
-    padding: 0.5em 1.5em;
+    margin-bottom: 0.5em;
+    padding: 0.4em 1.5em;
     border: none;
     border-radius: 4px;
     cursor: pointer;
     font-size: 1em;
-    transition: background-color 0.3s ease;
-    margin-top: 1em;
+    transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .btn-comment:hover {
+    color: white;
+    transform: scale(1.05);
     background-color: #29b948; /* Color más oscuro al pasar el ratón */
 }
 
@@ -235,7 +279,6 @@
 /* Estilo para la imagen de la publicación */
 .post-picture-display {
     margin-bottom: 1.5em;
-    cursor: pointer;
 }
 
 .post-picture {
@@ -244,6 +287,7 @@
     border-radius: 8px;
     object-fit: cover;
     box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
+    cursor: pointer;
 }
 
 /*WELCOME SECTION*/
@@ -379,7 +423,7 @@
 
 /*INSECTS*/
 
-.main__insect-index,
+.main__full-insect-index,
 .main__insects-index {
     min-height: 80vh;
     background-color: #ffffff;
@@ -399,7 +443,6 @@
     padding: 1.5em;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
 }
 
 .insect-name {
@@ -407,6 +450,23 @@
     font-weight: bold;
     color: #000;
     margin-bottom: 0.5em;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.insect-name:hover {
+  color: #179e0b;
+  transform: scale(1.01);
+}
+
+.main__full-insect-index .insect-name {
+  cursor:initial;
+}
+
+.main__full-insect-index .insect-name:hover {
+  transition:none;
+  transform:none;
+  color: #000;
 }
 
 .insect-scientificName,
@@ -437,6 +497,7 @@
   max-height: 400px;
   border-radius: 8px;
   object-fit: contain; /* Cambiado de cover a contain */
+  cursor: pointer;
 }
 
 .insect-box dialog form {
@@ -638,7 +699,7 @@
 .btn-danger {
   background-color: #cc0000;
   color: white;
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
   padding: 0.4em 1.5em;
   border: none;
   border-radius: 4px;
@@ -649,6 +710,20 @@
 
 .btn-danger:hover {
   background-color: #a60000;
+  transform: scale(1.05);
+}
+
+.btn-warning {
+  padding: 0.4em 1.5em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-warning:hover {
+  background-color: #fcdb24;
   transform: scale(1.05);
 }
 
@@ -679,4 +754,21 @@
 
 .insect__searchbar {
   padding-bottom: 1em;
+}
+
+.btn-primary {
+  background-color: #146bdb;
+  color: white;
+  margin-top: 0.5em;
+  padding: 0.4em 1.5em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: #3a8ae6;
+  transform: scale(1.05);
 }

@@ -1,7 +1,7 @@
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
 <main class="main__posts-index">
 
-    @if(!$current_user->banned)
+    @if(!$current_user || !$current_user->banned)
 
             @if(Auth::check()) 
             <a href="{{ route('post.showRegisterPost') }}" class="submit_post">
@@ -36,8 +36,8 @@
                                                 @endforeach
                                                 </h3>
                             <div class="post-separator-box">
-                            <div class="post-picture-display" onclick="location.href=`{{ route('post.showFullPost', ['id' => $post->id]) }}`">
-                                <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture">
+                            <div class="post-picture-display">
+                                <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture" onclick="location.href=`{{ route('post.showFullPost', ['id' => $post->id]) }}`">
                             </div>
                             <p class="post-tags">
                                 @foreach ($post->tags as $tag)
@@ -50,11 +50,20 @@
 
                             <p class="likes-text">Likes: {{ $post->n_likes }}</p>
 
-                            <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <button type="submit" class="btn btn-like">Like</button>
-                            </form>
+                            @if($current_user)
+                            @if(!$post->likedByUsers->contains($current_user->id))
+                                <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-like">Like</button>
+                                </form>
+                            @else
+                                <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <button type="submit" class="btn btn-danger">Quitar Like</button>
+                                </form>
+                            @endif
 
                             @php
                                 $currentUserId = $current_user->id;
@@ -105,6 +114,7 @@
                                 </dialog>
                             </div>
                             @endif
+                            @endif
                             </div>
 
                     @endif 
@@ -127,7 +137,7 @@
     
     @endif
 
-    @if($current_user->banned)
+    @if($current_user && $current_user->banned)
         <h2>Vaya parece que tu usuario está baneado.</h2>
         <h3>Si crees que pueda ser una equivocación ponte en contacto con nosotros.</h3>
     @endif

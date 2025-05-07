@@ -1,5 +1,5 @@
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
-<main class="main__insect-index">
+<main class="main__full-insect-index">
 
     <div class="insect-box">
 
@@ -20,6 +20,7 @@
         <p class="insect-text">{{ $insect->description }}</p>
         </div>
 
+        @if($current_user && $current_user->isAdmin)
         <form action="{{ route('insect.showUpdateInsect', ['id' => $insect->id]) }}" method="POST">
             @csrf
             @method('GET')
@@ -46,6 +47,7 @@
 
             </dialog>
         </div>
+        @endif
 
     </div>
 

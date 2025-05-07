@@ -20,7 +20,7 @@ class PostController extends Controller
 
     public function showPosts($tagId = null) {
 
-        $query = Post::with('tags');
+        $query = Post::with(['tags', 'likedByUsers']);
         $users = DB::table('users')->get();
         $insects = DB::table('insects')->get();
         $favorites = DB::table('favorites')->get();
@@ -111,19 +111,7 @@ class PostController extends Controller
     }
 
     public function showFullPost($id) {
-        $post = null;
-
-        $posts = Post::all();
-
-        foreach ($posts as $posto) {
-
-            if ($posto->id == $id) {
-
-                $post = $posto;
-
-            }
-
-        }
+        $post = Post::with('likedByUsers')->find($id);
 
         $post_user = null;
 
@@ -158,14 +146,18 @@ class PostController extends Controller
         $comments = $post->comments()->get();
 
 
-        $current_user_id = Auth::id();
+        $current_user = Auth::user();
 
-        $isFavorite = DB::table('favorites')
+        if ($current_user) {
+            $isFavorite = DB::table('favorites')
                         ->where('id_post', $id)
-                        ->where('id_user', $current_user_id)
+                        ->where('id_user', $current_user->id)
                         ->first();
+        } else {
+            $isFavorite = null;
+        }
 
-        return view('user_views.fullPost', compact('post', 'post_user', 'post_insect', 'post_insect_id', 'comments', 'users', 'current_user_id', 'isFavorite'));
+        return view('user_views.fullPost', compact('post', 'post_user', 'post_insect', 'post_insect_id', 'comments', 'users', 'current_user', 'isFavorite'));
     }
 
     public function showRegisterPost() {
@@ -175,13 +167,34 @@ class PostController extends Controller
     }
 
     public function updateLike($id) {
-    
-        $post = Post::find($id);
 
-        $post->increment('n_likes');
+        $post = Post::findOrFail($id);
+        $user = auth()->user();
+
+        // Verificar si el usuario ya dio like
+        if (!$post->likedByUsers->contains($user->id)) {
+            $post->likedByUsers()->attach($user->id); // Agrega el like
+            $post->increment('n_likes');
+        }
 
         return redirect()->back();
+    }
 
+    public function removeLike($id) {
+
+        $post = Post::findOrFail($id);
+        $user = auth()->user();
+
+        // Verificar si el usuario ya dio like
+        if ($post->likedByUsers->contains($user->id)) {
+            $post->likedByUsers()->detach($user->id); // Quita el like
+
+            if ($post->n_likes > 0) {
+                $post->decrement('n_likes');
+            }
+        }
+
+        return redirect()->back();
     }
 
     public function newFavorite($id) {
@@ -295,17 +308,16 @@ class PostController extends Controller
         $post->save();
 
         //CREACIÓN DE TAGS
-        $tags = strtolower($datosPost['tags']);
-        $listaTags = array_map('trim', explode(',', $tags));
+        $tagsRaw = strtolower(trim($datosPost['tags'] ?? ''));
 
-        foreach ($listaTags as $tag) {
-
-            TagController::registerTag($tag);
-
-            $tagId = TagController::getTag($tag);
-
-            $post->tags()->attach($tagId);
-
+        if (!empty($tagsRaw)) {
+            $listaTags = array_filter(array_map('trim', explode(',', $tagsRaw))); // Limpia tags vacíos
+        
+            foreach ($listaTags as $tag) {
+                TagController::registerTag($tag);
+                $tagId = TagController::getTag($tag);
+                $post->tags()->attach($tagId);
+            }
         }
 
         return redirect()->route('home');

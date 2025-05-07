@@ -85,9 +85,9 @@ class InsectController extends Controller
 
         }
 
-        $current_user_id = Auth::id();
+        $current_user = Auth::user();
 
-        return view('user_views.fullInsect', compact('insect', 'insect_user', 'users', 'current_user_id'));
+        return view('user_views.fullInsect', compact('insect', 'insect_user', 'users', 'current_user'));
     }
 
     public function showRegisterInsect() {

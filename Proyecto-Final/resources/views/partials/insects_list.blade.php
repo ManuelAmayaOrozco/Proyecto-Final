@@ -1,7 +1,7 @@
 @vite('resources/css/user_styles/user-index_styles.css')
 <main class="main__insects-index">
 
-    @if(!$current_user->banned)
+    @if(!$current_user || !$current_user->banned)
 
         <div class="insect__searchbar">
             <form action="{{ route('insect.showInsects') }}" method="GET" id="insect-search-form">
@@ -82,7 +82,7 @@
 
     @endif
 
-    @if($current_user->banned)
+    @if($current_user && $current_user->banned)
         <h2>Vaya parece que tu usuario está baneado.</h2>
         <h3>Si crees que pueda ser una equivocación ponte en contacto con nosotros.</h3>
     @endif

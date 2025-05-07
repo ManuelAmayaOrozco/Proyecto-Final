@@ -1,5 +1,5 @@
 @vite('resources/css/user_styles/user-index_styles.css')
-<main class="main__posts-index">
+<main class="main__full-posts-index">
 
     <div class="post-box">
 
@@ -22,41 +22,51 @@
         <p class="likes-text">Likes: {{ $post->n_likes }}</p>
         <p class="likes-text">Comentarios: {{ count($comments) }}</p>
 
-        <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <button type="submit" class="btn btn-like">Like</button>
-        </form>
+        @if($current_user)
+            @if(!$post->likedByUsers->contains($current_user->id))
+                <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-like">Like</button>
+                </form>
+            @else
+                <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-danger">Quitar Like</button>
+                </form>
+            @endif
 
-        @if ($isFavorite == null)
-        <form action="{{ route('post.newFavorite', ['id' => $post->id]) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <button type="submit" class="btn btn-warning btn-lg mb-3"><i class="bi bi-star"></i> Agregar a Favoritos</button>
-        </form>
+            @if ($isFavorite == null)
+            <form action="{{ route('post.newFavorite', ['id' => $post->id]) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-warning btn-lg mb-2"><i class="bi bi-star"></i> Agregar a Favoritos</button>
+            </form>
+            @endif
+
+            @if ($isFavorite != null)
+            <form action="{{ route('post.removeFavorite', ['id' => $post->id]) }}" method="POST">
+                @csrf
+                @method('PUT')
+                <button type="submit" class="btn btn-warning btn-lg mb-2"><i class="bi bi-star-fill"></i> Quitar de Favoritos</button>
+            </form>
+            @endif
+
+            @if ($post->belongs_to == $current_user->id)
+            <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </form>
+            @endif
+
+            <form action="{{ route('comment.showRegisterComment', ['id' => $post->id]) }}" method="POST">
+                @csrf
+                @method('GET')
+                <button type="submit" class="btn btn-comment">Comentar</button>
+            </form>
         @endif
-
-        @if ($isFavorite != null)
-        <form action="{{ route('post.removeFavorite', ['id' => $post->id]) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <button type="submit" class="btn btn-warning btn-lg mb-3"><i class="bi bi-star-fill"></i> Quitar de Favoritos</button>
-        </form>
-        @endif
-
-        @if ($post->belongs_to == $current_user_id)
-        <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger">Eliminar</button>
-        </form>
-        @endif
-
-        <form action="{{ route('comment.showRegisterComment', ['id' => $post->id]) }}" method="POST">
-            @csrf
-            @method('GET')
-            <button type="submit" class="btn btn-comment">Comentar</button>
-        </form>
 
     </div>
 

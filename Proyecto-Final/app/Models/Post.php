@@ -22,9 +22,12 @@ class Post extends Model
 
     }
 
-    public function tags(): BelongsToMany
-    {
+    public function tags(): BelongsToMany {
         return $this->belongsToMany(Tag::class);
+    }
+
+    public function likedByUsers(): BelongsToMany {
+        return $this->belongsToMany(User::class, 'likes');
     }
 
 }
