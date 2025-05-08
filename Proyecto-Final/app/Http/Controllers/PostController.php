@@ -82,6 +82,26 @@ class PostController extends Controller
 
         $posts = $query->get();
 
+        // Antes de pasar la descripción, asegúrate de que es un JSON válido
+        foreach ($posts as $post) {
+            // Si no hay descripción o es nula, asigna un objeto JSON vacío con bloques vacíos
+            if (empty($post->description) || is_null($post->description)) {
+                $post->description = json_encode(['blocks' => []]);
+            } else {
+                // Asegúrate de que la descripción es un JSON válido antes de pasarlo al frontend
+                try {
+                    $decodedDescription = json_decode($post->description);
+                    if (json_last_error() !== JSON_ERROR_NONE) {
+                        // Si el JSON no es válido, asigna un objeto JSON vacío
+                        $post->description = json_encode(['blocks' => []]);
+                    }
+                } catch (Exception $e) {
+                    // Si hay un error al decodificar, asigna un JSON vacío
+                    $post->description = json_encode(['blocks' => []]);
+                }
+            }
+        }
+
         return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user', 'favorites'));
     }
 

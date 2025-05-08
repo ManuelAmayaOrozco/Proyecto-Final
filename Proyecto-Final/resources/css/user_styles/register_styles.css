@@ -123,3 +123,27 @@ label[for="protectedSpecies"] {
         background-position: right 0.5em center;
     }
 }
+
+
+/* Estilo para el contenedor visual del editor */
+.editor-input {
+    background-color: #ffffff;
+    border: 2px solid #0B6600;
+    border-radius: 6px;
+    padding: 0.5em 0.8em;
+    min-height: 200px;
+    font-size: 1em;
+    color: #000000;
+}
+
+/* Alineación con otros campos */
+.form-group .editor-input:focus-within {
+    outline: none;
+    border-color: #44AB00;
+    box-shadow: 0 0 5px rgba(68, 171, 0, 0.5);
+}
+
+/* Opcional: para mostrar el cursor al escribir */
+.editor-input * {
+    cursor: text;
+}

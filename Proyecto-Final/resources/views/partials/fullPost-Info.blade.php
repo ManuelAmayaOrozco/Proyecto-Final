@@ -15,7 +15,9 @@
                     <span class="tag" onclick="location.href=`{{ route('post.showPosts', ['tagId' => $tag->id]) }}`">{{ ucfirst($tag->name) }}</span>
                 @endforeach
         </p>
-        <p class="post-text">{{ $post->description }}</p>
+        <script id="post-description-json" type="application/json">
+            {!! $post->description !!}
+        </script>
         <p class="post-date">{{ $post->publish_date }}</p>
         </div>
 
@@ -92,5 +94,53 @@
         </div>
 
     @endforeach
+
+    <!-- Cargar librería -->
+    <script src="https://cdn.jsdelivr.net/npm/editorjs-html-revised@3.3.0/build/edjsHTML.min.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (typeof window.edjsHTML !== 'function') {
+                console.error("❌ edjsHTML no está disponible.");
+                return;
+            }
+
+            const parser = edjsHTML({
+                list: (block) => {
+                    const tag = block.data.style === 'ordered' ? 'ol' : 'ul';
+                    const items = block.data.items.map(item => `<li>${item.content}</li>`).join('');
+                    return `<${tag}>${items}</${tag}>`;
+                },
+                checklist: (block) => {
+                    const items = block.data.items.map(item => {
+                        const checked = item.meta.checked ? 'checked' : '';
+                        return `<li><input type="checkbox" ${checked} disabled> ${item.content}</li>`;
+                    }).join('');
+                    return `<ul class="checklist">${items}</ul>`;
+                },
+                quote: (block) => {
+                    return `<blockquote>${block.data.text} <footer>— ${block.data.caption}</footer></blockquote>`;
+                },
+                header: (block) => {
+                    const level = block.data.level || 2;
+                    return `<h${level}>${block.data.text}</h${level}>`;
+                }
+    });
+
+            const scriptTag = document.getElementById('post-description-json');
+
+            try {
+                const content = JSON.parse(scriptTag.textContent);
+                const html = parser.parse(content);
+
+                const container = document.createElement('div');
+                container.classList.add('editorjs-content');
+                container.innerHTML = html.join('');
+                scriptTag.insertAdjacentElement('afterend', container);
+            } catch (e) {
+                console.error("⚠️ Error al procesar el contenido de Editor.js:", e);
+            }
+        });
+    </script>
 
 </main>
