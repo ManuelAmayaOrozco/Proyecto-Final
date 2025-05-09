@@ -52,10 +52,11 @@ document.addEventListener('alpine:init', () => {
         },
         beforeSend() {
             this.editor.save().then((data) => {
-                document.getElementById('description').value = data.blocks.length ? JSON.stringify(data) : ''
-                document.getElementById('post-form').submit()
+                document.getElementById('description').value = JSON.stringify(data);
+                document.getElementById('post-form').submit();
             }).catch((error) => {
-                console.log('Saving failed: ', error)
+                console.error('Error al guardar el contenido del editor:', error);
+                alert('Hubo un error al guardar el post. Revisa la consola para más información.');
             });
         }
     }))

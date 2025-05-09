@@ -77,7 +77,7 @@ class PostController extends Controller
 
         // Si no hay tipo específico pero hay búsqueda por texto
         if (!$searchType && $search) {
-            $query = $query->where('name', 'like', '%' . $search . '%');
+            $query = $query->where('title', 'like', '%' . $search . '%');
         }
 
         $posts = $query->get();
