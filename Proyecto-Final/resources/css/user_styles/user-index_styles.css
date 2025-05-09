@@ -772,3 +772,145 @@
   background-color: #3a8ae6;
   transform: scale(1.05);
 }
+
+/* Paginación personalizada */
+/* Contenedor principal de la paginación */
+.custom-pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    padding: 2rem 1rem;
+    width: 100%;
+}
+
+/* Estructura interior */
+.custom-pagination nav,
+.custom-pagination > div {
+    width: 100%;
+    max-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Contenedor que agrupa anterior, números y siguiente */
+.custom-pagination .custom-pagination-search {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Para que se adapte en pantallas pequeñas */
+    gap: 1rem;
+    width: 100%;
+}
+
+/* Estilo para la lista de números */
+.custom-pagination .pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    gap: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Cada elemento de paginación */
+.custom-pagination .pagination li {
+    margin: 0;
+}
+
+/* Estilo común para enlaces y span */
+.custom-pagination .pagination li a,
+.custom-pagination .pagination li span {
+    display: block;
+    padding: 0.6em 1.2em;
+    color: #0B6600;
+    background-color: #93D866;
+    border: 2px solid #0B6600;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
+    border-radius: 5px;
+}
+
+/* Hover en enlaces */
+.custom-pagination .pagination li a:hover {
+    background-color: #0B6600;
+    color: #fff;
+}
+
+/* Página actual */
+.custom-pagination .pagination li span[aria-current="page"] {
+    background-color: #0B6600;
+    color: white;
+    cursor: default;
+}
+
+/* Paginación deshabilitada */
+.custom-pagination .pagination li.disabled span {
+    color: #888;
+    background-color: #e2e2e2;
+    cursor: not-allowed;
+}
+
+/* Contenedor de los botones 'Anterior' y 'Siguiente' */
+.custom-pagination .pagination-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Botones anteriores/siguientes */
+.custom-pagination .pagination-controls a,
+.custom-pagination .pagination-controls span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6em 1.2em;
+    color: #fff;
+    background-color: #93D866;
+    border: 2px solid #0B6600;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+    border-radius: 5px;
+}
+
+.custom-pagination .pagination-controls a:hover {
+    background-color: #0B6600;
+}
+
+/* Cuando están deshabilitados (sin enlace), mostrar en verde oscuro */
+.custom-pagination .pagination-controls span {
+    background-color: #0B6600;
+    cursor: default;
+}
+
+/* Iconos */
+.custom-pagination i {
+    margin-right: 5px;
+    font-size: 1.2em;
+}
+
+.custom-pagination__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.6em 1.2em;
+    color: #0B6600; /* Verde principal */
+    font-weight: 500;
+    text-decoration: none; /* Quita subrayado */
+    border-radius: 5px;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.custom-pagination__link:hover {
+    background-color: #0B6600;
+    color: #fff;
+}
+
+.custom-pagination__link i {
+    margin-right: 5px;
+    font-size: 1.2em;
+}

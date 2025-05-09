@@ -18,7 +18,6 @@ class InsectController extends Controller
     public function showInsects() {
         $query = Insect::with('photos');
         $users = DB::table('users')->get();
-
         $current_user = Auth::user();
 
         $searchType = request()->get('searchtype');
@@ -44,14 +43,15 @@ class InsectController extends Controller
         }
 
         if ($searchType === 'inDanger') {
-            $query = $query->where('protectedSpecies', true); // o 1
+            $query = $query->where('protectedSpecies', true);
         }
 
         if (!$searchType && $search) {
             $query = $query->where('name', 'like', '%' . $search . '%');
         }
 
-        $insects = $query->get();
+        // PAGINACIÓN: muestra 5 insectos por página y conserva los filtros en la URL
+        $insects = $query->paginate(5)->appends(request()->all());
 
         return view('user_views.insects', compact('insects', 'users', 'current_user'));
     }

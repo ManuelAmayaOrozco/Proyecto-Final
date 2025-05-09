@@ -1,4 +1,4 @@
-@vite('resources/css/user_styles/user-index_styles.css')
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
 <main class="main__insects-index">
 
     @if(!$current_user || !$current_user->banned)
@@ -79,6 +79,10 @@
         @empty
             <h2>Vaya no se encontraron insectos, vuelve a intentarlo.</h2>
         @endforelse
+
+        <div class="custom-pagination">
+            {{ $insects->links('vendor.pagination.tailwind') }}
+        </div>
 
     @endif
 
