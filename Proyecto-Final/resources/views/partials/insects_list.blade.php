@@ -72,7 +72,9 @@
                 <p class="insect-info">Nº Documentados: {{ $insect->n_spotted }}</p>
                 <p class="insect-info">Tamaño record: {{ $insect->maxSize }}</p>
                 <p class="insect-info">En peligro de extinción: {{ $insect->protectedSpecies ? 'SI' : 'NO' }}</p>
-                <p class="insect-text">{{ $insect->description }}</p>
+                <script class="post-description-json" type="application/json">
+                    {!! $insect->description ?: json_encode(['blocks' => []]) !!}
+                </script>
                 </div>
 
             </div>
@@ -90,5 +92,52 @@
         <h2>Vaya parece que tu usuario está baneado.</h2>
         <h3>Si crees que pueda ser una equivocación ponte en contacto con nosotros.</h3>
     @endif
+
+    <!-- Cargar librería -->
+    <script src="https://cdn.jsdelivr.net/npm/editorjs-html-revised@3.3.0/build/edjsHTML.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.post-description-json').forEach((scriptTag) => {
+                const postBox = scriptTag.closest('.insect-box');
+
+                try {
+                    const data = JSON.parse(scriptTag.textContent);
+                    if (!data || !Array.isArray(data.blocks)) return;
+
+                    // Configuración del parser para las listas y otros bloques
+                    const parser = edjsHTML({
+                        list: (block) => {
+                            const tag = block.data.style === 'ordered' ? 'ol' : 'ul';
+                            const items = block.data.items.map(item => `<li>${item.content}</li>`).join('');
+                            return `<${tag}>${items}</${tag}>`;
+                        },
+                        checklist: (block) => {
+                            const items = block.data.items.map(item => {
+                                const checked = item.meta.checked ? 'checked' : '';
+                                return `<li><input type="checkbox" ${checked} disabled> ${item.content}</li>`;
+                            }).join('');
+                            return `<ul class="checklist">${items}</ul>`;
+                        },
+                        quote: (block) => {
+                            return `<blockquote>${block.data.text} <footer>— ${block.data.caption}</footer></blockquote>`;
+                        },
+                        header: (block) => {
+                            const level = block.data.level || 2;
+                            return `<h${level}>${block.data.text}</h${level}>`;
+                        }
+                    });
+
+                    const html = parser.parse(data);
+                    const descriptionContainer = document.createElement('div');
+                    descriptionContainer.classList.add('post-description');
+                    descriptionContainer.innerHTML = html.join('');
+                    postBox.appendChild(descriptionContainer);
+                } catch (error) {
+                    console.error('Error al convertir descripción Editor.js:', error);
+                }
+            });
+        });
+    </script>
 
 </main>

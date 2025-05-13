@@ -136,6 +136,10 @@
             @empty
                 <h2>Vaya no se encontraron posts, vuelve a intentarlo.</h2>
             @endforelse
+
+            <div class="custom-pagination">
+                {{ $posts->links('vendor.pagination.tailwind') }}
+            </div>
     
     @endif
 

@@ -17,6 +17,10 @@
 
     <!-- FOOTER -->
     @include('partials.footer')
+
+    @stack('scripts')
+
+    @vite(['resources/js/alpine.js'])
 </body>
 
 </html>

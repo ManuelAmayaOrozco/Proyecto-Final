@@ -80,7 +80,8 @@ class PostController extends Controller
             $query = $query->where('title', 'like', '%' . $search . '%');
         }
 
-        $posts = $query->get();
+        // PAGINACIÓN: muestra 5 posts por página y conserva los filtros en la URL
+        $posts = $query->paginate(5)->appends(request()->all());
 
         // Antes de pasar la descripción, asegúrate de que es un JSON válido
         foreach ($posts as $post) {
