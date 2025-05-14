@@ -41,7 +41,7 @@
 
         @if(Auth::check() && $current_user->isAdmin) 
         <a href="{{ route('insect.showRegisterInsect') }}" class="submit_post">
-            REGISTER INSECT
+            REGISTRAR UN INSECTO
         </a>
         @endif
 
@@ -62,19 +62,21 @@
                                         @endforeach
                                     </h3>
                 <div class="insect-separator-box">
-                <div class="insect-picture-display">
-                    @foreach ($insect->photos as $photo)
-                        <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto de {{ $insect->name }}" class="insect-picture" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">
-                    @endforeach
-                </div>
-                <p class="insect-info">Familia: {{ $insect->family }}</p>
-                <p class="insect-info">Dieta: {{ $insect->diet }}</p>
-                <p class="insect-info">Nº Documentados: {{ $insect->n_spotted }}</p>
-                <p class="insect-info">Tamaño record: {{ $insect->maxSize }}</p>
-                <p class="insect-info">En peligro de extinción: {{ $insect->protectedSpecies ? 'SI' : 'NO' }}</p>
-                <script class="post-description-json" type="application/json">
-                    {!! $insect->description ?: json_encode(['blocks' => []]) !!}
-                </script>
+                    <div class="insect-picture-display">
+                        @foreach ($insect->photos as $photo)
+                            <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto de {{ $insect->name }}" class="insect-picture" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">
+                        @endforeach
+                    </div>
+                    <p class="insect-info-start">Familia: <span class="insect-info">{{ $insect->family }}</span></p>
+                    <p class="insect-info-start">Dieta: <span class="insect-info">{{ $insect->diet }}</span></p>
+                    <p class="insect-info-start">Nº Documentados: <span class="insect-info">{{ $insect->n_spotted }}</span></p>
+                    <p class="insect-info-start">Tamaño record: <span class="insect-info">{{ $insect->maxSize }} cm</span></p>
+                    <p class="insect-info-start">En peligro de extinción: <span class="insect-info">{{ $insect->protectedSpecies ? 'SI' : 'NO' }}</span></p>
+                    <div class="insect-text">
+                        <script class="post-description-json" type="application/json">
+                            {!! $insect->description ?: json_encode(['blocks' => []]) !!}
+                        </script>
+                    </div>
                 </div>
 
             </div>
@@ -132,7 +134,10 @@
                     const descriptionContainer = document.createElement('div');
                     descriptionContainer.classList.add('post-description');
                     descriptionContainer.innerHTML = html.join('');
-                    postBox.appendChild(descriptionContainer);
+                    const postText = postBox.querySelector('.insect-text');
+                    if (postText) {
+                        postText.appendChild(descriptionContainer); // ✅ Ahora sí se coloca dentro de .post-text
+                    }
                 } catch (error) {
                     console.error('Error al convertir descripción Editor.js:', error);
                 }

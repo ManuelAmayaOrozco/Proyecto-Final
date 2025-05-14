@@ -5,7 +5,7 @@
 
             @if(Auth::check()) 
             <a href="{{ route('post.showRegisterPost') }}" class="submit_post">
-                MAKE POST
+                CREAR UN NUEVO POST
             </a>
             @endif
 
@@ -44,9 +44,11 @@
                                     <span class="tag" onclick="location.href=`{{ route('post.showPosts', ['tagId' => $tag->id]) }}`">{{ ucfirst($tag->name) }}</span>
                                 @endforeach
                             </p>
-                            <script class="post-description-json" type="application/json">
-                                {!! $post->description ?: json_encode(['blocks' => []]) !!}
-                            </script>
+                            <div class="post-text">
+                                <script class="post-description-json" type="application/json">
+                                    {!! $post->description ?: json_encode(['blocks' => []]) !!}
+                                </script>
+                            </div>
                             <p class="post-date">{{ $post->publish_date }}</p>
                             </div>
 
@@ -57,13 +59,13 @@
                                 <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-like">Like</button>
+                                    <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
                                 </form>
                             @else
                                 <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button type="submit" class="btn btn-danger">Quitar Like</button>
+                                    <button type="submit" class="btn btn-danger"><i class="bi bi-hand-thumbs-down icon-white"></i> Quitar Like</button>
                                 </form>
                             @endif
 
@@ -96,7 +98,7 @@
 
                             @if ($post->belongs_to == $current_user->id)
                             <div x-data="{}">
-                                <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Post</button>
+                                <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Post</button>
                                 <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
                                 
                                     <h2>¿Estas seguro de que quieres eliminar este post?</h2>
@@ -187,7 +189,10 @@
                     const descriptionContainer = document.createElement('div');
                     descriptionContainer.classList.add('post-description');
                     descriptionContainer.innerHTML = html.join('');
-                    postBox.appendChild(descriptionContainer);
+                    const postText = postBox.querySelector('.post-text');
+                    if (postText) {
+                        postText.appendChild(descriptionContainer); // ✅ Ahora sí se coloca dentro de .post-text
+                    }
                 } catch (error) {
                     console.error('Error al convertir descripción Editor.js:', error);
                 }

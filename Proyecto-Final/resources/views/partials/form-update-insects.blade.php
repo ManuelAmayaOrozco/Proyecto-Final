@@ -1,6 +1,8 @@
-@vite('resources/css/user_styles/register_styles.css')
+@push('scripts') 
+    @vite(['resources/css/user_styles/register_styles.css', 'resources/js/editor.js'])
+@endpush
 <main class="main__register">
-    <form id="updForm" class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('insect.updateInsect', ['id' => $insect->id]) }}" method="post" enctype="multipart/form-data">
+    <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('insect.updateInsect', ['id' => $insect->id]) }}" method="post" enctype="multipart/form-data" x-data="editor({{ $insect->description ? $insect->description : '{}' }})" @submit.prevent="beforeSend" id="post-form">
         @csrf
         <div class="form-group">
             <label for="name">Nombre:</label>
@@ -22,11 +24,14 @@
             <input class="form-control" type="text" name="diet" placeholder="Enter diet" value="{{ $insect->diet }}">
             @error('diet') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
+        
+        <input type="hidden" name="description" id="description">
         <div class="form-group">
-            <label for="description">Descripción:</label>
-            <input class="form-control" type="text" name="description" placeholder="Enter description" value="{{ $insect->description }}">
+            <label for="editor">Descripción:</label>
+            <div id="editor" class="editor-input"></div>
             @error('description') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
+
         <div class="form-group">
             <label for="n_spotted">Nº Documentados:</label>
             <input class="form-control" type="number" name="n_spotted" min="0" placeholder="Enter nº spotted" value="{{ $insect->n_spotted }}">
@@ -40,11 +45,10 @@
         <div class="form-group">
             <label for="protectedSpecies">En peligro de extinción:
                 <input type="hidden" name="protectedSpecies" id="hiddenTerms">
-                <input class="form-checkbox" type="checkbox" id="checkboxTerms" value="{{ $insect->protectedSpecies }}">
+                <input class="form-checkbox" type="checkbox" id="checkboxTerms" {{ $insect->protectedSpecies ? 'checked' : '' }}>
             </label>
 
             <script>
-                const form = document.getElementById('updForm');
                 const checkbox = document.getElementById('checkboxTerms');
                 const hidden = document.getElementById('hiddenTerms');
 

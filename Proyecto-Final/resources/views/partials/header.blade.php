@@ -4,21 +4,21 @@
     </div>
     <nav class="header__navigation">
         <a href="{{ Auth::check() ? route('user.showProfile') : route('login')  }}" class="navigation__a">
-            {{ Auth::check() ? 'PROFILE' : 'LOGIN' }}
+            {{ Auth::check() ? 'PERFIL' : 'LOGIN' }}
         </a>
         @if(!Auth::check())
         <a href="{{ route('user.showRegister') }}" class="navigation__a">
-            REGISTER
+            REGÍSTRATE
         </a>
         @endif
         <a href="{{ route('post.showPosts') }}" class="navigation__a">
             POSTS
         </a>
         <a href="{{ route('insect.showInsects') }}" class="navigation__a">
-            INSECTS
+            INSECTOS
         </a>
         <a href="{{ route('user.showContact') }}" class="navigation__a">
-            CONTACT US
+            CONTÁCTANOS
         </a>
     </nav>
 

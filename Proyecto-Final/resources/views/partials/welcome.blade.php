@@ -1,4 +1,4 @@
-@vite('resources/css/user_styles/user-index_styles.css', 'resources/js/app.js')
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__welcome">
 
     <section class="welcome-section">
@@ -27,21 +27,27 @@
         @if ($dailyPost != null)
         <section class="featured-section" x-data 
                                             x-init="
-                                                setInterval(() => {
-                                                    fetch('{{ route('post.updateDaily') }}', {
-                                                        method: 'POST',
-                                                        headers: {
-                                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                            'Content-Type': 'application/json'
-                                                        }
-                                                    })
-                                                    .then(res => res.json())
-                                                    .then(data => {
-                                                        console.log('Post diario actualizado automáticamente:', data);
-                                                        location.reload();
-                                                    });
-                                                }, 60000);
-                                            "
+                                                    const lastUpdate = localStorage.getItem('lastDailyPostUpdate');
+                                                    const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
+
+                                                    if (lastUpdate !== today) {
+                                                        fetch('{{ route('post.updateDaily') }}', {
+                                                            method: 'POST',
+                                                            headers: {
+                                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                                                'Content-Type': 'application/json'
+                                                            }
+                                                        })
+                                                        .then(res => res.json())
+                                                        .then(data => {
+                                                            localStorage.setItem('lastDailyPostUpdate', today);
+                                                            console.log('✅ Post diario actualizado:', data);
+                                                            setTimeout(() => location.reload(), 500);
+                                                        });
+                                                    } else {
+                                                        console.log('⏳ Post diario ya fue actualizado hoy.');
+                                                    }
+                                                "
                                         >
 
             <h1 class="featured-heading">Post del día</h1>
@@ -75,19 +81,31 @@
                         <span class="tag" onclick="location.href=`{{ route('post.showPosts', ['tagId' => $tag->id]) }}`">{{ ucfirst($tag->name) }}</span>
                     @endforeach
                 </p>
-                <script id="post-description-json" type="application/json">
-                    {!! $dailyPost->description !!}
-                </script>
+                <div class="post-text">
+                    <script id="post-description-json" type="application/json">
+                        {!! $dailyPost->description !!}
+                    </script>
+                </div>
                 <p class="post-date">{{ $dailyPost->publish_date }}</p>
                 </div>
 
                 <p class="likes-text">Likes: {{ $dailyPost->n_likes }}</p>
 
+                @if($current_user)
+                @if(!$dailyPost->likedByUsers->contains($current_user->id))
                 <form action="{{ route('post.like', ['id' => $dailyPost->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button type="submit" class="btn btn-like">Like</button>
+                    <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
                 </form>
+                @else
+                <form action="{{ route('post.dislike', ['id' => $dailyPost->id]) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-hand-thumbs-down icon-white"></i> Quitar Like</button>
+                </form>
+                @endif
+                @endif
 
             </div>
 

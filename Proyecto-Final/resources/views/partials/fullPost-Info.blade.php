@@ -1,4 +1,4 @@
-@vite('resources/css/user_styles/user-index_styles.css')
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
 <main class="main__full-posts-index">
 
     <div class="post-box">
@@ -29,13 +29,13 @@
                 <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button type="submit" class="btn btn-like">Like</button>
+                    <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
                 </form>
             @else
                 <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <button type="submit" class="btn btn-danger">Quitar Like</button>
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-hand-thumbs-down icon-white"></i> Quitar Like</button>
                 </form>
             @endif
 
@@ -56,17 +56,32 @@
             @endif
 
             @if ($post->belongs_to == $current_user->id)
-            <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
+                <div x-data="{}">
+                    <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Post</button>
+                    <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
+                                
+                    <h2>¿Estas seguro de que quieres eliminar este post?</h2>
+
+                    <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-success">Sí, Eliminar Post</button>
+                    </form>
+
+                    <form method="dialog">
+
+                        <button class="btn btn-danger">Cancelar</button>
+
+                    </form>
+
+                    </dialog>
+                </div>
             @endif
 
             <form action="{{ route('comment.showRegisterComment', ['id' => $post->id]) }}" method="POST">
                 @csrf
                 @method('GET')
-                <button type="submit" class="btn btn-comment">Comentar</button>
+                <button type="submit" class="btn btn-comment"><i class="bi bi-chat-right-dots icon-white"></i> Comentar</button>
             </form>
         @endif
 

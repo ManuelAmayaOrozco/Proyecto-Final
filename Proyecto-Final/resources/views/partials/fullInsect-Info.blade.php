@@ -1,4 +1,4 @@
-@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__full-insect-index">
 
     <div class="insect-box">
@@ -12,25 +12,27 @@
                 <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto de {{ $insect->name }}" class="insect-picture">
             @endforeach
         </div>
-        <p class="insect-info">Familia: {{ $insect->family }}</p>
-        <p class="insect-info">Dieta: {{ $insect->diet }}</p>
-        <p class="insect-info">Nº Documentados: {{ $insect->n_spotted }}</p>
-        <p class="insect-info">Tamaño record: {{ $insect->maxSize }}</p>
-        <p class="insect-info">En peligro de extinción: {{ $insect->protectedSpecies ? 'SI' : 'NO' }}</p>
-        <script id="post-description-json" type="application/json">
-            {!! $insect->description !!}
-        </script>
+            <p class="insect-info-start">Familia: <span class="insect-info">{{ $insect->family }}</span></p>
+            <p class="insect-info-start">Dieta: <span class="insect-info">{{ $insect->diet }}</span></p>
+            <p class="insect-info-start">Nº Documentados: <span class="insect-info">{{ $insect->n_spotted }}</span></p>
+            <p class="insect-info-start">Tamaño record: <span class="insect-info">{{ $insect->maxSize }}</span></p>
+            <p class="insect-info-start">En peligro de extinción: <span class="insect-info">{{ $insect->protectedSpecies ? 'SI' : 'NO' }}</span></p>
+            <div class="insect-text">
+                <script id="post-description-json" type="application/json">
+                    {!! $insect->description !!}
+                </script>
+            </div>
         </div>
 
         @if($current_user && $current_user->isAdmin)
         <form action="{{ route('insect.showUpdateInsect', ['id' => $insect->id]) }}" method="POST">
             @csrf
             @method('GET')
-            <button type="submit" class="btn btn-like">Actualizar Insecto</button>
+            <button type="submit" class="btn btn-like"><i class="bi bi-arrow-clockwise icon-white"></i> Actualizar Insecto</button>
         </form>
 
         <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Insecto</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Insecto</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres eliminar el insecto del registro?</h2>
