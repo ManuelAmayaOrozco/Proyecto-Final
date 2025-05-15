@@ -1,3 +1,4 @@
+<!--Estructura de la página de contactos.-->
 @vite('resources/css/user_styles/user-index_styles.css', 'resources/css/user_styles/register_styles.css')
 <main class="main__contact">
 

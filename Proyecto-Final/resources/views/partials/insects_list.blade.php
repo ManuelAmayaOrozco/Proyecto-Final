@@ -1,3 +1,4 @@
+<!--Estructura de la lista de insectos.-->
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
 <main class="main__insects-index">
 

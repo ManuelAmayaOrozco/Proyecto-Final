@@ -1,3 +1,4 @@
+<!--Estructura del menú de administración de usuarios.-->
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
 <main class="main__posts-index">
 

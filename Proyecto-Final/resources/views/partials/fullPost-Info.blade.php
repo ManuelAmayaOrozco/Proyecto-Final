@@ -1,3 +1,4 @@
+<!--Estructura de la información detallada de un post.-->
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
 <main class="main__full-posts-index">
 

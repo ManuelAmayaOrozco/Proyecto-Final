@@ -11,14 +11,28 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-
+/**
+ * Controlador para la clase Comment
+ */
 class CommentController extends Controller
 {
-    
+    /**
+     * Función que muestra la vista para registrar un nuevo comentario.
+     * 
+     * @return view La vista para registrar un nuevo comentario.
+     */
     public function showRegisterComment() {
         return view('user_views.insertComments');
     }
 
+    /**
+     * Función que registra un nuevo comentario en la base de datos.
+     * 
+     * @param long $id El ID del post al que pertenece el comentario.
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para crear el comentario.
+     * @return view La vista del post al que pertenece el comentario.
+     */
     public function doRegisterComment($id, Request $request) {
     
         // VALIDAR DATOS DE ENTRADA.
@@ -31,7 +45,7 @@ class CommentController extends Controller
             ]
         );
     
-        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN.
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
@@ -43,7 +57,7 @@ class CommentController extends Controller
             return redirect()->route('comment.showRegisterComment')->withErrors($validator)->withInput();
         }
 
-        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
         $datosComment = $request->all();
         $comment = new Comment();
         $comment->comment = $datosComment['comment'];

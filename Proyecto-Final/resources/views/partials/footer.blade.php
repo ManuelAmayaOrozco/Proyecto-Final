@@ -1,3 +1,4 @@
+<!--Estructura del footer.-->
 <footer class="body__footer">
     <div class="footer__div_contactos">
         <h5>Contactos</h5>

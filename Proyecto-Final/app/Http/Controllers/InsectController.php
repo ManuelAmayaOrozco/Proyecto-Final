@@ -12,14 +12,23 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * Controlador para la clase Insect
+ */
 class InsectController extends Controller
 {
-
+    /**
+     * Función que muestra la vista de la lista de todos los insectos, a la que se le
+     * pueden añadir filtros para búsquedas específicas.
+     * 
+     * @return view La vista de la lista de insectos.
+     */
     public function showInsects() {
         $query = Insect::with('photos');
         $users = DB::table('users')->get();
         $current_user = Auth::user();
 
+        // FILTROS DE BÚSQUEDA
         $searchType = request()->get('searchtype');
         $search = request()->get('search');
 
@@ -56,6 +65,12 @@ class InsectController extends Controller
         return view('user_views.insects', compact('insects', 'users', 'current_user'));
     }
 
+    /**
+     * Función que muestra la vista detallada de un insecto en específico.
+     * 
+     * @param long $id El ID del insecto del que deseamos ver la vista.
+     * @return view La vista detallada del insecto.
+     */
     public function showFullInsect($id) {
         $insect = null;
 
@@ -90,12 +105,25 @@ class InsectController extends Controller
         return view('user_views.fullInsect', compact('insect', 'insect_user', 'users', 'current_user'));
     }
 
+    /**
+     * Función que muestra la vista para registrar un nuevo insecto.
+     * 
+     * @return view La vista para registrar un nuevo insecto.
+     */
     public function showRegisterInsect() {
         return view('user_views.insertInsects');
     }
 
+    /**
+     * Función para eliminar un insecto específico de la base de datos.
+     * 
+     * @param long $id El ID del insecto que deseamos eliminar.
+     * @return view La vista de la lista de insectos para ver que el insecto
+     * fue eliminado correctamente.
+     */
     public function deleteInsect($id) {
 
+        // VALIDAR DATOS DE ENTRADA.
         $validator = Validator::make(
             ['id' => $id],
             [
@@ -103,15 +131,18 @@ class InsectController extends Controller
             ]
         );
 
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN.
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
 
+        // ELIMINAMOS LOS POSTS RELACIONADOS CON EL INSECTO
         $posts = Post::where("related_insect", $id);
         $posts->delete();
 
         $insect = Insect::find($id);
 
+        // ELIMINAMOS TODAS LAS IMÁGENES DEL INSECTO
         foreach ($insect->photos as $photo) {
             Storage::disk('public')->delete($photo->path); // elimina del disco
             $photo->delete(); // elimina de la base de datos
@@ -119,10 +150,18 @@ class InsectController extends Controller
 
         $insect->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('insect.showInsects');
 
     }
 
+    /**
+     * Función que registra un nuevo insecto en la base de datos.
+     * 
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para crear el insecto.
+     * @return view La vista de la lista de insectos para ver que el insecto
+     * fue añadido correctamente.
+     */
     public function doRegisterInsect(Request $request) {
     
         // VALIDAR DATOS DE ENTRADA.
@@ -157,7 +196,8 @@ class InsectController extends Controller
                 "photo.*.max" => "La foto no puede ser mayor de 2048px."
             ]
         );
-    
+
+        // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO
         if ($request->hasFile('photo')) {
             $photos = [];
             foreach ($request->file('photo') as $uploadedPhoto) {
@@ -177,7 +217,7 @@ class InsectController extends Controller
         $user = Auth::user();
         if(!$user) {
             $validator->errors()->add('credentials', 'This user does not exist, use a different ID.');
-            return redirect()->route('post.showRegisterPost')->withErrors($validator)->withInput();
+            return redirect()->route('insect.showRegisterInsect')->withErrors($validator)->withInput();
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
@@ -198,10 +238,16 @@ class InsectController extends Controller
             $insect->photos()->create(['path' => $path]);
         }
 
-        return redirect()->route('home');
+        return redirect()->route('insect.showInsects');
 
     }
 
+    /**
+     * Función que muestra la vista para actualizar un insecto.
+     * 
+     * @param long El ID del insecto que se va a actualizar.
+     * @return view La vista para actualizar un insecto.
+     */
     public function showUpdateInsect($id) {
 
         $insect = null;
@@ -221,6 +267,15 @@ class InsectController extends Controller
         return view('user_views.updateInsects', compact('insect'));
     }
 
+    /**
+    * Función que actualiza un insecto de la base de datos.
+    * 
+    * @param long $id El ID del insecto que se va a actualizar.
+    * @param request $request Request obtenida del formulario que provee
+    * los datos necesarios para actualizar el insecto.
+    * @return view La vista de la lista de insectos para ver que el insecto
+    * fue actualizado correctamente.
+    */
     public function updateInsect(Request $request, $id) {
     
         // VALIDAR DATOS DE ENTRADA.
@@ -266,7 +321,7 @@ class InsectController extends Controller
         $user = Auth::user();
         if(!$user) {
             $validator->errors()->add('credentials', 'This user does not exist, use a different ID.');
-            return redirect()->route('post.showRegisterPost')->withErrors($validator)->withInput();
+            return redirect()->route('insect.showRegisterInsect')->withErrors($validator)->withInput();
         }
 
         // BUSCAR INSECTO
@@ -275,6 +330,7 @@ class InsectController extends Controller
             return redirect()->back()->withErrors(['not_found' => 'Insect not found.'])->withInput();
         }
 
+        // SE ACTUALIZAN LAS IMÁGENES DEL INSECTO
         if ($request->hasFile('photo')) {
             $photos = [];
             foreach ($request->file('photo') as $uploadedPhoto) {
@@ -297,6 +353,7 @@ class InsectController extends Controller
         $insect->protectedSpecies = $datosPost['protectedSpecies'];
         $insect->save();
 
+        // ELIMINA LAS IMÁGENES DEL INSECTO QUE YA NO SE UTILICEN
         foreach ($insect->photos as $photo) {
             Storage::disk('public')->delete($photo->path); // elimina del disco
             $photo->delete(); // elimina de la base de datos
@@ -306,7 +363,7 @@ class InsectController extends Controller
             $insect->photos()->create(['path' => $path]);
         }
 
-        return redirect()->route('home');
+        return redirect()->route('insect.showInsects');
 
     }
 

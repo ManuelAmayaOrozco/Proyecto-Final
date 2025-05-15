@@ -15,9 +15,19 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TagController;
 
+/**
+ * Controlador para la clase Post
+ */
 class PostController extends Controller
 {
 
+    /**
+     * Función que muestra la vista de la lista de todos los posts, a la que se le
+     * pueden añadir filtros para búsquedas específicas.
+     * 
+     * @param long tagId El ID de la etiqueta por la que se filtra la búsqueda.
+     * @return view La vista de la lista de posts.
+     */
     public function showPosts($tagId = null) {
 
         $query = Post::with(['tags', 'likedByUsers']);
@@ -27,6 +37,7 @@ class PostController extends Controller
 
         $current_user = Auth::user();
 
+        // FILTROS DE BÚSQUEDA
         if ($tagId != null) {
             // Búsqueda por etiqueta
             $postTagIds = DB::table('post_tag')
@@ -75,7 +86,6 @@ class PostController extends Controller
             $query = $query->whereDate('created_at', $search);
         }
 
-        // Si no hay tipo específico pero hay búsqueda por texto
         if (!$searchType && $search) {
             $query = $query->where('title', 'like', '%' . $search . '%');
         }
@@ -83,21 +93,17 @@ class PostController extends Controller
         // PAGINACIÓN: muestra 5 posts por página y conserva los filtros en la URL
         $posts = $query->paginate(5)->appends(request()->all());
 
-        // Antes de pasar la descripción, asegúrate de que es un JSON válido
+        // PREPARACIÓN DESCRIPCIÓN
         foreach ($posts as $post) {
-            // Si no hay descripción o es nula, asigna un objeto JSON vacío con bloques vacíos
             if (empty($post->description) || is_null($post->description)) {
                 $post->description = json_encode(['blocks' => []]);
             } else {
-                // Asegúrate de que la descripción es un JSON válido antes de pasarlo al frontend
                 try {
                     $decodedDescription = json_decode($post->description);
                     if (json_last_error() !== JSON_ERROR_NONE) {
-                        // Si el JSON no es válido, asigna un objeto JSON vacío
                         $post->description = json_encode(['blocks' => []]);
                     }
                 } catch (Exception $e) {
-                    // Si hay un error al decodificar, asigna un JSON vacío
                     $post->description = json_encode(['blocks' => []]);
                 }
             }
@@ -106,6 +112,11 @@ class PostController extends Controller
         return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user', 'favorites'));
     }
 
+    /**
+     * Función que muestra la vista del inicio de la aplicación.
+     * 
+     * @return view La vista del inicio de la aplicación.
+     */
     public function showHome() {
         $posts = DB::table('posts')->get();
         $users = DB::table('users')->get();
@@ -113,6 +124,7 @@ class PostController extends Controller
 
         $current_user = Auth::user();
 
+        // POST DIARIO
         $dailyPost = Post::where('dailyPost', true)->first();
 
         // Si no hay dailyPost, forzar creación de uno nuevo
@@ -131,6 +143,12 @@ class PostController extends Controller
         return view('home', compact('posts', 'users', 'insects', 'current_user', 'dailyPost'));
     }
 
+    /**
+     * Función que muestra la vista detallada de un post en específico.
+     * 
+     * @param long $id El ID del post del que deseamos ver la vista.
+     * @return view La vista detallada del post.
+     */
     public function showFullPost($id) {
         $post = Post::with('likedByUsers')->find($id);
 
@@ -181,12 +199,23 @@ class PostController extends Controller
         return view('user_views.fullPost', compact('post', 'post_user', 'post_insect', 'post_insect_id', 'comments', 'users', 'current_user', 'isFavorite'));
     }
 
+    /**
+     * Función que muestra la vista para registrar un nuevo post.
+     * 
+     * @return view La vista para registrar un nuevo post.
+     */
     public function showRegisterPost() {
         $insects = DB::table('insects')->get();
 
         return view('user_views.insertPosts', compact('insects'));
     }
 
+    /**
+     * Función que actualiza el número de likes de un post, incrementándolo.
+     * 
+     * @param long $id El ID del post al que se da like.
+     * @return view La vista anterior.
+     */
     public function updateLike($id) {
 
         $post = Post::findOrFail($id);
@@ -201,6 +230,12 @@ class PostController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Función que actualiza el número de likes de un post, decrementándolo.
+     * 
+     * @param long $id El ID del post al que se le quita like.
+     * @return view La vista anterior.
+     */
     public function removeLike($id) {
 
         $post = Post::findOrFail($id);
@@ -218,6 +253,12 @@ class PostController extends Controller
         return redirect()->back();
     }
 
+    /**
+     * Función que añade un post a los favoritos de un usuario.
+     * 
+     * @param long $id El ID del post al que se añade como favorito.
+     * @return view La vista anterior.
+     */
     public function newFavorite($id) {
     
         $post = Post::find($id);
@@ -233,6 +274,12 @@ class PostController extends Controller
 
     }
 
+    /**
+     * Función que quita un post de los favoritos de un usuario.
+     * 
+     * @param long $id El ID del post al que se quita como favorito.
+     * @return view La vista anterior.
+     */
     public function removeFavorite($id) {
 
         $current_user_id = Auth::id();
@@ -243,8 +290,16 @@ class PostController extends Controller
 
     }
 
+    /**
+     * Función para eliminar un post específico de la base de datos.
+     * 
+     * @param long $id El ID del post que deseamos eliminar.
+     * @return view La vista de la lista de posts para ver que el post
+     * fue eliminado correctamente.
+     */
     public function deletePost($id) {
 
+        // VALIDAR DATOS DE ENTRADA.
         $validator = Validator::make(
             ['id' => $id],
             [
@@ -252,18 +307,22 @@ class PostController extends Controller
             ]
         );
 
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN.
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
 
+        // ELIMINAR COMENTARIOS RELACIONADOS
         $comments = Comment::where("post_id", $id);
         $comments->delete();
 
         $post = Post::find($id);
 
+        // ELIMINAR IMÁGENES RELACIONADAS
         $image = $post->photo;
         Storage::disk('public')->delete($image);
 
+        // ELIMINAR ETIQUETAS ÚNICAS RELACIONADAS
         $uniqueTags = TagController::getAllUniqueTags($id);
 
         DB::table('post_tag')->where('post_id', $id)->delete();
@@ -274,10 +333,18 @@ class PostController extends Controller
 
         $post->delete();
 
-        return redirect()->route('home');
+        return redirect()->route('post.showPosts');
 
     }
 
+    /**
+     * Función que registra un nuevo post en la base de datos.
+     * 
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para crear el post.
+     * @return view La vista de la lista de posts para ver que el post
+     * fue añadido correctamente.
+     */
     public function doRegisterPost(Request $request) {
     
         // VALIDAR DATOS DE ENTRADA.
@@ -298,6 +365,7 @@ class PostController extends Controller
             ]
         );
     
+        // SE GUARDA LA FOTO DEL POST SI EXISTE
         if ($request->hasFile('photo')) {
             $photo = $request['photo']->store('posts', 'public');
         } else {
@@ -341,13 +409,19 @@ class PostController extends Controller
             }
         }
 
-        return redirect()->route('home');
+        return redirect()->route('post.showPosts');
 
     }
 
+    /**
+     * Función que actualiza el post diario, elegido aleatoriamente de entre
+     * todos los posts.
+     * 
+     * @return status Estado que advierte de si el post ha sido actualizado o no.
+     */
     public static function updateDailyPost() {
 
-        // Resetear todos
+        // Resetear todos los posts
         Post::where('dailyPost', true)->update(['dailyPost' => false]);
 
         // Obtener todos los IDs

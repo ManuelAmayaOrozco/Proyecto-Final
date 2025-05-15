@@ -1,3 +1,4 @@
+<!--Estructura del formulario de registro de insectos.-->
 @push('scripts') 
     @vite(['resources/css/user_styles/register_styles.css', 'resources/js/editor.js'])
 @endpush

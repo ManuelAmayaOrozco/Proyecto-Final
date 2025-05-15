@@ -8,6 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * Clase que representa un Usuario de la aplicación.
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -47,6 +50,9 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * Varios usuarios pueden dar likes a varios Posts.
+     */
     public function likedPosts(): BelongsToMany {
         return $this->belongsToMany(Post::class, 'likes');
     }

@@ -1,3 +1,4 @@
+<!--Estructura de la vista principal.-->
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__welcome">
 

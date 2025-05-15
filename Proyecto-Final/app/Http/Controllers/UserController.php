@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\Insect;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,15 +14,30 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMailable;
 
+/**
+ * Controlador para la clase User
+ */
 class UserController extends Controller
 {
-    //Show login form
+
+    /**
+     * Función que muestra la vista para hacer login en la aplicación.
+     * 
+     * @return view La vista del login.
+     */
     public function showLogin() {
-        return view('user_views.login'); // CARGA LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
+        return view('user_views.login');
     }
 
-    //Do login
+    /**
+     * Función que realiza el login de un usuario.
+     * 
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para realizar el login.
+     * @return view La vista principal.
+     */
     public function doLogin(Request $request) {
+
         // VALIDAR DATOS DE ENTRADA
         $validator = Validator::make(
             $request->all(),
@@ -50,16 +66,7 @@ class UserController extends Controller
             return redirect()->route('login')->withErrors($validator)->withInput();
         }
 
-        // SI LOS DATOS SON VÁLIDOS (SI EL LOGIN ES CORRECTO) CARGAR LA VISTA PRINCIPAL DEL USUARIO.
-        // LA VISTA PRINCIPAL DE USUARIO DEBE INCLUIR:
-        /*
-            -> Un header que contenga el nombre del usuario.
-            -> Un botón de logout que redirija a la view de login.
-
-            -> La lista de tareas, tanto pendientes como realizadas, que el usuario tiene asignadas.
-            -> Un botón al lado de cada tarea para eliminar la tarea.
-            -> Un botón para marcar como hecha la tarea.
-        */
+        // SI LOS DATOS SON VÁLIDOS (SI EL LOGIN ES CORRECTO) CARGAR LA VISTA.
         $credentials = [
             'email' => $user->email,
             'password' => $userPassword,
@@ -73,21 +80,25 @@ class UserController extends Controller
         
     }
 
-    //Show register form
+    /**
+     * Función que muestra la vista para registrar un usuario.
+     * 
+     * @return view La vista para registrar un usuario.
+     */
     public function showRegister() {
-        return view('user_views.register'); // CARGA LA VIEW DE REGISTER PARA PODER REALIZAR UN ALTA DE USUARIO
+        return view('user_views.register');
     }
 
-    //Do register
+    /**
+     * Función que registra un nuevo usuario en la base de datos.
+     * 
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para crear el usuario.
+     * @return view La vista para realizar el login.
+     */
     public function doRegister(Request $request) {
 
-        // VALIDAR DATOS DE ENTRADA. LAS REGLAS DE VALIDACIÓN SON LAS SIGUIENTES:
-        /*
-            -> nombre es obligatorio, debe ser un string y debe ser menor de 20 carácteres
-            -> email es obligatorio, debe seguir un formato estándar, debe ser único en la base de datos
-            -> password es obligatoria, debe ser mayor de 5 carácteres, menor de 20 carácteres, debe contener una minúscula, una mayúscula y al menos un dígito
-            -> password_repeat es obligatoria y debe ser igual a password
-        */
+        // VALIDAR DATOS DE ENTRADA.
         $validator = Validator::make(
             $request->all(),
             [
@@ -112,6 +123,7 @@ class UserController extends Controller
             ]
         );
 
+        // SE GUARDA LA FOTO DEL USUARIO SI EXISTE
         if ($request->hasFile('photo')) {
             $photo = $request['photo']->store('profiles', 'public');
         } else {
@@ -123,7 +135,7 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator);
         }
 
-        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
         $datosUsuario = $request->all();
         $user = new User();
         $user->name = $datosUsuario['name'];
@@ -132,20 +144,36 @@ class UserController extends Controller
         $user->photo = $photo;
         $user->save();
 
-        return view('user_views.login'); // CARGA LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
+        return view('user_views.login');
     }
 
+    /**
+     * Función que muestra la vista del perfil del usuario actual.
+     * 
+     * @return view La vista del perfil del usuario actual.
+     */
     public function showProfile() {
         $current_user = Auth::user();
         return view('user_views.profile', compact('current_user'));
     }
 
+    /**
+     * Función que muestra la vista del menú de administración de usuarios.
+     * 
+     * @return view La vista del menú de administración de usuarios.
+     */
     public function showAdminMenu() {
         $users = User::all();
         $current_user = Auth::user();
         return view('user_views.adminMenu', compact('users', 'current_user'));
     }
 
+    /**
+     * Función que realiza el logout de la sesión del usuario actual.
+     * 
+     * @param long $id El ID del usuario actual.
+     * @return view La vista del login.
+     */
     public function logout($id) {
 
         $validator = Validator::make(
@@ -165,6 +193,12 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Función para eliminar un usuario específico de la base de datos.
+     * 
+     * @param long $id El ID del usuario que deseamos eliminar.
+     * @return view La vista principal.
+     */
     public function delete($id) {
 
         $validator = Validator::make(
@@ -178,14 +212,21 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator);
         }
 
+        // ELIMINAR LOS POSTS DEL USUARIO
         $posts = Post::where("belongs_to", $id);
         $posts->delete();
 
+        // ELIMINAR LOS COMENTARIOS DEL USUARIO
         $comments = Comment::where("user_id", $id);
         $comments->delete();
 
+        // ELIMINAR LOS INSECTOS DEL USUARIO
+        $insects = Insect::where("registered_by", $id);
+        $insects->delete();
+
         $user = User::find($id);
 
+        // ELIMINAR LA IMAGEN DEL USUARIO
         $image = $user->photo;
         Storage::disk('public')->delete($image);
 
@@ -195,6 +236,12 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Función que muestra la vista para actualizar un usuario.
+     * 
+     * @param long El ID del usuario que se va a actualizar.
+     * @return view La vista para actualizar un usuario.
+     */
     public function showUpdateUser($id) {
 
         $user = null;
@@ -214,15 +261,17 @@ class UserController extends Controller
         return view('user_views.updateUsers', compact('user'));
     }
 
+    /**
+    * Función que actualiza un usuario de la base de datos.
+    * 
+    * @param long $id El ID del usuario que se va a actualizar.
+    * @param request $request Request obtenida del formulario que provee
+    * los datos necesarios para actualizar el usuario.
+    * @return view La vista principal.
+    */
     public function updateUser(Request $request, $id) {
 
-        // VALIDAR DATOS DE ENTRADA. LAS REGLAS DE VALIDACIÓN SON LAS SIGUIENTES:
-        /*
-            -> nombre es obligatorio, debe ser un string y debe ser menor de 20 carácteres
-            -> email es obligatorio, debe seguir un formato estándar, debe ser único en la base de datos
-            -> password es obligatoria, debe ser mayor de 5 carácteres, menor de 20 carácteres, debe contener una minúscula, una mayúscula y al menos un dígito
-            -> password_repeat es obligatoria y debe ser igual a password
-        */
+        // VALIDAR DATOS DE ENTRADA.
         $validator = Validator::make(
             $request->all(),
             [
@@ -244,6 +293,7 @@ class UserController extends Controller
 
         $user = Auth::user();
 
+        // ACTUALIZAMOS LA FOTO SI ES NECESARIO
         if ($request->hasFile('photo')) {
             $photo = $request['photo']->store('posts', 'public');
             $oldImage = $user->photo;
@@ -254,7 +304,7 @@ class UserController extends Controller
             $photo = $user->photo;
         }
 
-        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW DE LOGIN PARA PODER REALIZAR LOGIN
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
         $datosUsuario = $request->all();
         $user->name = $datosUsuario['name'];
         $user->email = $datosUsuario['email'];
@@ -264,12 +314,25 @@ class UserController extends Controller
         return redirect()->route('home');
     }
 
+    /**
+     * Función que muestra la vista de contactos de la empresa.
+     * 
+     * @return view La vista de contactos de la empresa.
+     */
     public function showContact() {
         return view('user_views.contact');
     }
 
+    /**
+     * Función que envia un correo de contacto a la 'empresa'.
+     * 
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para enviar el correo.
+     * @return view La vista de contacto.
+     */
     public function doContact(Request $request) {
 
+        // VALIDAR DATOS DE ENTRADA.
         $validator = Validator::make(
             $request->all(),
             [
@@ -289,6 +352,7 @@ class UserController extends Controller
             ]
         );
 
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
         }
@@ -300,6 +364,12 @@ class UserController extends Controller
         return redirect()->route('user.showContact');
     }
 
+    /**
+     * Función que da permisos de administrador a un usuario.
+     * 
+     * @param long $id El ID del usuario al que se le concederan los permisos.
+     * @return view La vista anterior.
+     */
     public function makeAdmin($id) {
     
         $user = User::find($id);
@@ -312,6 +382,12 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Función que banea un usuario, dejándolo incapaz de acceder a varias funciones.
+     * 
+     * @param long $id El ID del usuario que será baneado.
+     * @return view La vista anterior.
+     */
     public function banUser($id) {
     
         $user = User::find($id);
@@ -324,6 +400,12 @@ class UserController extends Controller
 
     }
 
+    /**
+     * Función que desbanea un usuario.
+     * 
+     * @param long $id El ID del usuario que será desbaneado.
+     * @return view La vista anterior.
+     */
     public function unbanUser($id) {
     
         $user = User::find($id);

@@ -1,3 +1,4 @@
+<!--Estructura del email enviado por el formulario de contacto.-->
 <!DOCTYPE html>
 <html lang="en">
 <head>

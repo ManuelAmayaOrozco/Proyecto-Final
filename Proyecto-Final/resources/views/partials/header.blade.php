@@ -1,3 +1,4 @@
+<!--Estructura del header.-->
 <header class="body__header">
     <div onclick="location.href=`{{ route('home') }}`" class="header__div_logo">
         <img src="{{ asset('storage/imagenesBugs/BugBuds.png') }}" alt="Logo BugBuds" class="header__logo"/>

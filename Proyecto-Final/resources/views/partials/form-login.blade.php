@@ -1,3 +1,4 @@
+<!--Estructura del formulario de login.-->
 @vite('resources/css/user_styles/login_styles.css')
 <main class="main__login">
     <form class="login__login_form {{ $errors->any() ? 'login__login_form-error' : '' }}" action="{{ route('login') }}" method="post">

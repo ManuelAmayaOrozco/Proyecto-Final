@@ -1,3 +1,4 @@
+<!--Estructura de pop ups.-->
 <form action="{{ route('user.delete', ['id' => $current_user->id]) }}" method="GET" enctype="multipart/form-data">
 
     <div class="modal fade text-left" id="userDeleteWarning" tabindex="-1" role="dialog" aria-hidden="true">

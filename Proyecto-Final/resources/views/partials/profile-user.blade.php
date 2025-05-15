@@ -1,3 +1,4 @@
+<!--Estructura del perfil del usuario actual.-->
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
 <main class="main__profile-index">
 

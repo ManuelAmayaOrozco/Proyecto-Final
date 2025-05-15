@@ -1,3 +1,4 @@
+<!--Estructura del formulario de actualización de usuarios.-->
 @vite('resources/css/user_styles/register_styles.css')
 <main class="main__register">
     <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('user.updateUser', ['id' => $user->id]) }}" method="post" enctype="multipart/form-data">
