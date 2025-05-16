@@ -12,7 +12,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/register', [PostController::class, 'doRegisterPost'])->name('post.doRegisterPost');
 
     Route::put('/like/{id}', [PostController::class, 'updateLike'])->name('post.like');
-    Route::put('/post/dislike/{id}', [PostController::class, 'removeLike'])->name('post.dislike');
+    Route::put('/dislike/{id}', [PostController::class, 'removeLike'])->name('post.dislike');
 
     Route::put('/newFavorite/{id}', [PostController::class, 'newFavorite'])->name('post.newFavorite');
     Route::put('/removeFavorite/{id}', [PostController::class, 'removeFavorite'])->name('post.removeFavorite');
