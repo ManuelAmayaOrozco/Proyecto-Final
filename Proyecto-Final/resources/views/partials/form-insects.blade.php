@@ -59,13 +59,13 @@
             </script>
         </div>
         <div class="form-group">
-            <label for="photo">Insect Picture</label>
+            <label for="photo">Imágenes del Insecto:</label>
             <input type="file" class="form-control" id="input_photo" name="photo[]" accept="image/*" multiple>
             @error('photo') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
+            <button type="submit" class="btn btn-primary">Registrar Insecto</button>
+            <button type="reset" class="btn btn-danger">Resetear</button>
         </div>
     </form>
 </main>

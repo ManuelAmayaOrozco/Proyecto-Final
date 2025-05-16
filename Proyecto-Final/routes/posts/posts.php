@@ -17,6 +17,9 @@ Route::middleware(['auth'])->group(function(){
     Route::put('/newFavorite/{id}', [PostController::class, 'newFavorite'])->name('post.newFavorite');
     Route::put('/removeFavorite/{id}', [PostController::class, 'removeFavorite'])->name('post.removeFavorite');
 
+    Route::get('/update/{id}', [PostController::class, 'showUpdatePost'])->name('post.showUpdatePost');
+    Route::put('/update/{id}', [PostController::class, 'updatePost'])->name('post.updatePost');
+
     Route::delete('/delete/{id}', [PostController::class, 'deletePost'])->name('post.delete');
 
 });

@@ -56,7 +56,15 @@
             </form>
             @endif
 
-            @if ($post->belongs_to == $current_user->id)
+            @if($post->belongs_to == $current_user->id || $current_user->isAdmin)
+                <form action="{{ route('post.showUpdatePost', ['id' => $post->id]) }}" method="POST">
+                    @csrf
+                    @method('GET')
+                    <button type="submit" class="btn btn-like"><i class="bi bi-arrow-clockwise icon-white"></i> Actualizar Post</button>
+                </form>
+            @endif
+
+            @if ($post->belongs_to == $current_user->id || $current_user->isAdmin)
                 <div x-data="{}">
                     <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Post</button>
                     <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">

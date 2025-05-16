@@ -4,7 +4,7 @@
     <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('user.updateUser', ['id' => $user->id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">
-            <label for="name">Name:</label>
+            <label for="name">Nombre:</label>
             <input class="form-control" type="text" name="name" placeholder="Enter name" value="{{ $user->name }}">
             @error('name') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
@@ -14,13 +14,13 @@
             @error('email') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
-            <label for="photo">Profile Picture</label>
-            <input type="file" class="form-control" id="input_photo" name="photo" accept="image/*" value="{{ asset('storage/' . $user->photo) }}">
+            <label for="photo">Imagen de Perfil:</label>
+            <input type="file" class="form-control" id="input_photo" name="photo" accept="image/*">
         </div>
         <div class="form-group d-flex justify-content-center gap-3">
             @method('PUT')
-            <button type="submit" class="btn btn-primary">Submit</button>
-            <button type="reset" class="btn btn-danger">Reset</button>
+            <button type="submit" class="btn btn-primary">Actualizar Usuario</button>
+            <button type="reset" class="btn btn-danger">Resetear</button>
         </div>
     </form>
 </main>

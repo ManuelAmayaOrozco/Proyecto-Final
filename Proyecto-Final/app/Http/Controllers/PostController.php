@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\Status;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Insect;
 use App\Models\Comment;
 use App\Models\Tag;
 use App\Models\Favorite;
@@ -77,7 +78,7 @@ class PostController extends Controller
         
         if ($searchType === 'favorites') {
             $favoritesIds = DB::table('favorites')
-                ->where('id_user', $current_user_id)
+                ->where('id_user', $current_user->id)
                 ->pluck('id_post');
             $query = $query->whereIn('id', $favoritesIds);
         }
@@ -412,6 +413,90 @@ class PostController extends Controller
         return redirect()->route('post.showPosts');
 
     }
+
+    /**
+     * Función que muestra la vista para actualizar un post.
+     * 
+     * @param long El ID del post que se va a actualizar.
+     * @return view La vista para actualizar un post.
+     */
+    public function showUpdatePost($id) {
+
+        $post = Post::with('tags')->findOrFail($id);
+
+        $insects = Insect::all();
+
+        return view('user_views.updatePosts', compact('post', 'insects'));
+    }
+
+    public function updatePost(Request $request, $id) {
+        $post = Post::with('tags')->findOrFail($id);
+
+        // VALIDAR DATOS DE ENTRADA.
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "title" => "required|min:1|max:50",
+                "description" => "required",
+                "insect" => "required",
+                "photo" => "nullable|image"
+            ],
+            [
+                "title.required" => "El título es obligatorio.",
+                "title.min" => "El título ha de tener por lo menos un carácter.",
+                "title.max" => "El título no puede tener más de 50 carácteres.",
+                "description.required" => "La descripción es obligatoria.",
+                "insect.required" => "El insecto relacionado es obligatorio.",
+                "photo.image" => "El archivo debe ser una imagen válida."
+            ]
+        );
+
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // SI EL USUARIO NO EXISTE, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        $user = Auth::user();
+        if (!$user) {
+            $validator->errors()->add('credentials', 'El usuario no está autenticado.');
+            return redirect()->route('post.showRegisterPost')->withErrors($validator)->withInput();
+        }
+
+        // GUARDAR NUEVA FOTO (si se carga una nueva)
+        if ($request->hasFile('photo')) {
+            // Eliminar foto anterior si existe
+            if ($post->photo && Storage::disk('public')->exists($post->photo)) {
+                Storage::disk('public')->delete($post->photo);
+            }
+            $photoPath = $request->file('photo')->store('posts', 'public');
+            $post->photo = $photoPath;
+        }
+
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
+        $post->title = $request->input('title');
+        $post->description = $request->input('description');
+        $post->related_insect = $request->input('insect');
+        $post->save();
+
+        // ACTUALIZAR TAGS
+        // 1. Desvincular todos los tags actuales
+        $post->tags()->detach();
+
+        // 2. Procesar nuevos tags
+        $tagsRaw = strtolower(trim($request->input('tags', '')));
+        if (!empty($tagsRaw)) {
+            $listaTags = array_filter(array_map('trim', explode(',', $tagsRaw)));
+            foreach ($listaTags as $tag) {
+                TagController::registerTag($tag); // Crea el tag si no existe
+                $tagId = TagController::getTag($tag); // Obtiene el ID del tag
+                $post->tags()->attach($tagId);
+            }
+        }
+
+        return redirect()->route('post.showPosts');
+    }
+
 
     /**
      * Función que actualiza el post diario, elegido aleatoriamente de entre

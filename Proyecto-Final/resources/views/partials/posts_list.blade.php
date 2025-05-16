@@ -56,69 +56,77 @@
                             <p class="likes-text">Likes: {{ $post->n_likes }}</p>
 
                             @if($current_user)
-                            @if(!$post->likedByUsers->contains($current_user->id))
-                                <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
-                                </form>
-                            @else
-                                <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-danger"><i class="bi bi-hand-thumbs-down icon-white"></i> Quitar Like</button>
-                                </form>
-                            @endif
-
-                            @php
-                                $currentUserId = $current_user->id;
-                                $isFavorite = $favorites->contains(function ($favorite) use ($currentUserId, $post) {
-                                    return $favorite->id_user == $currentUserId && $favorite->id_post == $post->id;
-                                });
-                            @endphp
-
-                            @if (!$isFavorite)
-                                <form action="{{ route('post.newFavorite', ['id' => $post->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-warning btn-lg mb-3">
-                                        <i class="bi bi-star"></i> Agregar a Favoritos
-                                    </button>
-                                </form>
-                            @endif
-
-                            @if ($isFavorite)
-                                <form action="{{ route('post.removeFavorite', ['id' => $post->id]) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="btn btn-warning btn-lg mb-3">
-                                        <i class="bi bi-star-fill"></i> Quitar de Favoritos
-                                    </button>
-                                </form>
-                            @endif
-
-                            @if ($post->belongs_to == $current_user->id)
-                            <div x-data="{}">
-                                <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Post</button>
-                                <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
-                                
-                                    <h2>¿Estas seguro de que quieres eliminar este post?</h2>
-
-                                    <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
+                                @if(!$post->likedByUsers->contains($current_user->id))
+                                    <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
                                         @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-success">Sí, Eliminar Post</button>
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
                                     </form>
-
-                                    <form method="dialog">
-
-                                        <button class="btn btn-danger">Cancelar</button>
-
+                                @else
+                                    <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-danger"><i class="bi bi-hand-thumbs-down icon-white"></i> Quitar Like</button>
                                     </form>
+                                @endif
 
-                                </dialog>
-                            </div>
-                            @endif
+                                @php
+                                    $currentUserId = $current_user->id;
+                                    $isFavorite = $favorites->contains(function ($favorite) use ($currentUserId, $post) {
+                                        return $favorite->id_user == $currentUserId && $favorite->id_post == $post->id;
+                                    });
+                                @endphp
+
+                                @if (!$isFavorite)
+                                    <form action="{{ route('post.newFavorite', ['id' => $post->id]) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-warning btn-lg mb-3">
+                                            <i class="bi bi-star"></i> Agregar a Favoritos
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if ($isFavorite)
+                                    <form action="{{ route('post.removeFavorite', ['id' => $post->id]) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="btn btn-warning btn-lg mb-3">
+                                            <i class="bi bi-star-fill"></i> Quitar de Favoritos
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($post->belongs_to == $current_user->id || $current_user->isAdmin)
+                                    <form action="{{ route('post.showUpdatePost', ['id' => $post->id]) }}" method="POST">
+                                        @csrf
+                                        @method('GET')
+                                        <button type="submit" class="btn btn-like"><i class="bi bi-arrow-clockwise icon-white"></i> Actualizar Post</button>
+                                    </form>
+                                @endif
+
+                                @if ($post->belongs_to == $current_user->id || $current_user->isAdmin)
+                                <div x-data="{}">
+                                    <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Post</button>
+                                    <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
+                                    
+                                        <h2>¿Estas seguro de que quieres eliminar este post?</h2>
+
+                                        <form action="{{ route('post.delete', ['id' => $post->id]) }}" method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-success">Sí, Eliminar Post</button>
+                                        </form>
+
+                                        <form method="dialog">
+
+                                            <button class="btn btn-danger">Cancelar</button>
+
+                                        </form>
+
+                                    </dialog>
+                                </div>
+                                @endif
                             @endif
                             </div>
 

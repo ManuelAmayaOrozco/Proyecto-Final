@@ -1,13 +1,13 @@
-<!--Estructura del formulario de registro de posts.-->
+<!--Estructura del formulario de actualización de posts.-->
 @push('scripts') 
     @vite(['resources/css/user_styles/register_styles.css', 'resources/js/editor.js'])
 @endpush
 <main class="main__register">
-    <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('post.doRegisterPost') }}" method="post" enctype="multipart/form-data" x-data="editor" @submit.prevent="beforeSend" id="post-form">
+    <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('post.updatePost', ['id' => $post->id]) }}" method="post" enctype="multipart/form-data" x-data="editor({{ $post->description ? $post->description : '{}' }})" @submit.prevent="beforeSend" id="post-form">
         @csrf
         <div class="form-group">
             <label for="title">Título:</label>
-            <input class="form-control" type="text" name="title" placeholder="Escribe el título">
+            <input class="form-control" type="text" name="title" placeholder="Escribe el título" value="{{ $post->title }}">
             @error('title') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
 
@@ -21,16 +21,17 @@
         <div class="form-group">
             <label for="insect">Insecto:</label>
             <select class="form-select" name="insect" id="insect">
-                    <option value="" disabled selected>Elige un insecto</option>
                 @foreach ($insects as $insect)
-                    <option value="{{ $insect->id }}">{{ $insect->name }}</option>
+                    <option value="{{ $insect->id }}" {{ $post->related_insect == $insect->id ? 'selected' : '' }}>
+                        {{ $insect->name }}
+                    </option>
                 @endforeach
             </select>
             @error('insect') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="tags">Etiquetas:</label>
-            <input class="form-control" type="text" name="tags" placeholder="Escribe las etiquetas (Separadas por ',')">
+            <input class="form-control" type="text" name="tags" placeholder="Escribe las etiquetas (Separadas por ',')" value="{{ $post->tags->pluck('name')->implode(', ') }}">
         </div>
         <div class="form-group">
             <label for="photo">Imagen:</label>
@@ -38,16 +39,10 @@
             @error('photo') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group d-flex justify-content-center gap-3">
-            <button type="submit" class="btn btn-primary">Registrar Post</button>
+            @method('PUT')
+            <button type="submit" class="btn btn-primary">Actualizar Post</button>
             <button type="reset" class="btn btn-danger">Resetear</button>
         </div>
     </form>
 
-    <!--<div id="editor">-->
-
-    <!--<div class="form-group" id="editor">
-            <label for="description">Description:</label>
-            <textarea rows="4" class="form-control" name="description" placeholder="Enter description"></textarea>
-            @error('description') <small class="register_form__error">{{ $message }}</small> @enderror
-    </div>-->
 </main>
