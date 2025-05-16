@@ -37,6 +37,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
                 - Ha de incluir una letra minúscula, una letra mayúscula y un dígito.
         - `banned` **(Tipo: Boolean)**: Define si un usuario está baneado o no, los usuarios baneados no pueden utilizar diversas funciones aunque inicien sesión. Es 'false' por defecto, por lo que no está baneado a menos que se cambie.
         - `photo` **(Tipo: String)**: La dirección en donde se guarda la foto de perfil del usuario dentro de los archivos del programa, puede ser null ya que la foto de perfil es opcional.
+        - `isAdmin` **(Tipo: Boolean)**: Define si un usuario tiene permisos de administrador o no, permitiéndole acceder a ciertos menús y otros permisos que los usuarios normales no tienen.
 
 
 2. **Tabla Insects (Insectos)**
@@ -70,11 +71,16 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
                 - No puede estar vacío.
                 - No puede ser menor que 0.01.
         - `protectedSpecies` **(Tipo: Boolean)**: Define si el insecto está en peligro de extinción (true) o no (false).
-        - `photo` **(Tipo: String)**: La dirección en donde se guarda una imagen del insecto dentro de los archivos del programa.
-            **RESTRICCIONES:**
-                - No puede estar vacío.
 
-3. **Tabla Posts**
+3. **Tabla Insect_Photos**
+
+   - Representa todas las imágenes que le pertenecen a un insecto.
+   - Propiedades:
+     - `id` **(Tipo: Long)**: El ID de la imagen correspondiente, autogenerado por la base de datos.
+     - `insect_id` **(Tipo: Long)**: El ID del insecto al que le pertenece la imagen.
+     - `path` **(Tipo: String)**: La ruta donde se encuentra almacenada la imagen.
+
+4. **Tabla Posts**
     - Representa un post/blog publicado por un usuario específico.
     - Propiedades:
         - `id` **(Tipo: Long)**: El ID del post correspondiente, autogenerado por la base de datos.
@@ -112,7 +118,7 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
     - Representa una etiqueta utilizada por uno o varios posts, utilizadas para una búsqueda más fácil de posts específicos.
     - Propiedades:
         - `id` **(Tipo: Long)**: El ID de la etiqueta correspondiente, autogenerado por la base de datos.
-        - `title` **(Tipo: String)**: El nombre de la etiqueta.
+        - `name` **(Tipo: String)**: El nombre de la etiqueta.
 
 6. **Tabla Post_Tag**
     - Se trata de una tabla intermediaria usada en la relación de muchos a muchos entre las tablas de los posts y la tablas de las tags (etiquetas).
@@ -127,6 +133,13 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
         - `id_post` **(Tipo: String)**: El ID del post que ha sido marcado como favorito.
         - `id_user` **(Tipo: String)**: El ID del usuario que ha marcado al post como favorito.
 
+8. **Tabla Likes**
+    - Tabla que señala los posts que han recibido un like de un usuario.
+    - Propiedades:
+        - `id` **(Tipo: Long)**: El ID de la instancia en la que el usuario le da like a un post específico.
+        - `user_id` **(Tipo: String)**: El ID del usuario que ha dado like al post.
+        - `post_id` **(Tipo: String)**: El ID del post que ha recibido el like del usuario.
+
 ## **Endpoints**
 
 1. **Endpoints para Usuarios**
@@ -137,9 +150,18 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
     - **POST** `{users/login}`: Endpoint utilizado para realizar el login e iniciar sesión con un usuario en particular, enviando al usuario de vuelta a la página principal una vez realizado.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **POST** `{users/register}`: Endpoint utilizado para registrar un nuevo usuario en la base de datos, enviando al usuario a la página del login una vez realizado.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **GET** `{users/contact}`: Endpoint utilizado para llamar a la vista de contacto de la compañia y mostrarla por pantalla.
       - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
     - **GET** `{users/profile}`: Endpoint utilizado para llamar a la vista del perfil del usuario actual y mostrarla por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **GET** `{users/adminMenu}`: Endpoint utilizado para llamar a la vista del menú de administración de usuarios y mostrarlo por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{users/makeAdmin/{id}`: Endpoint utilizado para dar permisos de administrador a un usuario, recarga la página justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{users/ban/{id}`: Endpoint utilizado para banear un usuario, bloqueándolo de acceder a varias partes de la aplicación, recarga la página justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{users/unban/{id}`: Endpoint utilizado para desbanear un usuario, permitiéndolo tener los permisos de un usuario normal nuevamente, recarga la página justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **GET** `{users/update/{id}}`: Endpoint utilizado para llamar a la vista para actualizar un usuario específico.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
@@ -179,13 +201,19 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **POST** `{posts/register}`: Endpoint utilizado para registrar un post en la base de datos, devolviendo el usuario a la lista actualizada de posts justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
-    - **PUT** `{posts/like/{id}}`: Endpoint utilizado para actualizar un el contador de likes de un post, recarga la página justo después.
+    - **PUT** `{posts/like/{id}}`: Endpoint utilizado para que un usuario le de un like a un post, recarga la página justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{posts/dislike/{id}}`: Endpoint utilizado para quitar el like de un usuario a un post, recarga la página justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **PUT** `{posts/newFavorite/{id}}`: Endpoint utilizado para actualizar la tabla de favoritos y crear una nueva instancia de un favorito.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **PUT** `{posts/removeFavorite/{id}}`: Endpoint utilizado para actualizar la tabla de favoritos y eliminar una instancia de un favorito.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
-    - **DELETE** `{posts/delete/{id}}`: Endpoint utilizado para eliminar un post en la base de datos, devolviendo el usuario a la lista actualizada de insectos justo después.
+    - **GET** `{posts/update/{id}}`: Endpoint utilizado para llamar a la vista para actualizar un post específico y mostrarla por pantalla.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **PUT** `{posts/update/{id}}`: Endpoint utilizado para actualizar un post en la base de datos, devolviendo el usuario a la lista actualizada de posts justo después.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **DELETE** `{posts/delete/{id}}`: Endpoint utilizado para eliminar un post en la base de datos, devolviendo el usuario a la lista actualizada de posts justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
      
 4. **Endpoints para Comentarios**
@@ -272,6 +300,10 @@ Operaciones fallidas:
     - **POST** `{users/register}`: Cualquiera puede registrarse ya que es necesario para acceder a la aplicación si no tienes una cuenta creada.
     - **GET** `{users/contact}`: Cualquiera puede ver la página de contactos solo para informarse, aunque solo se puede usar el formulario si has hecho login previamente.
     - **GET** `{users/profile}`: Solo puedes acceder a tu perfil si tienes una sesión activa ya que se requiere para saber cuál es tu usuario.
+    - **GET** `{users/adminMenu}`: Solo pueden acceder los administradores que tengan una sesión activa en ese momento.
+    - **PUT** `{users/makeAdmin/{id}}`: Solo puede ser usada por un administrador con la sesión activa en ese momento.
+    - **PUT** `{users/ban/{id}}`: Solo puede ser usada por un administrador con la sesión activa en ese momento.
+    - **PUT** `{users/unban/{id}}`: Solo puede ser usada por un administrador con la sesión activa en ese momento.
     - **GET** `{users/update/{id}}`: Solo se puede acceder desde el perfil de usuario, el cuál requiere una sesión activa para saber cuál es el usuario.
     - **PUT** `{users/update/{id}}`: Solo se puede usar desde el perfil de usuario, el cuál requiere una sesión activa para saber cuál es el usuario.
     - **DELETE** `{users/logout/{id}}`: Solo puedes cerrar sesión si tienes una sesión abierta anteriormente por obvios motivos.
@@ -294,8 +326,11 @@ Operaciones fallidas:
     - **GET** `{posts/register}`: Solo los usuarios que han iniciado sesión pueden acceder para registrar posts para así saber a cuál usuario le pertence el post.
     - **POST** `{posts/register}`: Solo los usuarios que han iniciado sesión pueden registrar posts para así saber a cuál usuario le pertence el post.
     - **PUT** `{posts/like/{id}}`: Solo los usuarios que han iniciado sesión pueden dar likes a los posts para así saber a cuál usuario le ha dado like a cada post.
+    - **PUT** `{posts/dislike/{id}}`: Solo los usuarios que han iniciado sesión pueden quitar sus likes a los posts para así saber a cuál usuario ha quitado su like en cada post.
     - **PUT** `{posts/newFavorite/{id}}`: Solo los usuarios que han iniciado sesión pueden marcar posts como favoritos para saber cuál usuario lo ha marcado.
     - **PUT** `{posts/removeFavorite/{id}}`: Solo los usuarios que han iniciado sesión pueden desmarcar posts como favoritos para saber cuál usuario lo ha desmarcado.
+    - **GET** `{posts/update/{id}}`: Solo los administradores y el usuario al que le pertenezca el post pueden acceder para actualizar un post específico.
+    - **PUT** `{posts/update/{id}}`: Solo los administradores y el usuario al que le pertenezca el post pueden actualizar un post específico.
     - **DELETE** `{posts/delete/{id}}`: Solo el usuario autenticado que ha creado un post puede eliminar su propio post.
 
 4. **Comentarios:**
