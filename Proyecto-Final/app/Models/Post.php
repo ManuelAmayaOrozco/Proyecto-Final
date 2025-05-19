@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\DB;
+use App\Models\Tag;
 
 /**
  * Clase que representa un Post de la aplicación.
@@ -47,6 +51,30 @@ class Post extends Model
      */
     public function likedByUsers(): BelongsToMany {
         return $this->belongsToMany(User::class, 'likes');
+    }
+
+    public function deleteCompletely() {
+        // ELIMINAMOS LOS COMENTARIOS
+        $this->comments()->delete();
+
+        // ELIMINAMOS LA IMAGEN
+        if ($this->photo && Storage::disk('public')->exists($this->photo)) {
+            Storage::disk('public')->delete($this->photo);
+        }
+
+        // OBTENEMOS Y ELIMINAMOS LAS ETIQUETAS ÚNICAS
+        $uniqueTags = TagController::getAllUniqueTags($this->id);
+        DB::table('post_tag')->where('post_id', $this->id)->delete();
+
+        if ($uniqueTags && $uniqueTags->isNotEmpty()) {
+            Tag::whereIn('id', $uniqueTags)->delete();
+        }
+
+        // ELIMINAMOS LOS FAVORITOS RELACIONADOS
+        DB::table('favorites')->where('post_id', $this->id)->delete();
+
+        // ELIMINAMOS EL POST
+        $this->delete();
     }
 
 }

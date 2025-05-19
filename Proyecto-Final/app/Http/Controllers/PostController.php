@@ -300,42 +300,12 @@ class PostController extends Controller
      */
     public function deletePost($id) {
 
-        // VALIDAR DATOS DE ENTRADA.
-        $validator = Validator::make(
-            ['id' => $id],
-            [
-                'id' => 'required|exists:App\Models\Post,id'
-            ]
-        );
+        $post = Post::findOrFail($id);
 
-        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN.
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
-        }
-
-        // ELIMINAR COMENTARIOS RELACIONADOS
-        $comments = Comment::where("post_id", $id);
-        $comments->delete();
-
-        $post = Post::find($id);
-
-        // ELIMINAR IMÁGENES RELACIONADAS
-        $image = $post->photo;
-        Storage::disk('public')->delete($image);
-
-        // ELIMINAR ETIQUETAS ÚNICAS RELACIONADAS
-        $uniqueTags = TagController::getAllUniqueTags($id);
-
-        DB::table('post_tag')->where('post_id', $id)->delete();
-
-        if ($uniqueTags->isNotEmpty()) {
-            Tag::whereIn('id', $uniqueTags)->delete();
-        }
-
-        $post->delete();
+        $post->deleteCompletely();
 
         return redirect()->route('post.showPosts');
-
+        
     }
 
     /**

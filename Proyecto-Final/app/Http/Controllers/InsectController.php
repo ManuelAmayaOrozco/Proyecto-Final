@@ -137,8 +137,11 @@ class InsectController extends Controller
         }
 
         // ELIMINAMOS LOS POSTS RELACIONADOS CON EL INSECTO
-        $posts = Post::where("related_insect", $id);
-        $posts->delete();
+        $posts = Post::where("related_insect", $id)->get();
+
+        foreach ($posts as $post) {
+            $post->deleteCompletely();
+        }
 
         $insect = Insect::find($id);
 

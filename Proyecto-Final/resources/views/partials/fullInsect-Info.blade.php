@@ -69,13 +69,13 @@
             const parser = edjsHTML({
                 list: (block) => {
                     const tag = block.data.style === 'ordered' ? 'ol' : 'ul';
-                    const items = block.data.items.map(item => `<li>${item.content}</li>`).join('');
+                    const items = block.data.items.map(item => `<li>${item}</li>`).join('');
                     return `<${tag}>${items}</${tag}>`;
                 },
                 checklist: (block) => {
                     const items = block.data.items.map(item => {
-                        const checked = item.meta.checked ? 'checked' : '';
-                        return `<li><input type="checkbox" ${checked} disabled> ${item.content}</li>`;
+                        const checked = item.checked ? 'checked' : '';
+                        return `<li><input type="checkbox" ${checked} disabled> ${item.text}</li>`;
                     }).join('');
                     return `<ul class="checklist">${items}</ul>`;
                 },
@@ -85,8 +85,11 @@
                 header: (block) => {
                     const level = block.data.level || 2;
                     return `<h${level}>${block.data.text}</h${level}>`;
+                },
+                paragraph: (block) => {
+                    return `<p>${block.data.text}</p>`;
                 }
-    });
+            });
 
             const scriptTag = document.getElementById('post-description-json');
 

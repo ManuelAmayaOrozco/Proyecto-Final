@@ -128,6 +128,19 @@
                         header: (block) => {
                             const level = block.data.level || 2;
                             return `<h${level}>${block.data.text}</h${level}>`;
+                        },
+                        paragraph: (block) => {
+                            // Dividimos el texto en palabras usando el espacio como delimitador
+                            const words = block.data.text.trim().split(/\s+/); // Usamos una expresión regular para dividir por cualquier espacio en blanco
+                            let truncatedText = words.slice(0, 100).join(' '); // Limitar a las primeras 100 palabras
+
+                            // Si hay más de 100 palabras, agregamos "..."
+                            if (words.length > 100) {
+                                truncatedText += '...';
+                            }
+
+                            // Devolvemos el párrafo con el texto truncado
+                            return `<p>${truncatedText}</p>`;
                         }
                     });
 
