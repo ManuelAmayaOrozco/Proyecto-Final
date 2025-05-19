@@ -4,10 +4,10 @@
         <img src="{{ asset('storage/imagenesBugs/BugBuds.png') }}" alt="Logo BugBuds" class="header__logo"/>
     </div>
     <nav class="header__navigation">
-        <a href="{{ Auth::check() ? route('user.showProfile') : route('login')  }}" class="navigation__a">
-            {{ Auth::check() ? 'PERFIL' : 'LOGIN' }}
-        </a>
         @if(!Auth::check())
+        <a href="{{ Auth::check() ? route('user.showProfile') : route('login')  }}" class="navigation__a">
+            LOGIN
+        </a>
         <a href="{{ route('user.showRegister') }}" class="navigation__a">
             REGÍSTRATE
         </a>
@@ -37,6 +37,18 @@
             <button class="search-button">Buscar</button>
         </form>
     </div>
+
+    @if(Auth::check())
+        @if (Auth::user()->photo)
+            <div class="profile-picture-display-smallest">
+                <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="profile-picture" onclick="location.href=`{{ route('user.showProfile') }}`">
+            </div>
+        @else
+            <div class="profile-picture-display-smallest">
+                <img src="{{ asset('storage/' . 'default/Default.jpg') }}" class="profile-picture" onclick="location.href=`{{ route('user.showProfile') }}`">
+            </div>
+        @endif
+    @endif
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

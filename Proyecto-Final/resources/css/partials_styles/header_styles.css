@@ -17,6 +17,11 @@
 .header__logo {
     height:9vh;
     width:18vh;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.header__logo:hover {
+  transform: scale(1.05); /* Aumenta un 10% el tamaño */
 }
 
 .header__navigation {
@@ -124,4 +129,20 @@
     .header__searchbar {
         margin-top: 1em;
     }
+}
+
+.profile-picture-display-smallest .profile-picture {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #0B6600;
+  margin-right: 2em;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-picture-display-smallest .profile-picture:hover {
+  transform: scale(1.1); /* Aumenta un 10% el tamaño */
+  box-shadow: 0 0 5px rgba(11, 102, 0, 0.6); /* Sombra verde suave */
 }

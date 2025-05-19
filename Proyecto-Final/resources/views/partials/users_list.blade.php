@@ -9,14 +9,18 @@
             <h2 class="user-name">{{ $user->name }}</h2>
 
             @if ($user->photo)
-            <div class="profile-picture-display-small">
-                <img src="{{ asset('storage/' . $user->photo) }}" class="profile-picture">
-            </div>
+                <div class="profile-picture-display-small">
+                    <img src="{{ asset('storage/' . $user->photo) }}" class="profile-picture">
+                </div>
+            @else
+                <div class="profile-picture-display-small">
+                    <img src="{{ asset('storage/' . 'default/Default.jpg') }}" class="profile-picture">
+                </div>
             @endif
 
             @if(!$user->isAdmin)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success">Dar permisos de Administrador</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-shield-lock icon-white"></i> Dar permisos de Administrador</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres dar permisos de Administrador este usuario?</h2>
@@ -43,7 +47,7 @@
 
             @if(!$user->isAdmin && $user->id != $current_user->id && !$user->banned)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Banear Usuario</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-ban icon-white"></i> Banear Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres banear este usuario?</h2>
@@ -66,7 +70,7 @@
 
             @if(!$user->isAdmin && $user->id != $current_user->id && $user->banned)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success">Desbanear Usuario</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-check-circle icon-white"></i> Desbanear Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres desbanear este usuario?</h2>
@@ -89,7 +93,7 @@
 
             @if(!$user->isAdmin && $user->id != $current_user->id)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Usuario</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-person-x icon-white"></i> Eliminar Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres eliminar este usuario?</h2>

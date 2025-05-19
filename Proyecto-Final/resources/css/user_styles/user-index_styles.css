@@ -178,7 +178,6 @@
 /* Estilo para el contenedor de los datos del usuario */
 .box__user {
     background-color: #93D866; /* Fondo oscuro para resaltar el contenido */
-    padding: 2em;
     border-style: solid;
     border-width: 5px;
     border-color: #0B6600;
@@ -186,7 +185,6 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra sutil */
     text-align: center; /* Alineación central para los textos */
     width: 60%; /* Ancho moderado */
-    margin: 2em 0; /* Espaciado superior e inferior */
 }
 
 /* Estilo para el nombre de usuario */
@@ -194,14 +192,14 @@
     font-size: 3.5em;
     color: #000000; /* Blanco para el nombre de usuario */
     font-weight: bold;
-    margin-bottom: 1em;
+    margin-bottom: 0.8em;
 }
 
 /* Estilo para los datos del usuario */
 .userdata__text {
     font-size: 0.5em;
     color: #000000; /* Gris claro para los datos del usuario */
-    margin-bottom: 1.5em;
+    margin-bottom: 0.5em;
 }
 
 /* Estilo para el botón de comentar */
@@ -276,7 +274,7 @@
 
 /* Estilo para la sección de la foto del perfil */
 .profile-picture-display {
-    margin-bottom: 1.5em;
+    margin-bottom: 0.5em;
 }
 
 /* Estilo para la imagen del perfil */
@@ -299,8 +297,18 @@
     border-radius: 8px;
     object-fit: cover;
     box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
-    cursor: pointer;
     border: 4px solid #0B6600;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main__posts-index .post-picture {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main__posts-index .post-picture:hover {
+  transform: scale(1.02); /* Aumenta un 10% el tamaño */
+  box-shadow: 0 0 5px rgba(11, 102, 0, 0.6); /* Sombra verde suave */
 }
 
 /*WELCOME SECTION*/
@@ -523,8 +531,24 @@
   max-height: 400px;
   border-radius: 8px;
   object-fit: contain; /* Cambiado de cover a contain */
-  cursor: pointer;
   border: 4px solid #0B6600;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main__insects-index .insect-picture-display {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main__insects-index .insect-picture {
+  cursor: pointer;
+}
+
+.main__insects-index .insect-picture-display:hover {
+  transform: scale(1.03); /* Aumenta un 10% el tamaño */
+}
+
+.main__insects-index .insect-picture:hover {
+  box-shadow: 0 0 15px rgba(11, 102, 0, 0.6); /* Sombra verde suave */
 }
 
 .insect-box dialog form {
@@ -757,7 +781,7 @@
 .btn-success {
   background-color: #089c39;
   color: white;
-  margin-top: 0.5em;
+  margin-bottom: 0.5em;
   padding: 0.4em 1.5em;
   border: none;
   border-radius: 4px;
@@ -774,9 +798,7 @@
 .box__user .btn-danger,
 .box__user .btn-success {
   margin-top: 1em;
-  font-size: 0.5em;    /* Tamaño de texto más pequeño */
-  padding: 0.4em 1.5em;   /* Menor espacio interior */
-  min-width: auto;    /* Elimina anchura mínima si existe */
+  font-size: 0.3em;    /* Tamaño de texto más pequeño */
 }
 
 .insect__searchbar {
