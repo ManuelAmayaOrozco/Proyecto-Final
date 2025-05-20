@@ -19,6 +19,7 @@
     @include('partials.footer')
 
     @stack('scripts')
+    @stack('styles')
 
     @vite(['resources/js/alpine.js'])
 </body>

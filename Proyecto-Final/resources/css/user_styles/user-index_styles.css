@@ -311,6 +311,16 @@
   box-shadow: 0 0 5px rgba(11, 102, 0, 0.6); /* Sombra verde suave */
 }
 
+.main__welcome .post-picture {
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.main__welcome .post-picture:hover {
+  transform: scale(1.02); /* Aumenta un 10% el tamaño */
+  box-shadow: 0 0 5px rgba(11, 102, 0, 0.6); /* Sombra verde suave */
+}
+
 /*WELCOME SECTION*/
 
 /* Sección de bienvenida */

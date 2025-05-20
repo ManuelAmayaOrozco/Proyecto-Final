@@ -415,7 +415,9 @@ class PostController extends Controller
                 "title" => "required|min:1|max:50",
                 "description" => "required",
                 "insect" => "required",
-                "photo" => "nullable|image"
+                "photo" => "nullable|image",
+                "latitude" => "nullable|numeric",
+                "longitude" => "nullable|numeric"
             ],
             [
                 "title.required" => "El título es obligatorio.",
@@ -423,7 +425,9 @@ class PostController extends Controller
                 "title.max" => "El título no puede tener más de 50 carácteres.",
                 "description.required" => "La descripción es obligatoria.",
                 "insect.required" => "El insecto relacionado es obligatorio.",
-                "photo.image" => "El archivo debe ser una imagen válida."
+                "photo.image" => "El archivo debe ser una imagen válida.",
+                "latitude.numeric" => "La latitud ha de ser numérica.",
+                "longitude.numeric" => "La longitude ha de ser numérica."
             ]
         );
 
@@ -453,6 +457,8 @@ class PostController extends Controller
         $post->title = $request->input('title');
         $post->description = $request->input('description');
         $post->related_insect = $request->input('insect');
+        $post->latitude = $request->input('latitude');
+        $post->longitude = $request->input('longitude');
         $post->save();
 
         // ACTUALIZAR TAGS
