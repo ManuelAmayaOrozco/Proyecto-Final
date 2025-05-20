@@ -147,3 +147,10 @@ label[for="protectedSpecies"] {
 .editor-input * {
     cursor: text;
 }
+
+#map {
+    width:500px;
+    height:500px;
+    border: 3px solid #0B6600;
+    border-radius: 6px;
+}

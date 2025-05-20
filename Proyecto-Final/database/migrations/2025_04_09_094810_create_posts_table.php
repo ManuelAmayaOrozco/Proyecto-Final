@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('belongs_to')->references('id')->on('users');
             $table->unsignedBigInteger('related_insect');
             $table->foreign('related_insect')->references('id')->on('insects');
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->string('photo', 255)->nullable();
             $table->boolean('dailyPost')->default(false);
             $table->timestamps();

@@ -48,15 +48,6 @@
                 <input type="hidden" name="protectedSpecies" id="hiddenTerms">
                 <input class="form-checkbox" type="checkbox" id="checkboxTerms" value="true">
             </label>
-
-            <script>
-                const checkbox = document.getElementById('checkboxTerms');
-                const hidden = document.getElementById('hiddenTerms');
-
-                form.addEventListener('submit', () => {
-                    hidden.value = checkbox.checked ? '1' : '0';
-                });
-            </script>
         </div>
         <div class="form-group">
             <label for="photo">Imágenes del Insecto:</label>

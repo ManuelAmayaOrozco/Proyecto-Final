@@ -325,14 +325,18 @@ class PostController extends Controller
                 "title"=>"required|min:1|max:50",
                 "description"=> "required",
                 "photo"=>"required",
-                "insect"=>"required"
+                "insect"=>"required",
+                "latitude" => "nullable|numeric",
+                "longitude" => "nullable|numeric"
             ],[
                 "title.required" => "El título es obligatorio.",
                 "title.min" => "El título ha de tener por lo menos un carácter.",
                 "title.max" => "El título no puede tener más de 50 carácteres.",
                 "description.required" => "La descripción es obligatoria.",
                 "photo.required" => "La imagen es obligatoria.",
-                "insect.required" => "El insecto relacionado es obligatorio."
+                "insect.required" => "El insecto relacionado es obligatorio.",
+                "latitude.numeric" => "La latitud ha de ser numérica.",
+                "longitude.numeric" => "La longitude ha de ser numérica."
             ]
         );
     
@@ -364,6 +368,8 @@ class PostController extends Controller
         $post->n_likes = 0;
         $post->belongs_to = Auth::id();
         $post->related_insect = $datosPost['insect'];
+        $post->latitude = $datosPost['latitude'] ?? null;
+        $post->longitude = $datosPost['longitude'] ?? null;
         $post->photo = $photo;
         $post->save();
 

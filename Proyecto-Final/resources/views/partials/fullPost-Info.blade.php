@@ -1,5 +1,15 @@
 <!--Estructura de la información detallada de un post.-->
-@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="" />
+@endpush
+@push('scripts') 
+    @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+@endpush
 <main class="main__full-posts-index">
 
     <div class="post-box">
@@ -11,6 +21,12 @@
         <div class="post-picture-display">
             <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture">
         </div>
+        @if($post->latitude && $post->longitude)
+            <div class="post-map">
+                <p class="likes-text">Localización:</p>
+                <div id="map"></div>
+            </div>
+        @endif
         <p class="post-tags">
                 @foreach ($post->tags as $tag)
                     <span class="tag" onclick="location.href=`{{ route('post.showPosts', ['tagId' => $tag->id]) }}`">{{ ucfirst($tag->name) }}</span>
@@ -164,6 +180,18 @@
             } catch (e) {
                 console.error("⚠️ Error al procesar el contenido de Editor.js:", e);
             }
+
+            // Inicializa el mapa solo si las coordenadas están disponibles
+            @if($post->latitude && $post->longitude)
+                const map = L.map('map').setView([{{ $post->latitude }}, {{ $post->longitude }}], 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+
+                L.marker([{{ $post->latitude }}, {{ $post->longitude }}]).addTo(map);
+
+            @endif
         });
     </script>
 

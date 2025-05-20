@@ -18,6 +18,10 @@
 
     <!-- FOOTER -->
     @include('partials.footer')
+
+    @stack('scripts')
+    @stack('styles')
+
 </body>
 
 </html>
