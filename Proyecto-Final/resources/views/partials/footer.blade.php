@@ -1,5 +1,7 @@
 <!--Estructura del footer.-->
 <footer class="body__footer">
+    <img src="{{ asset('storage/imagenesBugs/Bug2.png') }}" class="bg-image--footer" alt="">
+
     <div class="footer__div_contactos">
         <h5>Contactos</h5>
         <p>+34-874-234-234</p>

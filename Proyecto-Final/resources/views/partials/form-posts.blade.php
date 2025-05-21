@@ -56,6 +56,10 @@
     </script>
 @endpush
 <main class="main__register">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--1" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--2" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--3" alt="">
+
     <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('post.doRegisterPost') }}" method="post" enctype="multipart/form-data" x-data="editor" @submit.prevent="beforeSend" id="post-form">
         @csrf
         <div class="form-group">

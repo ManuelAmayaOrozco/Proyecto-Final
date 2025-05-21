@@ -1,6 +1,10 @@
 <!--Estructura del formulario de registro de usuarios.-->
 @vite('resources/css/user_styles/register_styles.css')
 <main class="main__register">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--1" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--2" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--3" alt="">
+
     <form class="register__register_form {{ $errors->any() ? 'register__register_form-error' : '' }}" action="{{ route('user.doRegister') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="form-group">

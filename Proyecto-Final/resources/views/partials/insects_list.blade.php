@@ -49,6 +49,8 @@
         @forelse($insects as $insect)
 
             <div class="insect-box">
+                <img src="{{ asset('storage/imagenesBugs/Bug4.png') }}" class="bg-image bg-image--ins1" alt="">
+                <img src="{{ asset('storage/imagenesBugs/Bug4.png') }}" class="bg-image bg-image--ins2" alt="">
 
                 <h2 class="insect-name" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">{{ $insect->name }}</h2>
                 <h3 class="insect-scientificName">{{ $insect->scientificName }}</h2>

@@ -154,3 +154,30 @@ label[for="protectedSpecies"] {
     border: 3px solid #0B6600;
     border-radius: 6px;
 }
+
+.bg-image {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.bg-image--1 {
+    top: 15%;
+    right: 68%;
+    transform: rotate(15deg);
+    transform: scaleX(-1);
+}
+
+.bg-image--2 {
+    top: 50%;
+    left: 70%;
+    transform: rotate(15deg);
+}
+
+.bg-image--3 {
+    top: 65%;
+    right: 75%;
+    transform: rotate(15deg);
+    transform: scaleX(-1);
+}

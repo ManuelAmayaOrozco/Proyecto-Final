@@ -4,6 +4,8 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
+
+    position: relative;
 }
 .login__login_form {
 
@@ -28,4 +30,31 @@
 .login_form__error {
     position: absolute;
     color: #780000;
+}
+
+.bg-image {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.bg-image--1 {
+    top: 5%;
+    right: 60%;
+    transform: rotate(15deg);
+    transform: scaleX(-1);
+}
+
+.bg-image--2 {
+    top: 50%;
+    left: 70%;
+    transform: rotate(15deg);
+}
+
+.bg-image--3 {
+    top: 65%;
+    right: 70%;
+    transform: rotate(15deg);
+    transform: scaleX(-1);
 }

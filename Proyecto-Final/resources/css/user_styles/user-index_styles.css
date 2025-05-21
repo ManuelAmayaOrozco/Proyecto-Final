@@ -57,6 +57,44 @@
   
   font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
   padding: 2em;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-image {
+    position: absolute;
+    z-index: 0;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.bg-image--1 {
+    top: 28.5%;
+    left: 35%;
+}
+
+.bg-image--2 {
+    bottom: 0%;
+    right: 38%;
+    transform: scaleX(-1);
+}
+
+.bg-image--3 {
+    top: 50%;
+    left: 80%;
+    transform: rotate(15deg);
+    width: 15%;
+    height: 15%;
+}
+
+.bg-image--4 {
+    top: 65%;
+    right: 85%;
+    transform: rotate(15deg);
+    width: 15%;
+    height: 15%;
+    transform: scaleX(-1);
 }
 
 /* Estilo para cada caja de post */
@@ -70,6 +108,22 @@
     padding: 1.5em;
     border-radius: 8px; /* Bordes redondeados para un aspecto más moderno */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Agrega una sombra sutil */
+    z-index: 1;
+
+    position: relative;
+}
+
+.bg-image--post1 {
+    top: 28.5%;
+    left: -12%;
+    height:45%;
+}
+
+.bg-image--post2 {
+    top: 28.5%;
+    right: -12%;
+    height:45%;
+    transform: scaleX(-1);
 }
 
 /* Título del post */
@@ -481,6 +535,21 @@
     padding: 1.5em;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+    position: relative;
+}
+
+.bg-image--ins1 {
+    top: 28.5%;
+    left: -12%;
+    height: 30%;
+}
+
+.bg-image--ins2 {
+    top: 28.5%;
+    right: -12%;
+    height: 30%;
+    transform: scaleX(-1);
 }
 
 .insect-name {
@@ -593,6 +662,8 @@
   
   font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
   padding: 2em;
+
+  position: relative;
 }
 
 .contact-section {

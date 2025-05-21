@@ -1,6 +1,10 @@
 <!--Estructura del formulario de login.-->
 @vite('resources/css/user_styles/login_styles.css')
 <main class="main__login">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--1" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--2" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--3" alt="">
+
     <form class="login__login_form {{ $errors->any() ? 'login__login_form-error' : '' }}" action="{{ route('login') }}" method="post">
         @csrf
         <div class="form-group">

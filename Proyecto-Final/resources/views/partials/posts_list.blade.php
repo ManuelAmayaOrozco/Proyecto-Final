@@ -17,6 +17,8 @@
                     @if($user->id == $post->belongs_to && !$user->banned) 
 
                         <div class="post-box">
+                            <img src="{{ asset('storage/imagenesBugs/Bug4.png') }}" class="bg-image bg-image--post1" alt="">
+                            <img src="{{ asset('storage/imagenesBugs/Bug4.png') }}" class="bg-image bg-image--post2" alt="">
 
                             <h2 class="post-title" onclick="location.href=`{{ route('post.showFullPost', ['id' => $post->id]) }}`">{{ $post->title }}</h2>
                             @foreach ($insects as $insect)

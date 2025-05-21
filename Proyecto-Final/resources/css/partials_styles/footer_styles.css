@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: space-evenly;
     border-top: 3px solid #0B6600;
+    position: relative;
 }
 
 .footer__div_contactos,
@@ -49,4 +50,13 @@
     border-bottom: 1px solid #0B6600;
     padding-bottom: 0.2em;
     width: fit-content;
+}
+
+.bg-image--footer {
+    position: absolute;
+    z-index: 2;
+    pointer-events: none;
+    height: 30%;
+    left: 5%;
+    top: -32%;
 }

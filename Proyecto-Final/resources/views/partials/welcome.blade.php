@@ -1,6 +1,10 @@
 <!--Estructura de la vista principal.-->
 @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__welcome">
+    <img src="{{ asset('storage/imagenesBugs/Bug3.png') }}" class="bg-image bg-image--1" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug3.png') }}" class="bg-image bg-image--2" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--3" alt="">
+    <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--4" alt="">
 
     <section class="welcome-section">
 
