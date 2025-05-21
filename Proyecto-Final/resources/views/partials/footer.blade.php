@@ -9,9 +9,9 @@
     <div class="footer__div_redes">
         <h5>Redes sociales</h5>
         <ul>
-            <li><a href="">Twitter</a></li>
-            <li><a href="">Youtube</a></li>
-            <li><a href="">Facebook</a></li>
+            <li><a href="{{ route('dummy.404') }}">Twitter</a></li>
+            <li><a href="{{ route('dummy.404') }}">Youtube</a></li>
+            <li><a href="{{ route('dummy.404') }}">Facebook</a></li>
         </ul>
     </div>
     <div class="footer__div_info">

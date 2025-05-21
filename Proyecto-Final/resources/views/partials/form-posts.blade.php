@@ -22,7 +22,7 @@
             }).addTo(map);
 
             L.Marker.prototype.options.icon = L.icon({
-                iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+                iconUrl: '{{ asset('storage/imagenesBugs/marker-icon.png') }}',
                 shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],

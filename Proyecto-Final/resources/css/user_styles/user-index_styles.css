@@ -97,6 +97,39 @@
     transform: scaleX(-1);
 }
 
+.main__error {
+  min-height: 80vh;
+  background-color: #ffffff; /* Un color de fondo oscuro, similar al de la versión de usuario */
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  
+  font-size: 1.2em; /* Un tamaño de fuente mayor para una mejor visibilidad */
+  padding: 2em;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.bg-image--error1 {
+    top: 10%;
+    left: 75%;
+    transform: rotate(15deg);
+    width: 10%;
+    height: 25%;
+}
+
+.bg-image--error2 {
+    top: 15%;
+    right: 80%;
+    transform: rotate(15deg);
+    width: 10%;
+    height: 25%;
+    transform: scaleX(-1);
+}
+
 /* Estilo para cada caja de post */
 .post-box {
     width: 80%;
