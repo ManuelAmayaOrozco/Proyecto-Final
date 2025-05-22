@@ -98,6 +98,12 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
         - `related_insect` **(Tipo: Long)**: El ID del insecto al que este post hace referencia.
             **RESTRICCIONES:**
                 - No puede estar vacío.
+        - `latitude` **(Tipo: Decimal)**: La latitud de las coordenadas donde se encontró el insecto del post.
+            **RESTRICCIONES:**
+                - Ha de ser numérico.
+        - `longitude` **(Tipo: Decimal)**: La longitud de las coordenadas donde se encontró el insecto del post.
+            **RESTRICCIONES:**
+                - Ha de ser numérico.
         - `photo` **(Tipo: String)**: La dirección en donde se guarda la imagen del post dentro de los archivos del programa.
             **RESTRICCIONES:**
                 - No puede estar vacío.
@@ -269,6 +275,8 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | `description`           | No puede estar vacía.                                                     | 400          | "La descripción es obligatoria."                    |
 | `photo`                 | No puede estar vacía.                                                     | 400          | "La imagen es obligatoria."                         |
 | `insect`                | No puede estar vacío.                                                     | 400          | "El insecto relacionado es obligatorio."            |
+| `latitude`              | Ha de ser numérica.                                                       | 400          | "La latitud ha de ser numérica."                    |
+| `longitude`             | Ha de ser numérica.                                                       | 400          | "La longitud ha de ser numérica."                   |
 
 4. **Tabla Comments**
 
