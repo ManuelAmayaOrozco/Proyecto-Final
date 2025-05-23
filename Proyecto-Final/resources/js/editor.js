@@ -34,7 +34,7 @@ document.addEventListener('alpine:init', () => {
                 holder: 'editor',
                 minHeight: 20,
                 inlineToolbar: ['link', 'bold', 'italic'],
-                placeholder: 'Escribe tu post',
+                placeholder: 'Introduce la Descripción',
                 data,
                 readOnly,
                 tools: {

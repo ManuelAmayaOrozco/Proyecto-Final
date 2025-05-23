@@ -171,7 +171,7 @@ class InsectController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
-                "name"=>"required||unique:App\Models\Insect,name",
+                "name"=>"required|unique:App\Models\Insect,name",
                 "scientificName"=>"required|unique:App\Models\Insect,scientificName",
                 "family"=>"required",
                 "diet"=>"required",

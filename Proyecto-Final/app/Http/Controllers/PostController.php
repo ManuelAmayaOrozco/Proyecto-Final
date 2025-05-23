@@ -427,7 +427,7 @@ class PostController extends Controller
                 "insect.required" => "El insecto relacionado es obligatorio.",
                 "photo.image" => "El archivo debe ser una imagen válida.",
                 "latitude.numeric" => "La latitud ha de ser numérica.",
-                "longitude.numeric" => "La longitude ha de ser numérica."
+                "longitude.numeric" => "La longitud ha de ser numérica."
             ]
         );
 

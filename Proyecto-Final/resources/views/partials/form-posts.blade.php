@@ -64,7 +64,7 @@
         @csrf
         <div class="form-group">
             <label for="title">Título:</label>
-            <input class="form-control" type="text" name="title" placeholder="Escribe el título">
+            <input class="form-control" type="text" name="title" placeholder="Introduce el título">
             @error('title') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
 
@@ -87,7 +87,7 @@
         </div>
         <div class="form-group">
             <label for="tags">Etiquetas:</label>
-            <input class="form-control" type="text" name="tags" placeholder="Escribe las etiquetas (Separadas por ',')">
+            <input class="form-control" type="text" name="tags" placeholder="Introduce las etiquetas (Separadas por ',')">
         </div>
 
         <div class="form-group">

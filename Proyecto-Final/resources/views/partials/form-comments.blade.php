@@ -9,7 +9,7 @@
         @csrf
         <div class="form-group">
             <label for="comment">Comentario:</label>
-            <input class="form-control" type="text" name="comment" placeholder="Type your comment">
+            <input class="form-control" type="text" name="comment" placeholder="Introduce el Comentario">
             @error('comment') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group d-flex justify-content-center gap-3">

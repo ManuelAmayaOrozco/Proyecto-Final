@@ -1,5 +1,5 @@
 <!--Estructura del menú de administración de usuarios.-->
-@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/app.js'])
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__posts-index">
 
     @forelse($users as $user)
@@ -16,6 +16,29 @@
                 <div class="profile-picture-display-small">
                     <img src="{{ asset('storage/' . 'default/Default.jpg') }}" class="profile-picture">
                 </div>
+            @endif
+
+            @if(!$user->isAdmin  && !$user->banned || $user->id == $current_user->id)
+            <div x-data="{}">
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-lock icon-white"></i> Cambiar Contraseña</button>
+            <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
+            
+                <h2>¿Estas seguro de que quieres cambiar la contraseña de este usuario?</h2>
+
+                <form action="{{ route('user.showUpdatePassword', ['id' => $user->id]) }}" method="POST">
+                    @csrf
+                    @method('GET')
+                    <button type="submit" class="btn btn-success">Sí, cambiar contraseña</button>
+                </form>
+
+                <form method="dialog">
+
+                    <button class="btn btn-danger">Cancelar</button>
+
+                </form>
+
+            </dialog>
+            </div>
             @endif
 
             @if(!$user->isAdmin)

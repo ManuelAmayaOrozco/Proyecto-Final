@@ -9,12 +9,12 @@
         @csrf
         <div class="form-group">
             <label for="name">Nombre:</label>
-            <input class="form-control" type="text" name="name" placeholder="Enter name" value="{{ $user->name }}">
+            <input class="form-control" type="text" name="name" placeholder="Introduce tu nombre de usuario" value="{{ $user->name }}">
             @error('name') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input class="form-control" type="text" name="email" placeholder="Enter email" value="{{ $user->email }}">
+            <input class="form-control" type="text" name="email" placeholder="Introduce tu email" value="{{ $user->email }}">
             @error('email') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">

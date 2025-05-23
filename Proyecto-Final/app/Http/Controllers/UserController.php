@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMailable;
@@ -312,6 +313,80 @@ class UserController extends Controller
         $user->save();
 
         return redirect()->route('home');
+    }
+
+    /**
+     * Función que muestra la vista para actualizar la contraseña de un usuario.
+     * 
+     * @param long El ID del usuario que se va a actualizar.
+     * @return view La vista para actualizar la contraseña de un usuario.
+     */
+    public function showUpdatePassword($id) {
+        $user = null;
+
+        $users = User::all();
+
+        foreach ($users as $usero) {
+
+            if ($usero->id == $id) {
+
+                $user = $usero;
+
+            }
+
+        }
+
+        return view('user_views.updatePassword', compact('user'));
+    }
+
+    /**
+    * Función que actualiza la contraseña de un usuario de la base de datos.
+    * 
+    * @param long $id El ID del usuario que se va a actualizar.
+    * @param request $request Request obtenida del formulario que provee
+    * los datos necesarios para actualizar el usuario.
+    * @return view La vista principal.
+    */
+    public function updatePassword(Request $request, $id) {
+
+        // VALIDAR DATOS DE ENTRADA.
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "password" => [
+                    "required",
+                    "min:5",
+                    "max:20",
+                    "regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/",
+                    Rule::unique('users')->where(fn ($query) => $query->where('id', $id))
+                ],
+                "password_repeat" => "required|same:password"
+            ],
+            [
+                "password.required" => "La contraseña es obligatoria.",
+                "password.min" => "La contraseña debe contener 5 carácteres mínimo.",
+                "password.max" => "La contraseña debe contener 20 carácteres máximo.",
+                "password.regex" => "La contraseña debe contener al menos una minúscula, una mayúscula y un dígito.",
+                "password.unique" => "La contraseña no puede ser igual a la contraseña antigua.",
+                "password_repeat.required" => "La contraseña repetida es obligatoria.",
+                "password_repeat.same" => "La contraseña repetida ha de ser igual a la contraseña original.",
+            ]
+        );
+
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $user = Auth::user();
+
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
+        $datosUsuario = $request->all();
+        $user->password = $datosUsuario['password'];
+        $user->save();
+
+        return redirect()->route('home');
+
     }
 
     /**

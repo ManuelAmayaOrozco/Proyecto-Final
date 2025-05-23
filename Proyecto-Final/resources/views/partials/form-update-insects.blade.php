@@ -11,22 +11,22 @@
         @csrf
         <div class="form-group">
             <label for="name">Nombre:</label>
-            <input class="form-control" type="text" name="name" placeholder="Enter name" value="{{ $insect->name }}">
+            <input class="form-control" type="text" name="name" placeholder="Introduce el Nombre del insecto" value="{{ $insect->name }}">
             @error('name') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="scientificName">Nombre Científico:</label>
-            <input class="form-control" type="text" name="scientificName" placeholder="Enter scientific name" value="{{ $insect->scientificName }}">
+            <input class="form-control" type="text" name="scientificName" placeholder="Introduce el Nombre Científico del insecto" value="{{ $insect->scientificName }}">
             @error('scientificName') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="family">Familia:</label>
-            <input class="form-control" type="text" name="family" placeholder="Enter family" value="{{ $insect->family }}">
+            <input class="form-control" type="text" name="family" placeholder="Introduce la Familia del insecto" value="{{ $insect->family }}">
             @error('family') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="diet">Dieta:</label>
-            <input class="form-control" type="text" name="diet" placeholder="Enter diet" value="{{ $insect->diet }}">
+            <input class="form-control" type="text" name="diet" placeholder="Introduce la Dieta del insecto" value="{{ $insect->diet }}">
             @error('diet') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         
@@ -39,12 +39,12 @@
 
         <div class="form-group">
             <label for="n_spotted">Nº Documentados:</label>
-            <input class="form-control" type="number" name="n_spotted" min="0" placeholder="Enter nº spotted" value="{{ $insect->n_spotted }}">
+            <input class="form-control" type="number" name="n_spotted" min="0" placeholder="Introduce la Cantidad de individuos documentados del insecto" value="{{ $insect->n_spotted }}">
             @error('n_spotted') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="maxSize">Tamaño Record:</label>
-            <input class="form-control" type="number" name="maxSize" min="0" step="0.01" placeholder="Enter max size" value="{{ $insect->maxSize }}">
+            <input class="form-control" type="number" name="maxSize" min="0" step="0.01" placeholder="Introduce el Tamaño Máximo del insecto" value="{{ $insect->maxSize }}">
             @error('maxSize') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">

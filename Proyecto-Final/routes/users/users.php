@@ -23,6 +23,8 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/update/{id}', [UserController::class, 'showUpdateUser'])->name('user.showUpdateUser');
     Route::put('/update/{id}', [UserController::class, 'updateUser'])->name('user.updateUser');
+    Route::get('/updatePassword/{id}', [UserController::class, 'showUpdatePassword'])->name('user.showUpdatePassword');
+    Route::put('/updatePassword/{id}', [UserController::class, 'updatePassword'])->name('user.updatePassword');
 
     Route::delete('/logout/{id}', [UserController::class, 'logout'])->name('user.logout');
 

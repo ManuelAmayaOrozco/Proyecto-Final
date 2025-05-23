@@ -9,26 +9,26 @@
         @csrf
         <div class="form-group">
             <label for="name">Nombre:</label>
-            <input class="form-control" type="text" name="name" placeholder="Enter name">
+            <input class="form-control" type="text" name="name" placeholder="Introduce tu nombre de usuario">
             @error('name') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input class="form-control" type="text" name="email" placeholder="Enter email">
+            <input class="form-control" type="text" name="email" placeholder="Introduce tu email">
             @error('email') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="password">Contraseña:</label>
-            <input type="password" class="form-control" id="input_password" name="password" placeholder="Password">
+            <input type="password" class="form-control" id="input_password" name="password" placeholder="Introduce tu contraseña">
             @error('password') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
             <label for="repeat_password">Repite la Contraseña:</label>
-            <input type="password" class="form-control" id="input_repeat_password" name="password_repeat" placeholder="Repeat password">
+            <input type="password" class="form-control" id="input_repeat_password" name="password_repeat" placeholder="Repite la contraseña">
             @error('repeat_password') <small class="register_form__error">{{ $message }}</small> @enderror
         </div>
         <div class="form-group">
-            <label for="photo">Profile Picture</label>
+            <label for="photo">Foto de Perfil</label>
             <input type="file" class="form-control" id="input_photo" name="photo" accept="image/*">
         </div>
         <div class="form-group d-flex justify-content-center gap-3">
