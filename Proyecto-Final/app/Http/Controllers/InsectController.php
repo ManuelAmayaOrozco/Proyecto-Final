@@ -102,7 +102,9 @@ class InsectController extends Controller
 
         $current_user = Auth::user();
 
-        return view('user_views.fullInsect', compact('insect', 'insect_user', 'users', 'current_user'));
+        $insect_posts = Post::where('related_insect', $insect->id)->get();
+
+        return view('user_views.fullInsect', compact('insect', 'insect_user', 'users', 'current_user', 'insect_posts'));
     }
 
     /**

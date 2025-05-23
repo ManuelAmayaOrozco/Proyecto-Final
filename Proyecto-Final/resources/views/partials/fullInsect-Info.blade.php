@@ -1,5 +1,15 @@
 <!--Estructura de la información detallada de un insecto.-->
-@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
+@push('styles')
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+    crossorigin="" />
+@endpush
+@push('scripts') 
+    @vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+     crossorigin=""></script>
+@endpush
 <main class="main__full-insect-index">
 
     <div class="insect-box">
@@ -18,6 +28,20 @@
             <p class="insect-info-start">Nº Documentados: <span class="insect-info">{{ $insect->n_spotted }}</span></p>
             <p class="insect-info-start">Tamaño record: <span class="insect-info">{{ $insect->maxSize }}</span></p>
             <p class="insect-info-start">En peligro de extinción: <span class="insect-info">{{ $insect->protectedSpecies ? 'SI' : 'NO' }}</span></p>
+
+            @php
+                $postsWithCoordinates = collect($insect_posts)->filter(function ($post) {
+                    return $post->latitude && $post->longitude;
+                });
+            @endphp
+
+            @if ($postsWithCoordinates->isNotEmpty())
+                <div class="post-map">
+                    <p class="likes-text">Localizaciones:</p>
+                    <div id="map" style="height: 400px;"></div>
+                </div>
+            @endif
+
             <div class="insect-text">
                 <script id="post-description-json" type="application/json">
                     {!! $insect->description !!}
@@ -69,13 +93,13 @@
             const parser = edjsHTML({
                 list: (block) => {
                     const tag = block.data.style === 'ordered' ? 'ol' : 'ul';
-                    const items = block.data.items.map(item => `<li>${item}</li>`).join('');
+                    const items = block.data.items.map(item => `<li>${item.content}</li>`).join('');
                     return `<${tag}>${items}</${tag}>`;
                 },
                 checklist: (block) => {
                     const items = block.data.items.map(item => {
-                        const checked = item.checked ? 'checked' : '';
-                        return `<li><input type="checkbox" ${checked} disabled> ${item.text}</li>`;
+                        const checked = item.meta.checked ? 'checked' : '';
+                        return `<li><input type="checkbox" ${checked} disabled> ${item.content}</li>`;
                     }).join('');
                     return `<ul class="checklist">${items}</ul>`;
                 },
@@ -85,11 +109,8 @@
                 header: (block) => {
                     const level = block.data.level || 2;
                     return `<h${level}>${block.data.text}</h${level}>`;
-                },
-                paragraph: (block) => {
-                    return `<p>${block.data.text}</p>`;
                 }
-            });
+    });
 
             const scriptTag = document.getElementById('post-description-json');
 
@@ -103,6 +124,38 @@
                 scriptTag.insertAdjacentElement('afterend', container);
             } catch (e) {
                 console.error("⚠️ Error al procesar el contenido de Editor.js:", e);
+            }
+
+            // Inicializa el mapa solo si las coordenadas están disponibles
+            const posts = @json($postsWithCoordinates->values());
+            const postBaseUrl = "{{ url('/posts/fullPost') }}"; // <- Ajusta según tu ruta real
+
+            if (posts.length > 0) {
+                const map = L.map('map').setView([posts[0].latitude, posts[0].longitude], 6);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+
+                const bugIcon = L.icon({
+                    iconUrl: '{{ asset('storage/imagenesBugs/marker-icon.png') }}',
+                    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
+
+                posts.forEach(post => {
+                    const postUrl = `${postBaseUrl}/${post.id}`;
+
+                    L.marker([post.latitude, post.longitude], { icon: bugIcon })
+                        .addTo(map)
+                        .bindPopup(`<a href="${postUrl}" target="_blank">Ver Post Relacionado #${post.id}</a>`);
+                });
+
+                const bounds = posts.map(p => [p.latitude, p.longitude]);
+                map.fitBounds(bounds);
             }
         });
     </script>
