@@ -296,7 +296,7 @@ class UserController extends Controller
 
         // ACTUALIZAMOS LA FOTO SI ES NECESARIO
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('posts', 'public');
+            $photo = $request['photo']->store('profiles', 'public');
             $oldImage = $user->photo;
             if ($oldImage != null) {
                 Storage::disk('public')->delete($oldImage);

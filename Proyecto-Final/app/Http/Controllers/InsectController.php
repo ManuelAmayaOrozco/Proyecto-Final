@@ -60,7 +60,7 @@ class InsectController extends Controller
         }
 
         // PAGINACIÓN: muestra 5 insectos por página y conserva los filtros en la URL
-        $insects = $query->paginate(5)->appends(request()->all());
+        $insects = $query->paginate(2)->appends(request()->all());
 
         return view('user_views.insects', compact('insects', 'users', 'current_user'));
     }

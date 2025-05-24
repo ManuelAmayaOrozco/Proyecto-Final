@@ -148,13 +148,13 @@
 
 .bg-image--post1 {
     top: 28.5%;
-    left: -12%;
+    left: -15%;
     height:45%;
 }
 
 .bg-image--post2 {
     top: 28.5%;
-    right: -12%;
+    right: -15%;
     height:45%;
     transform: scaleX(-1);
 }
@@ -574,13 +574,13 @@
 
 .bg-image--ins1 {
     top: 28.5%;
-    left: -12%;
+    left: -15%;
     height: 30%;
 }
 
 .bg-image--ins2 {
     top: 28.5%;
-    right: -12%;
+    right: -15%;
     height: 30%;
     transform: scaleX(-1);
 }
