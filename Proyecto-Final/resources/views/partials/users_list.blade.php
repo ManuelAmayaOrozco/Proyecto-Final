@@ -41,7 +41,7 @@
             </div>
             @endif
 
-            @if(!$user->isAdmin)
+            @if(!$user->isAdmin && !$user->banned)
             <div x-data="{}">
             <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-shield-lock icon-white"></i> Dar permisos de Administrador</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">

@@ -324,7 +324,7 @@ class PostController extends Controller
             [
                 "title"=>"required|min:1|max:50",
                 "description"=> "required",
-                "photo"=>"required",
+                "photo"=>"required|image|mimes:jpeg,png,jpg|max:2048",
                 "insect"=>"required",
                 "latitude" => "nullable|numeric",
                 "longitude" => "nullable|numeric"
@@ -334,6 +334,9 @@ class PostController extends Controller
                 "title.max" => "El título no puede tener más de 50 carácteres.",
                 "description.required" => "La descripción es obligatoria.",
                 "photo.required" => "La imagen es obligatoria.",
+                "photo.image" => "La foto ha de ser una imagen.",
+                "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.max" => "La foto no puede ser mayor de 2048px.",
                 "insect.required" => "El insecto relacionado es obligatorio.",
                 "latitude.numeric" => "La latitud ha de ser numérica.",
                 "longitude.numeric" => "La longitude ha de ser numérica."
@@ -415,7 +418,7 @@ class PostController extends Controller
                 "title" => "required|min:1|max:50",
                 "description" => "required",
                 "insect" => "required",
-                "photo" => "nullable|image",
+                "photo" => "nullable|image|mimes:jpeg,png,jpg|max:2048",
                 "latitude" => "nullable|numeric",
                 "longitude" => "nullable|numeric"
             ],
@@ -425,7 +428,9 @@ class PostController extends Controller
                 "title.max" => "El título no puede tener más de 50 carácteres.",
                 "description.required" => "La descripción es obligatoria.",
                 "insect.required" => "El insecto relacionado es obligatorio.",
-                "photo.image" => "El archivo debe ser una imagen válida.",
+                "photo.image" => "La foto ha de ser una imagen.",
+                "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.max" => "La foto no puede ser mayor de 2048px.",
                 "latitude.numeric" => "La latitud ha de ser numérica.",
                 "longitude.numeric" => "La longitud ha de ser numérica."
             ]

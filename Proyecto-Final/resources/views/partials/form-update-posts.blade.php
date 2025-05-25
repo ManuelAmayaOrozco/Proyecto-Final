@@ -11,48 +11,77 @@
      crossorigin=""></script>
     <script>
         window.onload = function () {
-            const hasCoords = {{ ($post->latitude && $post->longitude) ? 'true' : 'false' }};
-            const defaultLat = hasCoords ? {{ $post->latitude }} : 40.4168;
-            const defaultLng = hasCoords ? {{ $post->longitude }} : -3.7038;
+            let map = null;
+            const mapContainer = document.getElementById('map-container');
+            const enableLocationCheckbox = document.getElementById('enable-location');
 
-            const map = L.map('map').setView([defaultLat, defaultLng], 13);
-            window.map = map; // 💡 guardar globalmente para Alpine.js
+            function initMap(lat, lng) {
+                if (map) {
+                    map.remove();
+                    map = null;
+                }
+                map = L.map('map').setView([lat, lng], 13);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(map);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
 
-            L.Marker.prototype.options.icon = L.icon({
-                iconUrl: '{{ asset('storage/imagenesBugs/marker-icon.png') }}',
-                shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-                iconSize: [25, 41],
-                iconAnchor: [12, 41],
-                popupAnchor: [1, -34],
-                shadowSize: [41, 41]
-            });
+                L.Marker.prototype.options.icon = L.icon({
+                    iconUrl: '{{ asset('storage/imagenesBugs/marker-icon.png') }}',
+                    shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+                    iconSize: [25, 41],
+                    iconAnchor: [12, 41],
+                    popupAnchor: [1, -34],
+                    shadowSize: [41, 41]
+                });
 
-            const marker = L.marker([defaultLat, defaultLng], { draggable: true }).addTo(map);
+                const marker = L.marker([lat, lng], { draggable: true }).addTo(map);
 
-            function updateCoords(lat, lng) {
-                document.getElementById("latitude").value = lat;
-                document.getElementById("longitude").value = lng;
+                function updateCoords(lat, lng) {
+                    document.getElementById("latitude").value = lat;
+                    document.getElementById("longitude").value = lng;
+                }
+                updateCoords(lat, lng);
+
+                marker.on('dragend', function () {
+                    const latLng = marker.getLatLng();
+                    updateCoords(latLng.lat, latLng.lng);
+                });
+
+                map.on('click', function (e) {
+                    marker.setLatLng(e.latlng);
+                    updateCoords(e.latlng.lat, e.latlng.lng);
+                });
+
+                // Forzar recalculo tamaño
+                setTimeout(() => {
+                    map.invalidateSize(true);
+                }, 200);
             }
 
-            updateCoords(defaultLat, defaultLng);
+            function toggleMap(e) {
+                if (e.target.checked) {
+                    mapContainer.style.display = 'block';
+                    const lat = parseFloat(document.getElementById('latitude').value) || 40.4168;
+                    const lng = parseFloat(document.getElementById('longitude').value) || -3.7038;
+                    initMap(lat, lng);
+                } else {
+                    mapContainer.style.display = 'none';
+                    if (map) {
+                        map.remove();
+                        map = null;
+                    }
+                    document.getElementById('latitude').value = '';
+                    document.getElementById('longitude').value = '';
+                }
+            }
 
-            marker.on('dragend', function () {
-                const latLng = marker.getLatLng();
-                updateCoords(latLng.lat, latLng.lng);
-            });
+            enableLocationCheckbox.addEventListener('change', toggleMap);
 
-            map.on('click', function (e) {
-                marker.setLatLng(e.latlng);
-                updateCoords(e.latlng.lat, e.latlng.lng);
-            });
-
-            setTimeout(() => {
-                map.invalidateSize(true);
-            }, 200);
+            // Inicializar si checkbox está activo al cargar
+            if (enableLocationCheckbox.checked) {
+                toggleMap({ target: enableLocationCheckbox });
+            }
         };
     </script>
 @endpush

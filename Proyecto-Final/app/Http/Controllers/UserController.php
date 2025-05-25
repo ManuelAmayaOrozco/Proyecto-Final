@@ -105,6 +105,7 @@ class UserController extends Controller
             [
                 "name"=>"required|string|max:20|unique:App\Models\User,name",
                 "email"=> "required|email:rfc,dns|unique:App\Models\User,email",
+                "photo" => "image|mimes:jpeg,png,jpg|max:2048",
                 "password"=>"required|min:5|max:20|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/",
                 "password_repeat"=>"required|same:password"
             ],[
@@ -115,6 +116,9 @@ class UserController extends Controller
                 "email.required"=> "El email es obligatorio.",
                 "email.email"=> "El email ha de tener el formato correcto.",
                 "email.unique"=> "Ese email ya está en uso.",
+                "photo.image" => "La foto ha de ser una imagen.",
+                "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.max" => "La foto no puede ser mayor de 2048px.",
                 "password.required" => "La contraseña es obligatoria.",
                 "password.min" => "La contraseña debe contener 5 carácteres mínimo.",
                 "password.max" => "La contraseña debe contener 20 carácteres máximo.",
@@ -278,12 +282,16 @@ class UserController extends Controller
             [
                 "name"=>"required|string|max:20",
                 "email"=> "required|email:rfc,dns",
+                "photo" => "image|mimes:jpeg,png,jpg|max:2048",
             ],[
                 "name.required" => "The :attribute is required.",
                 "name.string" => "The :attribute must be string.",
                 "name.max" => "The :attribute can't be longer than 20 characters.",
                 "email.required" => "The :attribute is required.",
                 "email.email" => "The :attribute must have the correct format.",
+                "photo.image" => "La foto ha de ser una imagen.",
+                "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.max" => "La foto no puede ser mayor de 2048px."
             ]
         );
 

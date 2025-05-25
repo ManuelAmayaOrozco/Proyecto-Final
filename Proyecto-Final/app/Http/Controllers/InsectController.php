@@ -195,7 +195,7 @@ class InsectController extends Controller
                 "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
                 "maxSize.min" => "El tamaño máximo documentado no puede ser menor a 0.01cm.",
                 "photo.required" => "La foto es obligatoria.",
-                "photo.array" => "La foto ha de ser en formato array.",
+                "photo.array" => "Las fotos han de venir en formato array.",
                 "photo.*.image" => "La foto ha de ser una imagen.",
                 "photo.*.mimes" => "La foto ha de ser jpg/png/jpg.",
                 "photo.*.max" => "La foto no puede ser mayor de 2048px."
