@@ -37,6 +37,10 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
                 - Ha de incluir una letra minúscula, una letra mayúscula y un dígito.
         - `banned` **(Tipo: Boolean)**: Define si un usuario está baneado o no, los usuarios baneados no pueden utilizar diversas funciones aunque inicien sesión. Es 'false' por defecto, por lo que no está baneado a menos que se cambie.
         - `photo` **(Tipo: String)**: La dirección en donde se guarda la foto de perfil del usuario dentro de los archivos del programa, puede ser null ya que la foto de perfil es opcional.
+            **RESTRICCIONES:**
+                - Ha de ser una imagen.
+                - Ha de ser formato jpeg, png o jpg.
+                - No puede ser mayor de 2048px.
         - `isAdmin` **(Tipo: Boolean)**: Define si un usuario tiene permisos de administrador o no, permitiéndole acceder a ciertos menús y otros permisos que los usuarios normales no tienen.
 
 
@@ -70,6 +74,13 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
             **RESTRICCIONES:**
                 - No puede estar vacío.
                 - No puede ser menor que 0.01.
+        - `photo` **(Tipo: Array)**: Array con todas las direcciones de las fotos que le pertenecen al insecto.
+            **RESTRICCIONES:**
+                - No puede estar vacío.
+                - Ha de venir en formato array.
+                - Han de ser imágenes.
+                - Han de ser formato jpeg, png o jpg.
+                - No pueden ser mayor de 2048px.
         - `protectedSpecies` **(Tipo: Boolean)**: Define si el insecto está en peligro de extinción (true) o no (false).
 
 3. **Tabla Insect_Photos**
@@ -107,6 +118,9 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
         - `photo` **(Tipo: String)**: La dirección en donde se guarda la imagen del post dentro de los archivos del programa.
             **RESTRICCIONES:**
                 - No puede estar vacío.
+                - Ha de ser una imagen.
+                - Ha de ser formato jpeg, png o jpg.
+                - No puede ser mayor de 2048px.
         - `dailyPost` **(Tipo: Boolean)**: Decide si este post es elegido como post del día (true) o no (false). Por defecto está puesto como 'false'.
 
 4. **Tabla Comments (Comentarios)**
@@ -241,6 +255,9 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | `email`                 | No puede estar vacío.                                                     | 400          | "El email es obligatorio."                                             |
 | `email`                 | Ha de tener el formato correcto.                                          | 400          | "El email ha de tener el formato correcto."                            |
 | `email`                 | Ha de ser único.                                                          | 400          | "Ese email ya está en uso."                                            |
+| `photo`                 | Ha de ser una imagen.                                                     | 400          | "La foto ha de ser una imagen."                                        |
+| `photo`                 | Ha de ser formato jpeg, png o jpg.                                        | 400          | "La foto ha de ser jpg/png/jpg."                                       |
+| `photo`                 | Ha de ser de 2040px como máximo.                                          | 400          | "La foto no puede ser mayor de 2048px."                                |
 | `password`              | No puede estar vacía.                                                     | 400          | "La contraseña es obligatoria."                                        |
 | `password`              | Ha de tener por lo menos 5 carácteres.                                    | 400          | "La contraseña debe contener 5 carácteres mínimo."                     |
 | `password`              | No puede ser de más de 20 carácteres.                                     | 400          | "La contraseña debe contener 20 carácteres máximo."                    |
@@ -263,7 +280,11 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | `n_spotted`             | Ha de ser por lo menos 1.                                                 | 400          | "El número de ejemplares vistos no puede ser menor que 1."  |
 | `maxSize`               | No puede estar vacío.                                                     | 400          | "El tamaño máximo documentado es obligatorio."              |
 | `maxSize`               | Ha de ser por lo menos 0.01.                                              | 400          | "El tamaño máximo documentado no puede ser menor a 0.01cm." |
-| `photo`                 | No puede estar vacía.                                                     | 400          | "La imagen es obligatoria."                                 |
+| `photo`                 | No puede estar vacía.                                                     | 400          | "La foto es obligatoria."                                   |
+| `photo`                 | Han de venir en formato array.                                            | 400          | "Las fotos han de venir en formato array."                  |
+| `photo`                 | Ha de ser una imagen.                                                     | 400          | "La foto ha de ser una imagen."                             |
+| `photo`                 | Ha de ser formato jpeg, png o jpg.                                        | 400          | "La foto ha de ser jpg/png/jpg."                            |
+| `photo`                 | Ha de ser de 2040px como máximo.                                          | 400          | "La foto no puede ser mayor de 2048px."                     |
 
 3. **Tabla Posts**
 
@@ -274,6 +295,9 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
 | `title`                 | No puede ser de más de 50 carácteres.                                     | 400          | "El título no puede tener más de 50 carácteres."    |
 | `description`           | No puede estar vacía.                                                     | 400          | "La descripción es obligatoria."                    |
 | `photo`                 | No puede estar vacía.                                                     | 400          | "La imagen es obligatoria."                         |
+| `photo`                 | Ha de ser una imagen.                                                     | 400          | "La foto ha de ser una imagen."                     |
+| `photo`                 | Ha de ser formato jpeg, png o jpg.                                        | 400          | "La foto ha de ser jpg/png/jpg."                    |
+| `photo`                 | Ha de ser de 2040px como máximo.                                          | 400          | "La foto no puede ser mayor de 2048px."             |
 | `insect`                | No puede estar vacío.                                                     | 400          | "El insecto relacionado es obligatorio."            |
 | `latitude`              | Ha de ser numérica.                                                       | 400          | "La latitud ha de ser numérica."                    |
 | `longitude`             | Ha de ser numérica.                                                       | 400          | "La longitud ha de ser numérica."                   |
