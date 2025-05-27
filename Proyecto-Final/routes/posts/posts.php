@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 // RUTA PARA ENRUTAR /post/
 Route::get('/postlist/{tagId?}', [PostController::class, 'showPosts'])->name('post.showPosts');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::get('/register', [PostController::class, 'showRegisterPost'])->name('post.showRegisterPost');
     Route::post('/register', [PostController::class, 'doRegisterPost'])->name('post.doRegisterPost');

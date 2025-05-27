@@ -149,7 +149,20 @@ class UserController extends Controller
         $user->photo = $photo;
         $user->save();
 
-        return view('user_views.login');
+        Auth::login($user);
+
+        $request->user()->sendEmailVerificationNotification();
+
+        return redirect()->route('verification.notice');
+    }
+
+    /**
+     * Función que muestra la vista para verificar el correo de un usuario.
+     * 
+     * @return view La vista para verificar el correo de un usuario.
+     */
+    public function showVerification() {
+        return view('user_views.mailVerification');
     }
 
     /**
@@ -233,7 +246,9 @@ class UserController extends Controller
 
         // ELIMINAR LA IMAGEN DEL USUARIO
         $image = $user->photo;
-        Storage::disk('public')->delete($image);
+        if ($image) {
+            Storage::disk('public')->delete($image);
+        }
 
         $user->delete();
 

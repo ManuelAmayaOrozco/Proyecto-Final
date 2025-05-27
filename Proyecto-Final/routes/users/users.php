@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 // RUTA PARA ENRUTAR /user/
 Route::get('/login', [UserController::class, 'showLogin'])->name('login'); // IMPORTANTE PARA LARAVEL
@@ -12,7 +14,7 @@ Route::post('/register', [UserController::class, 'doRegister'])->name('user.doRe
 
 Route::get('/contact', [UserController::class, 'showContact'])->name('user.showContact');
 
-Route::middleware(['auth'])->group(function(){
+Route::middleware(['auth', 'verified'])->group(function(){
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('user.showProfile');
 
@@ -33,3 +35,17 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/contact', [UserController::class, 'doContact'])->name('user.doContact');
 
 });
+
+Route::get('/email/verify', [UserController::class, 'showVerification'])->middleware('auth')->name('verification.notice');
+
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+ 
+    return redirect()->route('home');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+ 
+    return back()->with('message', 'Correo de verificación reenviado.');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
