@@ -30,30 +30,7 @@
     @if(!$current_user || !$current_user->banned)
 
         @if ($dailyPost != null)
-        <section class="featured-section" x-data 
-                                            x-init="
-                                                    const lastUpdate = localStorage.getItem('lastDailyPostUpdate');
-                                                    const today = new Date().toISOString().split('T')[0]; // yyyy-mm-dd
-
-                                                    if (lastUpdate !== today) {
-                                                        fetch('{{ route('post.updateDaily') }}', {
-                                                            method: 'POST',
-                                                            headers: {
-                                                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                                                'Content-Type': 'application/json'
-                                                            }
-                                                        })
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            localStorage.setItem('lastDailyPostUpdate', today);
-                                                            console.log('✅ Post diario actualizado:', data);
-                                                            setTimeout(() => location.reload(), 500);
-                                                        });
-                                                    } else {
-                                                        console.log('⏳ Post diario ya fue actualizado hoy.');
-                                                    }
-                                                "
-                                        >
+        <section class="featured-section">
 
             <h1 class="featured-heading">Post del día</h1>
 
