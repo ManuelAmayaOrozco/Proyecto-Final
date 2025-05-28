@@ -193,6 +193,12 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **POST** `{users/contact}`: Endpoint utilizado para mandar el correo de contacto a el email correspondiente.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **GET** `{users/email/verify}`: Endpoint utilizado para llamar a la vista de verificación de email de un usuario.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **GET** `{users/email/{id}/{hash}}`: Endpoint utilizado para completar la verificación de email de un usuario, activado en el botón que se envia por correo.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+    - **POST** `{users/email/verification-notification}`: Endpoint utilizado para enviar/reenviar el correo de verificación de email de un usuario.
+      - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
 
 2. **Endpoints para Insectos**
     - **GET** `{insects/insectlist}`: Endpoint utilizado para llamar a la vista de la lista de los insectos y mostrarla por pantalla.
@@ -241,6 +247,12 @@ Considero que la idea tiene bastante promesa ya que el campo de la entomología 
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
     - **POST** `{comments/register/{id}}`: Endpoint utilizado para registrar un comentario en la base de datos junto con el ID de su post correspondiente, devolviendo el usuario al post actualizado justo después.
       - *RUTA PROTEGIDA* **AUTHENTICATED** Sólo usuarios correctamente autenticados pueden acceder a este recurso.
+
+5. **Otros endpoints**
+    - **GET** `{error-prueba-404}`: Endpoint utilizado para simular un error 404.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
+    - **GET** `{captcha-reload}`: Endpoint utilizado para recargar el captcha.
+      - *RUTA PÚBLICA*: Cualquier usuario puede acceder a este endpoint.
 
 ## **Lógica de negocio**
 
@@ -341,6 +353,9 @@ Operaciones fallidas:
     - **DELETE** `{users/logout/{id}}`: Solo puedes cerrar sesión si tienes una sesión abierta anteriormente por obvios motivos.
     - **DELETE** `{users/delete/{id}}`: Solo puedes eliminar tu propio usuario si tienes una sesión abierta para saber cuál es tu usuario.
     - **POST** `{users/contact}`: Solo puedes mandar un correo de contacto si tienes la sesión iniciada para saber cuál es el usuario que lo está haciendo.
+    - **GET** `{users/email/verify}`: Solo los usuarios autenticados pueden acceder a la verificación del correo electrónico para así saber cuál usuario es el que ha de ser verificado.
+    - **GET** `{users/email/verify/{id}/{hash}}`: Solo los usuarios autenticados pueden acceder a la verificación del correo electrónico para así saber cuál usuario es el que ha de ser verificado.
+    - **GET** `{users/email/verification-notification}`: Solo los usuarios autenticados pueden acceder a la verificación del correo electrónico para así saber cuál usuario es el que ha de ser verificado.
 
 2. **Insectos:**
     - **GET** `{insects/insectlist}`: Cualquiera puede mirar la lista de insectos para informarse sobre ellos.
@@ -368,3 +383,7 @@ Operaciones fallidas:
 4. **Comentarios:**
     - **GET** `{comments/register/{id}}`: Solo los usuarios que han iniciado sesión pueden acceder para registrar comentarios para así saber a cuál usuario le pertence el comentario.
     - **GET** `{comments/register/{id}}`: Solo los usuarios que han iniciado sesión pueden registrar comentarios para así saber a cuál usuario le pertence el comentario.
+  
+5. **Otros:**
+    - **GET** `{error-prueba-404}`: Cualquier usuario puede acceder a esta simulación de error 404 a través de los enlaces de las redes sociales, ya que dichas redes aún no existen.
+    - **GET** `{captcha-reload}`: Cualquier usuario puede recargar el captcha en el formulario de login.
