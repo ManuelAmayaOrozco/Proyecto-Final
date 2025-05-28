@@ -20,7 +20,7 @@
 
             @if(!$user->isAdmin  && !$user->banned || $user->id == $current_user->id)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-lock icon-white"></i> Cambiar Contraseña</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success btn-update"><i class="bi bi-lock icon-white"></i> Cambiar Contraseña</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres cambiar la contraseña de este usuario?</h2>
@@ -43,7 +43,7 @@
 
             @if(!$user->isAdmin && !$user->banned)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-shield-lock icon-white"></i> Dar permisos de Administrador</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success btn-admin"><i class="bi bi-shield-lock icon-white"></i> Dar permisos de Administrador</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres dar permisos de Administrador este usuario?</h2>
@@ -70,7 +70,7 @@
 
             @if(!$user->isAdmin && $user->id != $current_user->id && !$user->banned)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-ban icon-white"></i> Banear Usuario</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger btn-ban"><i class="bi bi-ban icon-white"></i> Banear Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres banear este usuario?</h2>

@@ -19,7 +19,7 @@
         <p class="userdata__text">Email: {{ $current_user->email }}</p>
 
         <div x-data="{}">
-            <button @click="$refs.dialogLogout.showModal()" class="btn btn-danger">Cerrar Sesión</button>
+            <button @click="$refs.dialogLogout.showModal()" class="btn btn-danger btn-exit"><i class="bi bi-box-arrow-right icon-white"></i> Cerrar Sesión</button>
             <dialog x-ref="dialogLogout" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres cerrar sesión?</h2>
@@ -42,15 +42,15 @@
         <form action="{{ route('user.showUpdateUser', ['id' => $current_user->id]) }}" method="POST">
             @csrf
             @method('GET')
-            <button type="submit" class="btn btn-success">Actualizar Usuario</button>
+            <button type="submit" class="btn btn-success btn-update"><i class="bi bi-arrow-clockwise icon-white"></i> Actualizar Usuario</button>
         </form>
 
         @if ($current_user->isAdmin)
-        <a href="{{ route('user.showAdminMenu') }}" class="btn btn-success">Menú Administrador</a>
+        <a href="{{ route('user.showAdminMenu') }}" class="btn btn-success btn-admin"><i class="bi bi-people icon-white"></i> Menú Administrador</a>
         @endif
 
         <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger">Eliminar Usuario</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-danger"><i class="bi bi-trash icon-white"></i> Eliminar Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres eliminar tu usuario?</h2>

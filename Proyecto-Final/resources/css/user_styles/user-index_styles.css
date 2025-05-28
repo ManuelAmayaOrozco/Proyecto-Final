@@ -941,6 +941,48 @@
   transform: scale(1.05);
 }
 
+.btn-update {
+  background-color: #15cfe7;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn-update:hover {
+  background-color: #3abee6;
+  color: white;
+  transform: scale(1.05);
+}
+
+.btn-admin {
+    border-color: #e69823;
+    background-color: #e69823;
+}
+
+.btn-admin:hover {
+    border-color: #d88e1f;
+    background-color: #d88e1f;
+}
+
+.btn-ban {
+    border-color: #d1377f;
+    background-color: #d1377f;
+}
+
+.btn-ban:hover {
+    border-color: #9c285e;
+    background-color: #9c285e;
+}
+
+.btn-exit {
+    border-color: #1ee6aa;
+    background-color: #1ee6aa;
+}
+
+.btn-exit:hover {
+    border-color: rgb(18, 134, 86);
+    background-color: rgb(18, 134, 86);
+}
+
 /* Paginación personalizada */
 /* Contenedor principal de la paginación */
 .custom-pagination {

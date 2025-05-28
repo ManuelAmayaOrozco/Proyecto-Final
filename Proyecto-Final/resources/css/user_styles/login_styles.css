@@ -58,3 +58,13 @@
     transform: rotate(15deg);
     transform: scaleX(-1);
 }
+
+.btn-reload {
+    border-color: #e69823;
+    background-color: #e69823;
+}
+
+.btn-reload:hover {
+    border-color: #d88e1f;
+    background-color: #d88e1f;
+}

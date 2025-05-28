@@ -62,7 +62,7 @@
                                     <form action="{{ route('post.like', ['id' => $post->id]) }}" method="POST">
                                         @csrf
                                         @method('PUT')
-                                        <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
+                                        <button type="submit" class="btn btn-primary"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
                                     </form>
                                 @else
                                     <form action="{{ route('post.dislike', ['id' => $post->id]) }}" method="POST">
@@ -103,7 +103,7 @@
                                     <form action="{{ route('post.showUpdatePost', ['id' => $post->id]) }}" method="POST">
                                         @csrf
                                         @method('GET')
-                                        <button type="submit" class="btn btn-like"><i class="bi bi-arrow-clockwise icon-white"></i> Actualizar Post</button>
+                                        <button type="submit" class="btn btn-like btn-update"><i class="bi bi-arrow-clockwise icon-white"></i> Actualizar Post</button>
                                     </form>
                                 @endif
 

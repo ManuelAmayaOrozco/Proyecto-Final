@@ -73,22 +73,6 @@
 
                 <p class="likes-text">Likes: {{ $dailyPost->n_likes }}</p>
 
-                @if($current_user)
-                @if(!$dailyPost->likedByUsers->contains($current_user->id))
-                <form action="{{ route('post.like', ['id' => $dailyPost->id]) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-like"><i class="bi bi-hand-thumbs-up icon-white"></i> Like</button>
-                </form>
-                @else
-                <form action="{{ route('post.dislike', ['id' => $dailyPost->id]) }}" method="POST">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-hand-thumbs-down icon-white"></i> Quitar Like</button>
-                </form>
-                @endif
-                @endif
-
             </div>
 
         </section>

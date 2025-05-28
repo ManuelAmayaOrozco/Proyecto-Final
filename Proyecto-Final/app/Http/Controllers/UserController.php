@@ -45,11 +45,14 @@ class UserController extends Controller
             [
                 "email" => "required|email:rfc,dns|exists:App\Models\User,email",
                 "password" => "required",
+                "captcha" => "required|captcha"
             ],[
                 "email.required"=> "El email es obligatorio.",
                 "email.email"=> "El email ha de tener el formato correcto.",
                 "email.exists"=> "Ese email no está registrado.",
                 "password.required"=> "La contraseña es obligatoria.",
+                "captcha.required" => "El captcha es obligatorio.",
+                "captcha.captcha" => "El captcha es inválido.",
             ]
         );
 
