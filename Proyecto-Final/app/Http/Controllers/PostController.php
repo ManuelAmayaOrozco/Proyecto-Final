@@ -92,7 +92,7 @@ class PostController extends Controller
         }
 
         // PAGINACIÓN: muestra 5 posts por página y conserva los filtros en la URL
-        $posts = $query->paginate(5)->appends(request()->all());
+        $posts = $query->paginate(3)->appends(request()->all());
 
         // PREPARACIÓN DESCRIPCIÓN
         foreach ($posts as $post) {
