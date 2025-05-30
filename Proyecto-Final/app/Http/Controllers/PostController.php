@@ -84,12 +84,15 @@ class PostController extends Controller
         }
         
         if ($searchType === 'date' && $search) {
-            $query = $query->whereDate('created_at', $search);
+            $query = $query->whereDate('publish_date', $search);
         }
 
         if (!$searchType && $search) {
             $query = $query->where('title', 'like', '%' . $search . '%');
         }
+
+        // ORDENAR DEL MÁS NUEVO AL MÁS ANTIGUO
+        $query = $query->orderBy('created_at', 'desc');
 
         // PAGINACIÓN: muestra 5 posts por página y conserva los filtros en la URL
         $posts = $query->paginate(3)->appends(request()->all());
