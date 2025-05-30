@@ -47,6 +47,7 @@
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres dar permisos de Administrador este usuario?</h2>
+                <p>Esta acción no se podrá deshacer.</p>
 
                 <form action="{{ route('user.makeAdmin', ['id' => $user->id]) }}" method="POST">
                     @csrf
@@ -93,7 +94,7 @@
 
             @if(!$user->isAdmin && $user->id != $current_user->id && $user->banned)
             <div x-data="{}">
-            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success"><i class="bi bi-check-circle icon-white"></i> Desbanear Usuario</button>
+            <button @click="$refs.dialogDelUser.showModal()" class="btn btn-success btn-ban"><i class="bi bi-check-circle icon-white"></i> Desbanear Usuario</button>
             <dialog x-ref="dialogDelUser" class="bg-white rounded-lg shadow-lg p-4">
             
                 <h2>¿Estas seguro de que quieres desbanear este usuario?</h2>

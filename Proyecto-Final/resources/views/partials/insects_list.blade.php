@@ -96,6 +96,7 @@
     @if($current_user && $current_user->banned)
         <h2>Vaya parece que tu usuario está baneado.</h2>
         <h3>Si crees que pueda ser una equivocación ponte en contacto con nosotros.</h3>
+        <img src="{{ asset('storage/imagenesBugs/Bug7.png') }}" class="404-illustration" alt="Ilustración de error 404">
     @endif
 
     <!-- Cargar librería -->
