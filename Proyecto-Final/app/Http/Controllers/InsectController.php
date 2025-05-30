@@ -177,7 +177,6 @@ class InsectController extends Controller
                 "scientificName"=>"required|unique:App\Models\Insect,scientificName",
                 "family"=>"required",
                 "diet"=>"required",
-                "description"=> "required",
                 "n_spotted"=>"required|min:1",
                 "maxSize"=>"required|min:0.01",
                 "photo" => "required|array",
@@ -189,7 +188,6 @@ class InsectController extends Controller
                 "scientificName.unique" => "Ese nombre científico ya está en uso.",
                 "family.required" => "El nombre de la familia es obligatorio.",
                 "diet.required" => "El tipo de dieta es obligatorio.",
-                "description.required" => "La descripción es obligatoria.",
                 "n_spotted.required" => "El número de ejemplares vistos es obligatorio.",
                 "n_spotted.min" => "El número de ejemplares vistos no puede ser menor que 1.",
                 "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
@@ -201,6 +199,19 @@ class InsectController extends Controller
                 "photo.*.max" => "La foto no puede ser mayor de 2048px."
             ]
         );
+
+        // VALIDACIÓN DESCRIPCIÓN
+        $description = json_decode($request->input('description'), true);
+
+        if (
+            !$description ||
+            !isset($description['blocks']) ||
+            !is_array($description['blocks']) ||
+            count(array_filter($description['blocks'], fn($block) => !empty(trim($block['data']['text'] ?? '')))) === 0
+        ) {
+            $validator->errors()->add('description', 'La descripción no puede estar vacía.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO
         if ($request->hasFile('photo')) {
@@ -291,7 +302,6 @@ class InsectController extends Controller
                 "scientificName"=>"required",
                 "family"=>"required",
                 "diet"=>"required",
-                "description"=> "required",
                 "n_spotted"=>"required|min:1",
                 "maxSize"=>"required|min:0.01",
                 "photo" => "required|array",
@@ -304,7 +314,6 @@ class InsectController extends Controller
                 "scientificName.unique" => "Ese nombre científico ya está en uso.",
                 "family.required" => "El nombre de la familia es obligatorio.",
                 "diet.required" => "El tipo de dieta es obligatorio.",
-                "description.required" => "La descripción es obligatoria.",
                 "n_spotted.required" => "El número de ejemplares vistos es obligatorio.",
                 "n_spotted.min" => "El número de ejemplares vistos no puede ser menor que 1.",
                 "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
@@ -316,6 +325,19 @@ class InsectController extends Controller
                 "photo.*.max" => "La foto no puede ser mayor de 2048px."
             ]
         );
+
+        // VALIDACIÓN DESCRIPCIÓN
+        $description = json_decode($request->input('description'), true);
+
+        if (
+            !$description ||
+            !isset($description['blocks']) ||
+            !is_array($description['blocks']) ||
+            count(array_filter($description['blocks'], fn($block) => !empty(trim($block['data']['text'] ?? '')))) === 0
+        ) {
+            $validator->errors()->add('description', 'La descripción no puede estar vacía.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {

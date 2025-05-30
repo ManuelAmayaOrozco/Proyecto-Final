@@ -15,6 +15,6 @@ Route::get('error-prueba-404', function () {
     abort(404);
 })->name('dummy.404');
 
-Route::get('/captcha-reload', function () {
+Route::get('captcha-reload', function () {
     return response()->json(['captcha' => captcha_src('flat')]);
 })->name('captcha.reload');

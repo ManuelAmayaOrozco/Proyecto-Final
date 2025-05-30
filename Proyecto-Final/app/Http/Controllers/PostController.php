@@ -323,7 +323,6 @@ class PostController extends Controller
             $request->all(),
             [
                 "title"=>"required|min:1|max:50",
-                "description"=> "required",
                 "photo"=>"required|image|mimes:jpeg,png,jpg|max:2048",
                 "insect"=>"required",
                 "latitude" => "nullable|numeric",
@@ -332,7 +331,6 @@ class PostController extends Controller
                 "title.required" => "El título es obligatorio.",
                 "title.min" => "El título ha de tener por lo menos un carácter.",
                 "title.max" => "El título no puede tener más de 50 carácteres.",
-                "description.required" => "La descripción es obligatoria.",
                 "photo.required" => "La imagen es obligatoria.",
                 "photo.image" => "La foto ha de ser una imagen.",
                 "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
@@ -342,6 +340,19 @@ class PostController extends Controller
                 "longitude.numeric" => "La longitude ha de ser numérica."
             ]
         );
+
+        // VALIDACIÓN DESCRIPCIÓN
+        $description = json_decode($request->input('description'), true);
+
+        if (
+            !$description ||
+            !isset($description['blocks']) ||
+            !is_array($description['blocks']) ||
+            count(array_filter($description['blocks'], fn($block) => !empty(trim($block['data']['text'] ?? '')))) === 0
+        ) {
+            $validator->errors()->add('description', 'La descripción no puede estar vacía.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
     
         // SE GUARDA LA FOTO DEL POST SI EXISTE
         if ($request->hasFile('photo')) {
@@ -416,7 +427,6 @@ class PostController extends Controller
             $request->all(),
             [
                 "title" => "required|min:1|max:50",
-                "description" => "required",
                 "insect" => "required",
                 "photo" => "nullable|image|mimes:jpeg,png,jpg|max:2048",
                 "latitude" => "nullable|numeric",
@@ -426,7 +436,6 @@ class PostController extends Controller
                 "title.required" => "El título es obligatorio.",
                 "title.min" => "El título ha de tener por lo menos un carácter.",
                 "title.max" => "El título no puede tener más de 50 carácteres.",
-                "description.required" => "La descripción es obligatoria.",
                 "insect.required" => "El insecto relacionado es obligatorio.",
                 "photo.image" => "La foto ha de ser una imagen.",
                 "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
@@ -435,6 +444,19 @@ class PostController extends Controller
                 "longitude.numeric" => "La longitud ha de ser numérica."
             ]
         );
+
+        // VALIDACIÓN DESCRIPCIÓN
+        $description = json_decode($request->input('description'), true);
+
+        if (
+            !$description ||
+            !isset($description['blocks']) ||
+            !is_array($description['blocks']) ||
+            count(array_filter($description['blocks'], fn($block) => !empty(trim($block['data']['text'] ?? '')))) === 0
+        ) {
+            $validator->errors()->add('description', 'La descripción no puede estar vacía.');
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
 
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {
