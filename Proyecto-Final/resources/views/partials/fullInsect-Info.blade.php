@@ -37,7 +37,7 @@
 
             @if ($postsWithCoordinates->isNotEmpty())
                 <div class="post-map">
-                    <p class="likes-text">Localizaciones:</p>
+                    <p class="insect-info-start">Localizaciones:</p>
                     <div id="map" style="height: 400px;"></div>
                 </div>
             @endif
