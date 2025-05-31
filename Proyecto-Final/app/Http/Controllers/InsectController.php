@@ -59,7 +59,10 @@ class InsectController extends Controller
             $query = $query->where('name', 'like', '%' . $search . '%');
         }
 
-        // PAGINACIÓN: muestra 5 insectos por página y conserva los filtros en la URL
+        // ORDENAR DEL MÁS NUEVO AL MÁS ANTIGUO
+        $query = $query->orderBy('created_at', 'desc');
+
+        // PAGINACIÓN: muestra 2 insectos por página y conserva los filtros en la URL
         $insects = $query->paginate(2)->appends(request()->all());
 
         return view('user_views.insects', compact('insects', 'users', 'current_user'));
