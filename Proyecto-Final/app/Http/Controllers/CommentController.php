@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+
 
 /**
  * Controlador para la clase Comment
@@ -61,7 +63,7 @@ class CommentController extends Controller
         $datosComment = $request->all();
         $comment = new Comment();
         $comment->comment = $datosComment['comment'];
-        $comment->publish_date = date('d-m-y h:i:s');
+        $comment->publish_date = Carbon::now();
         $comment->user_id = Auth::id();
         $comment->post_id = $id;
         $comment->save();

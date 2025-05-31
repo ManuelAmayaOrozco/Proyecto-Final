@@ -381,7 +381,7 @@ class PostController extends Controller
         $post = new Post();
         $post->title = $datosPost['title'];
         $post->description = $datosPost['description'];
-        $post->publish_date = date('d-m-y h:i:s');
+        $post->publish_date = Carbon::now();
         $post->n_likes = 0;
         $post->belongs_to = Auth::id();
         $post->related_insect = $datosPost['insect'];
