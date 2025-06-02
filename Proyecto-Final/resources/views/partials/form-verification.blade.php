@@ -1,5 +1,4 @@
 <!--Estructura del formulario de login.-->
-@vite('resources/css/user_styles/user-index_styles.css')
 <main class="main__verify">
     <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--1" alt="">
     <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--2" alt="">

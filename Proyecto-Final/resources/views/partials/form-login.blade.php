@@ -1,5 +1,4 @@
 <!--Estructura del formulario de login.-->
-@vite('resources/css/user_styles/login_styles.css')
 <main class="main__login">
     <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--1" alt="">
     <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--2" alt="">

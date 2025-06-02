@@ -5,7 +5,7 @@
     crossorigin="" />
 @endpush
 @push('scripts') 
-    @vite(['resources/css/user_styles/register_styles.css', 'resources/js/editor.js'])
+    @vite('resources/js/editor.js')
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
      crossorigin=""></script>
