@@ -1,5 +1,5 @@
 [phases.setup]
-nixpkgsArchive = "https://github.com/NixOS/nixpkgs/archive/nixos-23.05.tar.gz"
+nixpkgsArchive = "nixpkgs/nixos-23.05"
 packages = [
   "php82",
   "php82Packages.composer",
