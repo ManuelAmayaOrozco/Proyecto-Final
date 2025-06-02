@@ -6,7 +6,7 @@ cmds = [
   "composer install --no-dev --optimize-autoloader",
   "rm -rf node_modules package-lock.json",
   "npm cache clean --force",
-  "npm install --ignore-scripts --no-optional",
+  "npm install",
   "npm run build",
   "php artisan migrate --force",
   "php artisan config:cache",
