@@ -1,5 +1,16 @@
 [phases.setup]
-packages = ["php", "composer", "nodejs", "npm"]
+nixpkgsArchive = "https://github.com/NixOS/nixpkgs/archive/nixos-23.05.tar.gz"
+packages = [
+  "php82",
+  "php82Packages.composer",
+  "php82Extensions.mbstring",
+  "php82Extensions.xml",
+  "php82Extensions.curl",
+  "php82Extensions.zip",
+  "php82Extensions.pdo_mysql",
+  "nodejs_20",
+  "npm"
+]
 
 [phases.install]
 commands = [
@@ -9,10 +20,15 @@ commands = [
 
 [phases.build]
 commands = [
-  "npm run build"
+  "npm run build",
+  "php artisan migrate --force",
+  "php artisan db:seed --class=UserSeeder",
+  "php artisan db:seed --class=InsectSeeder",
+  "php artisan optimize",
+  "php artisan config:cache",
+  "php artisan route:cache",
+  "php artisan view:cache"
 ]
 
-[phases.start]
-commands = [
-  "php artisan serve --host=0.0.0.0 --port=$PORT"
-]
+[start]
+cmd = "php artisan serve --host=0.0.0.0 --port=$PORT"
