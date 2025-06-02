@@ -54,4 +54,8 @@ WORKDIR /app
 
 COPY --from=composer_php /app /app
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT}"]
+# Exponer el puerto
+EXPOSE 8000
+
+# CMD corregido para que se expanda la variable PORT
+CMD sh -c "php artisan serve --host=0.0.0.0 --port=${PORT}"
