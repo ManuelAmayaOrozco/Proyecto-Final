@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TagController;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Controlador para la clase Post
@@ -122,28 +123,40 @@ class PostController extends Controller
      * @return view La vista del inicio de la aplicación.
      */
     public function showHome() {
+        Log::info('Inicio showHome');
+        
         $posts = DB::table('posts')->get();
+        Log::info('Posts cargados: ' . $posts->count());
+
         $users = DB::table('users')->get();
+        Log::info('Users cargados: ' . $users->count());
+
         $insects = DB::table('insects')->get();
+        Log::info('Insects cargados: ' . $insects->count());
 
         $current_user = Auth::user();
+        Log::info('Usuario actual: ' . ($current_user ? $current_user->id : 'no logueado'));
 
-        // POST DIARIO
         $dailyPost = Post::where('dailyPost', true)->first();
+        Log::info('DailyPost encontrado: ' . ($dailyPost ? $dailyPost->id : 'ninguno'));
 
-        // Si no hay dailyPost, forzar creación de uno nuevo
         if (!$dailyPost) {
             Post::where('dailyPost', true)->update(['dailyPost' => false]);
-
+            Log::info('Se limpiaron dailyPosts');
+            
             $postIds = Post::pluck('id');
+            Log::info('IDs de posts: ' . $postIds->count());
+
             if ($postIds->isNotEmpty()) {
                 $randomPostId = $postIds->random();
                 $dailyPost = Post::find($randomPostId);
                 $dailyPost->dailyPost = true;
                 $dailyPost->save();
+                Log::info('Nuevo dailyPost asignado: ' . $dailyPost->id);
             }
         }
 
+        Log::info('Terminando showHome');
         return view('home', compact('posts', 'users', 'insects', 'current_user', 'dailyPost'));
     }
 
