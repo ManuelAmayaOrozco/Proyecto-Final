@@ -117,17 +117,12 @@ class PostController extends Controller
         return view('user_views.posts', compact('posts', 'users', 'insects', 'current_user', 'favorites'));
     }
 
-    public function showHome() {
-        Log::info('showHome simple response');
-        return response('Hello from showHome', 200);
-    }
-
     /**
      * Función que muestra la vista del inicio de la aplicación.
      * 
      * @return view La vista del inicio de la aplicación.
      */
-    /**public function showHome() {
+    public function showHome() {
         $posts = DB::table('posts')->get();
         $users = DB::table('users')->get();
         $insects = DB::table('insects')->get();
@@ -151,7 +146,7 @@ class PostController extends Controller
         }
 
         return view('home', compact('posts', 'users', 'insects', 'current_user', 'dailyPost'));
-    }*/
+    }
 
     /**
      * Función que muestra la vista detallada de un post en específico.
