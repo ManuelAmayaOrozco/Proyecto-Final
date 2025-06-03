@@ -6,9 +6,11 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
-                'resources/css/user_styles/user-index_styles.css',
                 'resources/js/editor.js',
-                'resources/js/alpine.js'
+                'resources/js/alpine.js',
+                'resources/css/user_styles/user-index_styles.css',
+                'resources/css/user_styles/header_styles.css',
+                'resources/css/user_styles/footer_styles.css',
             ],
             refresh: true,
         }),
