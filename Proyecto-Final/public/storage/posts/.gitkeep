@@ -1,0 +1,4 @@
+touch posts/.gitkeep
+git add posts/.gitkeep
+git commit -m "Add .gitkeep to keep posts folder in repo"
+git push
