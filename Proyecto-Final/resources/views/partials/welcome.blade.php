@@ -1,5 +1,5 @@
 <!--Estructura de la vista principal.-->
-@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
+@vite(['resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__welcome">
     @if(!$current_user || $current_user && !$current_user->banned)
         <img src="{{ asset('storage/imagenesBugs/Bug3.png') }}" class="bg-image bg-image--1" alt="">
