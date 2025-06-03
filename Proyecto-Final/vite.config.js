@@ -11,6 +11,8 @@ export default defineConfig({
                 'resources/css/user_styles/user-index_styles.css',
                 'resources/css/partials_styles/header_styles.css',
                 'resources/css/partials_styles/footer_styles.css',
+                'resources/css/partials_styles/reset_styles.css',
+                'resources/css/partials_styles/font_styles.css'
             ],
             refresh: true,
         }),
