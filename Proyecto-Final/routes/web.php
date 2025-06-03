@@ -18,3 +18,7 @@ Route::get('error-prueba-404', function () {
 Route::get('captcha-reload', function () {
     return response()->json(['captcha' => captcha_src('flat')]);
 })->name('captcha.reload');
+
+Route::get('/check-manifest', function () {
+    dd(file_exists(public_path('build/manifest.json')));
+});
