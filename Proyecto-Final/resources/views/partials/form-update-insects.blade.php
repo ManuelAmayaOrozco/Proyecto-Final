@@ -1,6 +1,6 @@
 <!--Estructura del formulario de actualización de insectos.-->
 @push('scripts') 
-    @vite('resources/js/editor.js')
+    @vite(['resources/css/user_styles/register_styles.css', 'resources/js/editor.js'])
 @endpush
 <main class="main__register">
     <img src="{{ asset('storage/imagenesBugs/Bug5.png') }}" class="bg-image bg-image--1" alt="">

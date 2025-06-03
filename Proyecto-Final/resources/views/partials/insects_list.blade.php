@@ -1,5 +1,5 @@
 <!--Estructura de la lista de insectos.-->
-@vite(['resources/js/alpine.js'])
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js'])
 <main class="main__insects-index">
 
     @if(!$current_user || !$current_user->banned)

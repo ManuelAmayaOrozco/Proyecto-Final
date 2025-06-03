@@ -1,5 +1,5 @@
 <!--Estructura del menú de administración de usuarios.-->
-@vite(['resources/js/alpine.js', 'resources/js/app.js'])
+@vite(['resources/css/user_styles/user-index_styles.css', 'resources/js/alpine.js', 'resources/js/app.js'])
 <main class="main__posts-index">
 
     @forelse($users as $user)
