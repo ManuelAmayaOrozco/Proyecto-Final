@@ -1,4 +1,9 @@
 {
+  "resources/css/user_styles/user-index_styles.css": {
+    "file": "assets/user-index_styles-H5vZHmic.css",
+    "src": "resources/css/user_styles/user-index_styles.css",
+    "isEntry": true
+  },
   "resources/js/alpine.js": {
     "file": "assets/alpine-CcSAaUhI.js",
     "name": "alpine",
