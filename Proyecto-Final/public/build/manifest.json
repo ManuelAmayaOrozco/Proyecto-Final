@@ -1,4 +1,24 @@
 {
+  "resources/css/partials_styles/font_styles.css": {
+    "file": "assets/font_styles-QOUOearC.css",
+    "src": "resources/css/partials_styles/font_styles.css",
+    "isEntry": true
+  },
+  "resources/css/partials_styles/footer_styles.css": {
+    "file": "assets/footer_styles-CWTwgykH.css",
+    "src": "resources/css/partials_styles/footer_styles.css",
+    "isEntry": true
+  },
+  "resources/css/partials_styles/header_styles.css": {
+    "file": "assets/header_styles-Cl4zudmo.css",
+    "src": "resources/css/partials_styles/header_styles.css",
+    "isEntry": true
+  },
+  "resources/css/partials_styles/reset_styles.css": {
+    "file": "assets/reset_styles-ulgnFFAK.css",
+    "src": "resources/css/partials_styles/reset_styles.css",
+    "isEntry": true
+  },
   "resources/css/user_styles/user-index_styles.css": {
     "file": "assets/user-index_styles-H5vZHmic.css",
     "src": "resources/css/user_styles/user-index_styles.css",
