@@ -19,6 +19,16 @@
     "src": "resources/css/partials_styles/reset_styles.css",
     "isEntry": true
   },
+  "resources/css/user_styles/login_styles.css": {
+    "file": "assets/login_styles-xhBi_fc_.css",
+    "src": "resources/css/user_styles/login_styles.css",
+    "isEntry": true
+  },
+  "resources/css/user_styles/register_styles.css": {
+    "file": "assets/register_styles-DVC-XITy.css",
+    "src": "resources/css/user_styles/register_styles.css",
+    "isEntry": true
+  },
   "resources/css/user_styles/user-index_styles.css": {
     "file": "assets/user-index_styles-H5vZHmic.css",
     "src": "resources/css/user_styles/user-index_styles.css",
