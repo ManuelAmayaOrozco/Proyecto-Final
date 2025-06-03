@@ -15,4 +15,7 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 <!-- VITE -->
-@vite('resources/js/app.js')
+@vite('resources/css/partials_styles/header_styles.css')
+@vite('resources/css/partials_styles/footer_styles.css')
+@vite('resources/css/partials_styles/font_styles.css')
+@vite('resources/css/partials_styles/reset_styles.css')
