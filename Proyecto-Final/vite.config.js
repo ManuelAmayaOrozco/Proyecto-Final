@@ -6,6 +6,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/js/app.js',
+                'resources/css/user_styles/user-index_styles.css',
                 'resources/js/editor.js',
                 'resources/js/alpine.js'
             ],
