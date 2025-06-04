@@ -413,12 +413,20 @@ class InsectController extends Controller
             foreach ($request->file('photo') as $uploadedPhoto) {
                 $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
 
-                $response = Http::post('https://api.imgbb.com/1/upload', [
-                    'key' => env('IMGBB_API_KEY'), // Asegúrate de tener tu API key en .env
+                $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                    'key' => env('IMGBB_API_KEY'),
                     'image' => $imageData,
                     'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
                 ]);
 
+                if (!$response->successful()) {
+                    $error = $response->json();
+                    \Log::error('ImgBB upload failed', ['response' => $error]);
+
+                    $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir a Imgbb.';
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
+                }
+                
                 if ($response->successful()) {
                     $responseBody = $response->json();
 
