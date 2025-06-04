@@ -8,10 +8,11 @@ cmds = [
   "npm cache clean --force",
   "npm install",
   "npm run build",
+  "php artisan storage:link",
   "php artisan config:cache",
   "php artisan route:cache",
   "php artisan view:cache"
 ]
 
 [start]
-cmd = "php artisan storage:link && php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"
+cmd = "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"
