@@ -58,7 +58,7 @@
                                     </h3>
                 <div class="post-separator-box">
                 <div class="post-picture-display" onclick="location.href=`{{ route('post.showFullPost', ['id' => $dailyPost->id]) }}`">
-                    <img src="{{ asset('storage/' . $dailyPost->photo) }}" class="post-picture">
+                    <img src="{{ $dailyPost->photo}}" alt="Imagen de {{ $dailyPost->title }}" class="post-picture">
                 </div>
                 <p class="post-tags">
                     @foreach ($dailyPost->tags as $tag)
