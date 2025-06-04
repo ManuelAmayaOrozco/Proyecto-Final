@@ -232,7 +232,7 @@ class InsectController extends Controller
         // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO EN IMGBB
         $photos = [];
 
-        if (!$imgbbApiKey) {
+        if (!env('IMGBB_API_KEY')) {
             return redirect()->back()->withErrors(['photo' => 'API key de ImgBB no configurada'])->withInput();
         }
 
