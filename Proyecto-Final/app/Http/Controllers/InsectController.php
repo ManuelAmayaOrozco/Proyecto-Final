@@ -341,7 +341,7 @@ class InsectController extends Controller
                 "diet"=>"required",
                 "n_spotted"=>"required|min:1",
                 "maxSize"=>"required|min:0.01",
-                "photo" => "array",
+                "photo" => "required|array",
                 "photo.*" => "image|mimes:jpeg,png,jpg|max:2048",
             ],
             [
@@ -355,6 +355,7 @@ class InsectController extends Controller
                 "n_spotted.min" => "El número de ejemplares vistos no puede ser menor que 1.",
                 "maxSize.required" => "El tamaño máximo documentado es obligatorio.",
                 "maxSize.min" => "El tamaño máximo documentado no puede ser menor a 0.01cm.",
+                "photo.required" => "La foto es obligatoria.",
                 "photo.array" => "La foto ha de ser en formato array.",
                 "photo.*.image" => "La foto ha de ser una imagen.",
                 "photo.*.mimes" => "La foto ha de ser jpg/png/jpg.",
@@ -425,7 +426,7 @@ class InsectController extends Controller
                     $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir a Imgbb.';
                     return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
                 }
-
+                
                 if ($response->successful()) {
                     $responseBody = $response->json();
 

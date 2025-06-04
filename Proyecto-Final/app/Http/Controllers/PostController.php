@@ -372,26 +372,31 @@ class PostController extends Controller
             return redirect()->route('post.showRegisterPost')->withErrors($validator)->withInput();
         }
 
-        // SUBIR IMAGEN A POSTIMAGE
+        // SUBIR IMAGEN A IMGBB
         $photoUrl = null;
         if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
+            $uploadedPhoto = $request->file('photo');
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
 
-            $response = Http::attach(
-                'file',
-                file_get_contents($file->getRealPath()),
-                $file->getClientOriginalName()
-            )->post('https://postimages.org/json/rr');
+            $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                'key' => env('IMGBB_API_KEY'),
+                'image' => $imageData,
+                'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+            ]);
 
-            if ($response->successful()) {
-                $body = $response->json();
-                $photoUrl = $body['image']['url'] ?? null;
+            if (!$response->successful()) {
+                $error = $response->json();
+                \Log::error('ImgBB upload failed', ['response' => $error]);
 
-                if (!$photoUrl) {
-                    return redirect()->back()->withErrors(['photo' => 'Error obteniendo la URL de la imagen en Postimage'])->withInput();
-                }
-            } else {
-                return redirect()->back()->withErrors(['photo' => 'Error subiendo la imagen a Postimage'])->withInput();
+                $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir la imagen.';
+                return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
+            }
+
+            $body = $response->json();
+            $photoUrl = $body['data']['url'] ?? null;
+
+            if (!$photoUrl) {
+                return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Imgbb'])->withInput();
             }
         }
 
@@ -502,26 +507,28 @@ class PostController extends Controller
 
         // GUARDAR NUEVA FOTO (si se carga una nueva)
         if ($request->hasFile('photo')) {
-            $file = $request->file('photo');
+            $uploadedPhoto = $request->file('photo');
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
 
-            $response = Http::attach(
-                'file',
-                file_get_contents($file->getRealPath()),
-                $file->getClientOriginalName()
-            )->post('https://postimages.org/json/rr');
+            $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                'key' => env('IMGBB_API_KEY'),
+                'image' => $imageData,
+                'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+            ]);
 
-            if ($response->successful()) {
+            if (!$response->successful()) {
                 $body = $response->json();
-                $photoUrl = $body['image']['url'] ?? null;
-
-                if ($photoUrl) {
-                    $post->photo = $photoUrl;
-                } else {
-                    return redirect()->back()->withErrors(['photo' => 'Error obteniendo la URL de la imagen en Postimage'])->withInput();
-                }
-            } else {
-                return redirect()->back()->withErrors(['photo' => 'Error subiendo la imagen a Postimage'])->withInput();
+                \Log::error('Error subiendo imagen a Imgbb: ', $body);
+                $errorMessage = $body['error']['message'] ?? 'Error desconocido al subir imagen.';
+                return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
             }
+
+            $body = $response->json();
+            if (!isset($body['data']['url'])) {
+                return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Imgbb'])->withInput();
+            }
+
+            $post->photo = $body['data']['url'];
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
