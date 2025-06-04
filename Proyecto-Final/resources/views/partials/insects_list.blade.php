@@ -67,7 +67,7 @@
                 <div class="insect-separator-box">
                     <div class="insect-picture-display">
                         @foreach ($insect->photos as $photo)
-                            <img src="{{ asset('storage/' . $photo->path) }}" alt="Foto de {{ $insect->name }}" class="insect-picture" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">
+                            <img src="{{ $photo->path }}" alt="Foto de {{ $insect->name }}" class="insect-picture" onclick="location.href=`{{ route('insect.showFullInsect', ['id' => $insect->id]) }}`">
                         @endforeach
                     </div>
                     <p class="insect-info-start">Familia: <span class="insect-info">{{ $insect->family }}</span></p>
