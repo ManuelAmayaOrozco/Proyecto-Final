@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('insect_id')->constrained()->onDelete('cascade');
             $table->string('path');
+            $table->string('delete_url')->nullable()->after('path');
             $table->timestamps();
         });
     }

@@ -154,7 +154,14 @@ class InsectController extends Controller
 
         // ELIMINAMOS TODAS LAS IMÁGENES DEL INSECTO
         foreach ($insect->photos as $photo) {
-            $photo->delete(); // elimina de la base de datos
+            if (!empty($photo->delete_url)) {
+                try {
+                    Http::get($photo->delete_url);
+                } catch (\Exception $e) {
+                    \Log::error('Error eliminando imagen en Imgbb: ' . $e->getMessage());
+                }
+            }
+            $photo->delete();
         }
 
         $insect->delete();
@@ -223,8 +230,6 @@ class InsectController extends Controller
         }
 
         // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO EN IMGBB
-        $imgbbApiKey = env('IMGBB_API_KEY');
-
         $photos = [];
 
         if (!$imgbbApiKey) {
@@ -236,7 +241,7 @@ class InsectController extends Controller
                 $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
 
                 $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
-                    'key' => $imgbbApiKey,
+                    'key' => env('IMGBB_API_KEY'),
                     'image' => $imageData,
                     'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
                 ]);
@@ -389,27 +394,44 @@ class InsectController extends Controller
             return redirect()->back()->withErrors(['not_found' => 'Insect not found.'])->withInput();
         }
 
-        // SE ACTUALIZAN LAS IMÁGENES DEL INSECTO EN POSTIMAGE
-        $photos = [];
+        // ELIMINA LAS IMÁGENES DEL INSECTO QUE YA NO SE UTILICEN EN IMGBB
+        foreach ($insect->photos as $photo) {
+            if (!empty($photo->delete_url)) {
+                try {
+                    Http::get($photo->delete_url);
+                } catch (\Exception $e) {
+                    // Puedes loguear el error si quieres
+                    \Log::error('Error eliminando imagen en Imgbb: ' . $e->getMessage());
+                }
+            }
+            $photo->delete();
+        }
+
+        // SE ACTUALIZAN LAS IMÁGENES DEL INSECTO EN IMGBB
+        $photosData = [];
         if ($request->hasFile('photo')) {
             foreach ($request->file('photo') as $uploadedPhoto) {
-                $response = Http::attach(
-                    'file', file_get_contents($uploadedPhoto->getRealPath()), $uploadedPhoto->getClientOriginalName()
-                )->post('https://postimages.org/json/rr');
+                $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
+
+                $response = Http::post('https://api.imgbb.com/1/upload', [
+                    'key' => env('IMGBB_API_KEY'), // Asegúrate de tener tu API key en .env
+                    'image' => $imageData,
+                    'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+                ]);
 
                 if ($response->successful()) {
                     $responseBody = $response->json();
 
-                    // Ajusta según la estructura de la respuesta real
-                    $imageUrl = $responseBody['image']['url'] ?? null;
-
-                    if ($imageUrl) {
-                        $photos[] = $imageUrl;
+                    if (isset($responseBody['data']['url']) && isset($responseBody['data']['delete_url'])) {
+                        $photosData[] = [
+                            'path' => $responseBody['data']['url'],
+                            'delete_url' => $responseBody['data']['delete_url'],
+                        ];
                     } else {
-                        return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Postimage'])->withInput();
+                        return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Imgbb'])->withInput();
                     }
                 } else {
-                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Postimage'])->withInput();
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Imgbb'])->withInput();
                 }
             }
         }
@@ -426,14 +448,12 @@ class InsectController extends Controller
         $insect->protectedSpecies = $datosPost['protectedSpecies'];
         $insect->save();
 
-        // ELIMINA LAS IMÁGENES DEL INSECTO QUE YA NO SE UTILICEN
-        foreach ($insect->photos as $photo) {
-            $photo->delete();
-        }
-
-        // GUARDAR NUEVAS URLs DE LAS IMÁGENES
-        foreach ($photos as $url) {
-            $insect->photos()->create(['path' => $url]);
+        // GUARDAR NUEVAS FOTOS EN LA BASE DE DATOS
+        foreach ($photosData as $photoData) {
+            $insect->photos()->create([
+                'path' => $photoData['path'],
+                'delete_url' => $photoData['delete_url'],
+            ]);
         }
 
         return redirect()->route('insect.showInsects');

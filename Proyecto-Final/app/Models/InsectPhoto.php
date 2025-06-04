@@ -14,7 +14,7 @@ class InsectPhoto extends Model
 
     use HasFactory;
 
-    protected $fillable = ['path'];
+    protected $fillable = ['insect_id', 'path', 'delete_url'];
 
     /**
      * El Insecto al que pertenece la imagen.
