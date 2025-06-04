@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tag;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Clase que representa un Post de la aplicación.
