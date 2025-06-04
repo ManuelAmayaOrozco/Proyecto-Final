@@ -222,32 +222,31 @@ class InsectController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO EN POSTIMAGE
+        // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO EN IMGBB
+        $imgbbApiKey = env('IMGBB_API_KEY');
+
         $photos = [];
+
         if ($request->hasFile('photo')) {
-            $client = new Client();
-
             foreach ($request->file('photo') as $uploadedPhoto) {
-                try {
-                    $response = $client->post('https://api.postimages.org/1/upload', [
-                        'multipart' => [
-                            [
-                                'name' => 'file',
-                                'contents' => fopen($uploadedPhoto->getPathname(), 'r'),
-                                'filename' => $uploadedPhoto->getClientOriginalName(),
-                            ]
-                        ]
-                    ]);
+                $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
 
-                    $body = json_decode($response->getBody(), true);
+                $response = Http::post('https://api.imgbb.com/1/upload', [
+                    'key' => $imgbbApiKey,
+                    'image' => $imageData,
+                    'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+                ]);
+
+                if ($response->successful()) {
+                    $body = $response->json();
 
                     if (isset($body['data']['url'])) {
                         $photos[] = $body['data']['url'];
                     } else {
-                        return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Postimage'])->withInput();
+                        return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de ImgBB'])->withInput();
                     }
-                } catch (\Exception $e) {
-                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Postimage: ' . $e->getMessage()])->withInput();
+                } else {
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a ImgBB'])->withInput();
                 }
             }
         }
