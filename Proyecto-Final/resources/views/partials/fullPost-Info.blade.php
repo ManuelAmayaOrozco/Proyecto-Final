@@ -19,7 +19,7 @@
         <h3 class="post-user">{{ $post_user }}</h3>
         <div class="post-separator-box">
         <div class="post-picture-display">
-            <img src="{{ asset('storage/' . $post->photo) }}" class="post-picture">
+            <img src="{{ $post->photo}}" alt="Imagen de {{ $post->title }}" class="post-picture">
         </div>
         @if($post->latitude && $post->longitude)
             <div class="post-map">
