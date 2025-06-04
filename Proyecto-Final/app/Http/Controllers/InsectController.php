@@ -227,15 +227,25 @@ class InsectController extends Controller
 
         $photos = [];
 
+        if (!$imgbbApiKey) {
+            return redirect()->back()->withErrors(['photo' => 'API key de ImgBB no configurada'])->withInput();
+        }
+
         if ($request->hasFile('photo')) {
             foreach ($request->file('photo') as $uploadedPhoto) {
                 $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
 
-                $response = Http::post('https://api.imgbb.com/1/upload', [
+                $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
                     'key' => $imgbbApiKey,
                     'image' => $imageData,
                     'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
                 ]);
+
+                if (!$response->successful()) {
+                    $body = $response->json();
+                    $errorMessage = $body['error']['message'] ?? 'Error desconocido';
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a ImgBB: ' . $errorMessage])->withInput();
+                }
 
                 if ($response->successful()) {
                     $body = $response->json();
