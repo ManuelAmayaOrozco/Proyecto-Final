@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Client;
 
 /**
  * Controlador para la clase Insect
@@ -224,24 +225,29 @@ class InsectController extends Controller
         // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO EN POSTIMAGE
         $photos = [];
         if ($request->hasFile('photo')) {
+            $client = new Client();
+
             foreach ($request->file('photo') as $uploadedPhoto) {
-                $response = Http::attach(
-                    'file', file_get_contents($uploadedPhoto->getRealPath()), $uploadedPhoto->getClientOriginalName()
-                )->post('https://postimages.org/json/rr');
+                try {
+                    $response = $client->post('https://api.postimages.org/1/upload', [
+                        'multipart' => [
+                            [
+                                'name' => 'file',
+                                'contents' => fopen($uploadedPhoto->getPathname(), 'r'),
+                                'filename' => $uploadedPhoto->getClientOriginalName(),
+                            ]
+                        ]
+                    ]);
 
-                if ($response->successful()) {
-                    $responseBody = $response->json();
+                    $body = json_decode($response->getBody(), true);
 
-                    // Cambia según estructura real (verifica con dump($responseBody))
-                    $imageUrl = $responseBody['image']['url'] ?? null;
-
-                    if ($imageUrl) {
-                        $photos[] = $imageUrl;
+                    if (isset($body['data']['url'])) {
+                        $photos[] = $body['data']['url'];
                     } else {
                         return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Postimage'])->withInput();
                     }
-                } else {
-                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Postimage'])->withInput();
+                } catch (\Exception $e) {
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Postimage: ' . $e->getMessage()])->withInput();
                 }
             }
         }
