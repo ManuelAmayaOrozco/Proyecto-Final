@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Controlador para la clase Insect
@@ -152,7 +153,6 @@ class InsectController extends Controller
 
         // ELIMINAMOS TODAS LAS IMÁGENES DEL INSECTO
         foreach ($insect->photos as $photo) {
-            Storage::disk('public')->delete($photo->path); // elimina del disco
             $photo->delete(); // elimina de la base de datos
         }
 
@@ -216,20 +216,34 @@ class InsectController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO
-        if ($request->hasFile('photo')) {
-            $photos = [];
-            foreach ($request->file('photo') as $uploadedPhoto) {
-                $path = $uploadedPhoto->store('insects', 'public');
-                $photos[] = $path;
-            }
-        } else {
-            $photos = [];
-        }
-
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        // SE GUARDAN LAS FOTOS QUE SEAN AÑADIDAS PARA EL INSECTO EN POSTIMAGE
+        $photos = [];
+        if ($request->hasFile('photo')) {
+            foreach ($request->file('photo') as $uploadedPhoto) {
+                $response = Http::attach(
+                    'file', file_get_contents($uploadedPhoto->getRealPath()), $uploadedPhoto->getClientOriginalName()
+                )->post('https://postimages.org/json/rr');
+
+                if ($response->successful()) {
+                    $responseBody = $response->json();
+
+                    // Cambia según estructura real (verifica con dump($responseBody))
+                    $imageUrl = $responseBody['image']['url'] ?? null;
+
+                    if ($imageUrl) {
+                        $photos[] = $imageUrl;
+                    } else {
+                        return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Postimage'])->withInput();
+                    }
+                } else {
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Postimage'])->withInput();
+                }
+            }
         }
 
         // SI EL USUARIO NO EXISTE, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
@@ -253,8 +267,8 @@ class InsectController extends Controller
         $insect->protectedSpecies = $datosPost['protectedSpecies'];
         $insect->save();
 
-        foreach ($photos as $path) {
-            $insect->photos()->create(['path' => $path]);
+        foreach ($photos as $url) {
+            $insect->photos()->create(['path' => $url]);
         }
 
         return redirect()->route('insect.showInsects');
@@ -360,15 +374,29 @@ class InsectController extends Controller
             return redirect()->back()->withErrors(['not_found' => 'Insect not found.'])->withInput();
         }
 
-        // SE ACTUALIZAN LAS IMÁGENES DEL INSECTO
+        // SE ACTUALIZAN LAS IMÁGENES DEL INSECTO EN POSTIMAGE
+        $photos = [];
         if ($request->hasFile('photo')) {
-            $photos = [];
             foreach ($request->file('photo') as $uploadedPhoto) {
-                $path = $uploadedPhoto->store('insects', 'public');
-                $photos[] = $path;
+                $response = Http::attach(
+                    'file', file_get_contents($uploadedPhoto->getRealPath()), $uploadedPhoto->getClientOriginalName()
+                )->post('https://postimages.org/json/rr');
+
+                if ($response->successful()) {
+                    $responseBody = $response->json();
+
+                    // Ajusta según la estructura de la respuesta real
+                    $imageUrl = $responseBody['image']['url'] ?? null;
+
+                    if ($imageUrl) {
+                        $photos[] = $imageUrl;
+                    } else {
+                        return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Postimage'])->withInput();
+                    }
+                } else {
+                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a Postimage'])->withInput();
+                }
             }
-        } else {
-            $photos = [];
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
@@ -385,12 +413,12 @@ class InsectController extends Controller
 
         // ELIMINA LAS IMÁGENES DEL INSECTO QUE YA NO SE UTILICEN
         foreach ($insect->photos as $photo) {
-            Storage::disk('public')->delete($photo->path); // elimina del disco
-            $photo->delete(); // elimina de la base de datos
+            $photo->delete();
         }
 
-        foreach ($photos as $path) {
-            $insect->photos()->create(['path' => $path]);
+        // GUARDAR NUEVAS URLs DE LAS IMÁGENES
+        foreach ($photos as $url) {
+            $insect->photos()->create(['path' => $url]);
         }
 
         return redirect()->route('insect.showInsects');

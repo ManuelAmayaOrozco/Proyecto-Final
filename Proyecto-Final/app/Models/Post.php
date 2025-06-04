@@ -57,9 +57,11 @@ class Post extends Model
         // ELIMINAMOS LOS COMENTARIOS
         $this->comments()->delete();
 
-        // ELIMINAMOS LA IMAGEN
-        if ($this->photo && Storage::disk('public')->exists($this->photo)) {
-            Storage::disk('public')->delete($this->photo);
+        // ELIMINAMOS LA FOTO SOLO SI ES LOCAL (no es URL)
+        if ($this->photo && !filter_var($this->photo, FILTER_VALIDATE_URL)) {
+            if (Storage::disk('public')->exists($this->photo)) {
+                Storage::disk('public')->delete($this->photo);
+            }
         }
 
         // OBTENEMOS Y ELIMINAMOS LAS ETIQUETAS ÚNICAS

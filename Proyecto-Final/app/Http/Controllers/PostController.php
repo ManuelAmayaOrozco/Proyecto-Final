@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Http;
+use Carbon\Carbon;
 
 /**
  * Controlador para la clase Post
@@ -358,13 +360,6 @@ class PostController extends Controller
             return redirect()->back()->withErrors($validator)->withInput();
         }
     
-        // SE GUARDA LA FOTO DEL POST SI EXISTE
-        if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('posts', 'public');
-        } else {
-            $photo = null;
-        }
-
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
@@ -375,6 +370,29 @@ class PostController extends Controller
         if(!$user) {
             $validator->errors()->add('credentials', 'This user does not exist, use a different ID.');
             return redirect()->route('post.showRegisterPost')->withErrors($validator)->withInput();
+        }
+
+        // SUBIR IMAGEN A POSTIMAGE
+        $photoUrl = null;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+
+            $response = Http::attach(
+                'file',
+                file_get_contents($file->getRealPath()),
+                $file->getClientOriginalName()
+            )->post('https://postimages.org/json/rr');
+
+            if ($response->successful()) {
+                $body = $response->json();
+                $photoUrl = $body['image']['url'] ?? null;
+
+                if (!$photoUrl) {
+                    return redirect()->back()->withErrors(['photo' => 'Error obteniendo la URL de la imagen en Postimage'])->withInput();
+                }
+            } else {
+                return redirect()->back()->withErrors(['photo' => 'Error subiendo la imagen a Postimage'])->withInput();
+            }
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
@@ -388,7 +406,7 @@ class PostController extends Controller
         $post->related_insect = $datosPost['insect'];
         $post->latitude = $datosPost['latitude'] ?? null;
         $post->longitude = $datosPost['longitude'] ?? null;
-        $post->photo = $photo;
+        $post->photo = $photoUrl;
         $post->save();
 
         //CREACIÓN DE TAGS
@@ -423,6 +441,14 @@ class PostController extends Controller
         return view('user_views.updatePosts', compact('post', 'insects'));
     }
 
+    /**
+     * Función que actualiza un post de la base de datos.
+     * 
+     * @param request $request Request obtenida del formulario que provee
+     * los datos necesarios para crear el post.
+     * @param long $id ID del post que se va a actualizar.
+     * @return view La vista de la lista de posts para ver los cambios realizados.
+     */
     public function updatePost(Request $request, $id) {
         $post = Post::with('tags')->findOrFail($id);
 
@@ -476,12 +502,26 @@ class PostController extends Controller
 
         // GUARDAR NUEVA FOTO (si se carga una nueva)
         if ($request->hasFile('photo')) {
-            // Eliminar foto anterior si existe
-            if ($post->photo && Storage::disk('public')->exists($post->photo)) {
-                Storage::disk('public')->delete($post->photo);
+            $file = $request->file('photo');
+
+            $response = Http::attach(
+                'file',
+                file_get_contents($file->getRealPath()),
+                $file->getClientOriginalName()
+            )->post('https://postimages.org/json/rr');
+
+            if ($response->successful()) {
+                $body = $response->json();
+                $photoUrl = $body['image']['url'] ?? null;
+
+                if ($photoUrl) {
+                    $post->photo = $photoUrl;
+                } else {
+                    return redirect()->back()->withErrors(['photo' => 'Error obteniendo la URL de la imagen en Postimage'])->withInput();
+                }
+            } else {
+                return redirect()->back()->withErrors(['photo' => 'Error subiendo la imagen a Postimage'])->withInput();
             }
-            $photoPath = $request->file('photo')->store('posts', 'public');
-            $post->photo = $photoPath;
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW
