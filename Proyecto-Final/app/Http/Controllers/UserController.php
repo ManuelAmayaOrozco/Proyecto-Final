@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMailable;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Controlador para la clase User
