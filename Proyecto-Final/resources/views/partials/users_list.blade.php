@@ -10,7 +10,7 @@
 
             @if ($user->photo)
                 <div class="profile-picture-display-small">
-                    <img src="{{ $user->photo) }}" class="profile-picture">
+                    <img src="{{ $user->photo }}" class="profile-picture">
                 </div>
             @else
                 <div class="profile-picture-display-small">
