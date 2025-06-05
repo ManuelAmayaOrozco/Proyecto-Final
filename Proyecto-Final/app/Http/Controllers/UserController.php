@@ -241,12 +241,10 @@ class UserController extends Controller
      * @param long $id El ID del usuario que deseamos eliminar.
      * @return view La vista principal.
      */
-    public function deleteUser($id) {
+    public function delete($id) {
         $validator = Validator::make(
             ['id' => $id],
-            [
-                'id' => 'required|exists:users,id'
-            ]
+            ['id' => 'required|exists:users,id']
         );
 
         if ($validator->fails()) {
@@ -257,6 +255,7 @@ class UserController extends Controller
             DB::transaction(function () use ($id) {
                 $user = User::findOrFail($id);
 
+                // Eliminar relaciones
                 $user->posts()->delete();
                 $user->comments()->delete();
                 $user->insects()->delete();
@@ -266,13 +265,16 @@ class UserController extends Controller
 
             return redirect()->route('home');
 
-        } catch (\Exception $e) {
-            // Devuelve el error detallado en JSON para debugging
-            return response()->json([
-                'error' => true,
-                'message' => $e->getMessage(),
-                'trace' => $e->getTraceAsString()
-            ], 500);
+        } catch (\Throwable $e) {
+            if (auth()->check() && auth()->user()->isAdmin) {
+                return back()->withErrors([
+                    'error' => 'Error: ' . $e->getMessage()
+                ]);
+            }
+
+            return back()->withErrors([
+                'error' => 'No se pudo eliminar el usuario.'
+            ]);
         }
     }
 
