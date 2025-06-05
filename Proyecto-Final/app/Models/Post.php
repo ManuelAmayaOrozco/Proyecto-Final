@@ -56,36 +56,22 @@ class Post extends Model
     }
 
     public function deleteCompletely() {
-        Log::info("Inicio deleteCompletely para post ID {$this->id}");
+        // ELIMINAMOS LOS COMENTARIOS
+        $this->comments()->delete();
 
-        try {
-            Log::info("Eliminando comentarios");
-            $this->comments()->delete();
+        // OBTENEMOS Y ELIMINAMOS LAS ETIQUETAS ÚNICAS
+        $uniqueTags = collect(TagController::getAllUniqueTags($this->id))->filter()->values();
+        DB::table('post_tag')->where('post_id', $this->id)->delete();
 
-            Log::info("Obteniendo etiquetas únicas");
-            $uniqueTags = collect(TagController::getAllUniqueTags($this->id))->filter()->values();
-            Log::info("Etiquetas únicas obtenidas: " . $uniqueTags->implode(','));
-
-            Log::info("Eliminando de post_tag");
-            DB::table('post_tag')->where('post_id', $this->id)->delete();
-
-            if ($uniqueTags->isNotEmpty()) {
-                Log::info("Eliminando etiquetas");
-                Tag::whereIn('id', $uniqueTags)->delete();
-            }
-
-            Log::info("Eliminando favoritos");
-            DB::table('favorites')->where('post_id', $this->id)->delete();
-
-            Log::info("Eliminando post");
-            $this->delete();
-
-            Log::info("Post eliminado correctamente");
-
-        } catch (\Exception $e) {
-            Log::error("Error al eliminar post ID {$this->id}: " . $e->getMessage());
-            throw $e;
+        if ($uniqueTags && $uniqueTags->isNotEmpty()) {
+            Tag::whereIn('id', $uniqueTags)->delete();
         }
+
+        // ELIMINAMOS LOS FAVORITOS RELACIONADOS
+        DB::table('favorites')->where('id_post', $this->id)->delete();
+
+        // ELIMINAMOS EL POST
+        $this->delete();
     }
 
 }

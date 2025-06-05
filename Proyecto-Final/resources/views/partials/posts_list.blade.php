@@ -162,13 +162,6 @@
         <img src="{{ asset('storage/imagenesBugs/Bug7.png') }}" class="404-illustration" alt="Ilustración de error 404">
     @endif
 
-    @if(session('debug'))
-        <script>
-            console.warn('Laravel Debug:', {!! json_encode(session('debug')) !!});
-            alert('Debug: {{ session('debug') }}'); // Puedes quitar esto si solo quieres consola
-        </script>
-    @endif
-
     <!-- Cargar librería -->
     <script src="https://cdn.jsdelivr.net/npm/editorjs-html-revised@3.3.0/build/edjsHTML.min.js"></script>
 
