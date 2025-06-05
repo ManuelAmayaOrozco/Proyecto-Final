@@ -242,11 +242,10 @@ class UserController extends Controller
      * @return view La vista principal.
      */
     public function delete($id) {
-
         $validator = Validator::make(
             ['id' => $id],
             [
-                'id' => 'required|exists:App\Models\User,id'
+                'id' => 'required|exists:users,id'
             ]
         );
 
@@ -254,23 +253,24 @@ class UserController extends Controller
             return redirect()->back()->withErrors($validator);
         }
 
-        // ELIMINAR LOS POSTS DEL USUARIO
-        $posts = Post::where("belongs_to", $id);
-        $posts->delete();
+        try {
+            DB::transaction(function () use ($id) {
+                $user = User::findOrFail($id);
 
-        // ELIMINAR LOS COMENTARIOS DEL USUARIO
-        $comments = Comment::where("user_id", $id);
-        $comments->delete();
+                // Elimina posts, comentarios, insectos si tienes relaciones en User
+                $user->posts()->delete();
+                $user->comments()->delete();
+                $user->insects()->delete();
 
-        // ELIMINAR LOS INSECTOS DEL USUARIO
-        $insects = Insect::where("registered_by", $id);
-        $insects->delete();
+                $user->delete();
+            });
 
-        $user = User::find($id);
-        $user->delete();
+            return redirect()->route('home');
 
-        return redirect()->route('home');
-
+        } catch (\Exception $e) {
+            Log::error("Error eliminando usuario $id: " . $e->getMessage());
+            return redirect()->back()->withErrors(['error' => 'No se pudo eliminar el usuario.']);
+        }
     }
 
     /**

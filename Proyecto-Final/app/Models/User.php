@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * Clase que representa un Usuario de la aplicación.
@@ -56,4 +57,17 @@ class User extends Authenticatable implements MustVerifyEmail
     public function likedPosts(): BelongsToMany {
         return $this->belongsToMany(Post::class, 'likes');
     }
+
+    public function posts() {
+        return $this->hasMany(Post::class, 'belongs_to');
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class, 'user_id');
+    }
+
+    public function insects() {
+        return $this->hasMany(Insect::class, 'registered_by');
+    }
+
 }
