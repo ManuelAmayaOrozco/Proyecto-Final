@@ -11,6 +11,7 @@ use App\Http\Controllers\TagController;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tag;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Clase que representa un Post de la aplicación.
@@ -55,22 +56,36 @@ class Post extends Model
     }
 
     public function deleteCompletely() {
-        // ELIMINAMOS LOS COMENTARIOS
-        $this->comments()->delete();
+        Log::info("Inicio deleteCompletely para post ID {$this->id}");
 
-        // OBTENEMOS Y ELIMINAMOS LAS ETIQUETAS ÚNICAS
-        $uniqueTags = collect(TagController::getAllUniqueTags($this->id))->filter()->values();
-        DB::table('post_tag')->where('post_id', $this->id)->delete();
+        try {
+            Log::info("Eliminando comentarios");
+            $this->comments()->delete();
 
-        if ($uniqueTags && $uniqueTags->isNotEmpty()) {
-            Tag::whereIn('id', $uniqueTags)->delete();
+            Log::info("Obteniendo etiquetas únicas");
+            $uniqueTags = collect(TagController::getAllUniqueTags($this->id))->filter()->values();
+            Log::info("Etiquetas únicas obtenidas: " . $uniqueTags->implode(','));
+
+            Log::info("Eliminando de post_tag");
+            DB::table('post_tag')->where('post_id', $this->id)->delete();
+
+            if ($uniqueTags->isNotEmpty()) {
+                Log::info("Eliminando etiquetas");
+                Tag::whereIn('id', $uniqueTags)->delete();
+            }
+
+            Log::info("Eliminando favoritos");
+            DB::table('favorites')->where('post_id', $this->id)->delete();
+
+            Log::info("Eliminando post");
+            $this->delete();
+
+            Log::info("Post eliminado correctamente");
+
+        } catch (\Exception $e) {
+            Log::error("Error al eliminar post ID {$this->id}: " . $e->getMessage());
+            throw $e;
         }
-
-        // ELIMINAMOS LOS FAVORITOS RELACIONADOS
-        DB::table('favorites')->where('post_id', $this->id)->delete();
-
-        // ELIMINAMOS EL POST
-        $this->delete();
     }
 
 }
