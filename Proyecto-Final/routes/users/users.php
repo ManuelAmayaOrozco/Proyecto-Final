@@ -40,7 +40,6 @@ Route::get('/email/verify', [UserController::class, 'showVerification'])->middle
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
- 
     return redirect()->route('home');
 })->middleware('signed')->name('verification.verify');
 

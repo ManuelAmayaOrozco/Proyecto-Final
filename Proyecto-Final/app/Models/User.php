@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Notifications\VerifyEmailNotification;
 
 /**
  * Clase que representa un Usuario de la aplicación.
@@ -43,13 +44,10 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @return array<string, string>
      */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
 
     /**
      * Varios usuarios pueden dar likes a varios Posts.
@@ -68,6 +66,14 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function insects() {
         return $this->hasMany(Insect::class, 'registered_by');
+    }
+
+    /**
+     * Sobrescribe el método para enviar el email de verificación con URL personalizada.
+     */
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
     }
 
 }
