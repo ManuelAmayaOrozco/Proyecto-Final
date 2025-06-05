@@ -21,8 +21,8 @@ class Post extends Model
     /**
      * Un Post le pertenece a un Usuario.
      */
-    public function user(): HasOne {
-        return $this->hasOne(User::class);
+    public function user() {
+        return $this->belongsTo(User::class, 'belongs_to', 'id');
     }
 
     /**
@@ -59,7 +59,7 @@ class Post extends Model
         $this->comments()->delete();
 
         // OBTENEMOS Y ELIMINAMOS LAS ETIQUETAS ÚNICAS
-        $uniqueTags = collect(TagController::getAllUniqueTags($this->id));
+        $uniqueTags = collect(TagController::getAllUniqueTags($this->id))->filter()->values();
         DB::table('post_tag')->where('post_id', $this->id)->delete();
 
         if ($uniqueTags && $uniqueTags->isNotEmpty()) {
