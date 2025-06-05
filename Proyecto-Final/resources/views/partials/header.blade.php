@@ -41,7 +41,7 @@
     @if(Auth::check())
         @if (Auth::user()->photo)
             <div class="profile-picture-display-smallest">
-                <img src="{{ asset('storage/' . Auth::user()->photo) }}" class="profile-picture" onclick="location.href=`{{ route('user.showProfile') }}`">
+                <img src="{{ Auth::user()->photo) }}" class="profile-picture" onclick="location.href=`{{ route('user.showProfile') }}`">
             </div>
         @else
             <div class="profile-picture-display-smallest">

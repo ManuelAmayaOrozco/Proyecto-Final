@@ -131,16 +131,37 @@ class UserController extends Controller
             ]
         );
 
-        // SE GUARDA LA FOTO DEL USUARIO SI EXISTE
-        if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('profiles', 'public');
-        } else {
-            $photo = null;
-        }
-
         // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
+        }
+
+        // SUBIR IMAGEN A IMGBB SI EXISTE
+        $photoUrl = null;
+        if ($request->hasFile('photo')) {
+            $uploadedPhoto = $request->file('photo');
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
+
+            $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                'key' => env('IMGBB_API_KEY'),
+                'image' => $imageData,
+                'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+            ]);
+
+            if (!$response->successful()) {
+                $error = $response->json();
+                \Log::error('ImgBB upload failed', ['response' => $error]);
+
+                $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir la imagen.';
+                return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
+            }
+
+            $body = $response->json();
+            $photoUrl = $body['data']['url'] ?? null;
+
+            if (!$photoUrl) {
+                return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Imgbb'])->withInput();
+            }
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
@@ -149,7 +170,7 @@ class UserController extends Controller
         $user->name = $datosUsuario['name'];
         $user->email = $datosUsuario['email'];
         $user->password = $datosUsuario['password'];
-        $user->photo = $photo;
+        $user->photo = $photoUrl;
         $user->save();
 
         Auth::login($user);
@@ -246,13 +267,6 @@ class UserController extends Controller
         $insects->delete();
 
         $user = User::find($id);
-
-        // ELIMINAR LA IMAGEN DEL USUARIO
-        $image = $user->photo;
-        if ($image) {
-            Storage::disk('public')->delete($image);
-        }
-
         $user->delete();
 
         return redirect()->route('home');
@@ -320,22 +334,39 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        // ACTUALIZAMOS LA FOTO SI ES NECESARIO
+        // ACTUALIZAMOS LA FOTO SI SE SUBE UNA NUEVA
+        $photoUrl = $user->photo;
         if ($request->hasFile('photo')) {
-            $photo = $request['photo']->store('profiles', 'public');
-            $oldImage = $user->photo;
-            if ($oldImage != null) {
-                Storage::disk('public')->delete($oldImage);
+            $uploadedPhoto = $request->file('photo');
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
+
+            $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                'key' => env('IMGBB_API_KEY'),
+                'image' => $imageData,
+                'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+            ]);
+
+            if (!$response->successful()) {
+                $error = $response->json();
+                \Log::error('ImgBB upload failed', ['response' => $error]);
+
+                $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir la imagen.';
+                return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
             }
-        } else {
-            $photo = $user->photo;
+
+            $body = $response->json();
+            $photoUrl = $body['data']['url'] ?? null;
+
+            if (!$photoUrl) {
+                return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Imgbb'])->withInput();
+            }
         }
 
         // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
         $datosUsuario = $request->all();
         $user->name = $datosUsuario['name'];
         $user->email = $datosUsuario['email'];
-        $user->photo = $photo;
+        $user->photo = $photoUrl;
         $user->save();
 
         return redirect()->route('home');

@@ -8,7 +8,7 @@
 
         @if ($current_user->photo)
             <div class="profile-picture-display">
-                <img src="{{ asset('storage/' . $current_user->photo) }}" class="profile-picture">
+                <img src="{{ $current_user->photo) }}" class="profile-picture">
             </div>
         @else
             <div class="profile-picture-display">
