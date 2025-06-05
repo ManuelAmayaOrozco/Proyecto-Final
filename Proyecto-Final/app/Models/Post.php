@@ -59,7 +59,7 @@ class Post extends Model
         $this->comments()->delete();
 
         // OBTENEMOS Y ELIMINAMOS LAS ETIQUETAS ÚNICAS
-        $uniqueTags = TagController::getAllUniqueTags($this->id);
+        $uniqueTags = collect(TagController::getAllUniqueTags($this->id));
         DB::table('post_tag')->where('post_id', $this->id)->delete();
 
         if ($uniqueTags && $uniqueTags->isNotEmpty()) {
