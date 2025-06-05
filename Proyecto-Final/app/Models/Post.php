@@ -29,8 +29,8 @@ class Post extends Model
     /**
      * Un Post referencia a un Insecto.
      */
-    public function insect(): HasOne {
-        return $this->hasOne(Insect::class);
+    public function insect() {
+        return $this->belongsTo(Insect::class, 'related_insect', 'id');
     }
 
     /**
