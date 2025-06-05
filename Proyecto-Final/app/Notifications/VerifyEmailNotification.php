@@ -11,12 +11,12 @@ class VerifyEmailNotification extends VerifyEmailBase
     protected function verificationUrl($notifiable)
     {
         return URL::temporarySignedRoute(
-            'verification.verify', // o 'users.verification.verify' si cambiaste el nombre
-            now()->addMinutes(60),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
-            ]
-        );
+        'users.verification.verify', // Usa el nombre completo
+        now()->addMinutes(60),
+        [
+            'id' => $notifiable->getKey(),
+            'hash' => sha1($notifiable->getEmailForVerification()),
+        ]
+    );
     }
 }
