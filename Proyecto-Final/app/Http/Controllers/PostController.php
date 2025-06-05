@@ -305,13 +305,17 @@ class PostController extends Controller
      * fue eliminado correctamente.
      */
     public function deletePost($id) {
+        try {
+            $post = Post::findOrFail($id);
+            $post->deleteCompletely();
 
-        $post = Post::findOrFail($id);
+            session()->flash('debug', 'Post eliminado correctamente');
 
-        $post->deleteCompletely();
-
-        return redirect()->route('post.showPosts');
-        
+            return redirect()->route('post.showPosts');
+        } catch (\Exception $e) {
+            session()->flash('debug', 'Error: ' . $e->getMessage());
+            return redirect()->route('post.showPosts');
+        }
     }
 
     /**
