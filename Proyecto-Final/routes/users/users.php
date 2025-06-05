@@ -39,15 +39,10 @@ Route::middleware(['auth', 'verified'])->group(function(){
 Route::get('/email/verify', [UserController::class, 'showVerification'])->middleware('auth')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    dd([
-        'auth_user_id' => auth()->id(),
-        'url_id' => $request->route('id'),
-        'hash_valid' => hash_equals(sha1($request->user()->getEmailForVerification()), $request->route('hash'))
-    ]);
-
     $request->fulfill();
+ 
     return redirect()->route('home');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+})->middleware('signed')->name('verification.verify');
 
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
