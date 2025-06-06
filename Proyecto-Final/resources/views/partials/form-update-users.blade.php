@@ -30,20 +30,4 @@
             <button type="reset" class="btn btn-danger">Resetear</button>
         </div>
     </form>
-
-    @if ($errors->has('general'))
-        <div class="alert alert-danger text-center">
-            {{ $errors->first('general') }}
-        </div>
-    @endif
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $err)
-                    <li>{{ $err }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 </main>

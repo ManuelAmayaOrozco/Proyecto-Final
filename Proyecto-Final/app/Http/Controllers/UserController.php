@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMailable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 /**
  * Controlador para la clase User
@@ -313,89 +314,69 @@ class UserController extends Controller
     * @return view La vista principal.
     */
     public function updateUser(Request $request, $id) {
-        try {
-            // VALIDACIÓN
-            $validator = Validator::make(
-                $request->all(),
-                [
-                    "name" => "required|string|max:20",
-                    "email" => "required|email:rfc,dns",
-                    "photo" => "nullable|image|mimes:jpeg,png,jpg|max:2048",
-                ],
-                [
-                    "name.required" => "El nombre es obligatorio.",
-                    "name.string" => "El nombre debe ser una cadena.",
-                    "name.max" => "El nombre no puede tener más de 20 caracteres.",
-                    "email.required" => "El email es obligatorio.",
-                    "email.email" => "El email debe tener un formato válido.",
-                    "photo.image" => "La foto debe ser una imagen.",
-                    "photo.mimes" => "La foto debe tener formato jpg, jpeg o png.",
-                    "photo.max" => "La foto no puede ser mayor de 2MB.",
-                ]
-            );
 
-            if ($validator->fails()) {
-                return redirect()->back()->withErrors($validator)->withInput();
-            }
+        // VALIDAR DATOS DE ENTRADA.
+        $validator = Validator::make(
+            $request->all(),
+            [
+                "name"=>"required|string|max:20",
+                "email"=> "required|email:rfc,dns",
+                "photo" => "image|mimes:jpeg,png,jpg|max:2048",
+            ],[
+                "name.required" => "The :attribute is required.",
+                "name.string" => "The :attribute must be string.",
+                "name.max" => "The :attribute can't be longer than 20 characters.",
+                "email.required" => "The :attribute is required.",
+                "email.email" => "The :attribute must have the correct format.",
+                "photo.image" => "La foto ha de ser una imagen.",
+                "photo.mimes" => "La foto ha de ser jpg/png/jpg.",
+                "photo.max" => "La foto no puede ser mayor de 2048px."
+            ]
+        );
 
-            $user = Auth::user();
-            $photoUrl = $user->photo;
-
-            if ($request->hasFile('photo')) {
-                if (!env('IMGBB_API_KEY')) {
-                    return redirect()->back()->withErrors(['photo' => 'No se ha configurado la clave API de ImgBB.'])->withInput();
-                }
-
-                $uploadedPhoto = $request->file('photo');
-
-                if (!$uploadedPhoto->isValid()) {
-                    return redirect()->back()->withErrors(['photo' => 'La imagen subida no es válida.'])->withInput();
-                }
-
-                $imagePath = $uploadedPhoto->getPathname();
-
-                if (!file_exists($imagePath)) {
-                    return redirect()->back()->withErrors(['photo' => 'No se pudo acceder al archivo de imagen.'])->withInput();
-                }
-
-                $imageData = base64_encode(file_get_contents($imagePath));
-
-                if (!$imageData) {
-                    return redirect()->back()->withErrors(['photo' => 'No se pudo leer la imagen para codificarla.'])->withInput();
-                }
-
-                $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
-                    'key' => env('IMGBB_API_KEY'),
-                    'image' => $imageData,
-                    'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
-                ]);
-
-                if (!$response->successful()) {
-                    $error = $response->json();
-                    $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir la imagen.';
-                    return redirect()->back()->withErrors(['photo' => 'Error al subir la imagen a ImgBB: ' . $errorMessage])->withInput();
-                }
-
-                $photoUrl = $response->json()['data']['url'] ?? null;
-
-                if (!$photoUrl) {
-                    return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de la imagen desde ImgBB.'])->withInput();
-                }
-            }
-
-            // ACTUALIZACIÓN DE DATOS
-            $user->name = $request->input('name');
-            $user->email = $request->input('email');
-            $user->photo = $photoUrl;
-            $user->save();
-
-            return redirect()->route('home');
-        } catch (\Throwable $e) {
-            // Captura todo tipo de error y lo devuelve a la vista
-            return redirect()->back()
-                ->withErrors(['general' => 'Ocurrió un error inesperado: ' . $e->getMessage()])
-                ->withInput();
+        // SI LOS DATOS SON INVÁLIDOS, DEVOLVER A LA PÁGINA ANTERIOR E IMPRIMIR LOS ERRORES DE VALIDACIÓN
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
         }
+
+        $user = Auth::user();
+
+        // ACTUALIZAMOS LA FOTO SI SE SUBE UNA NUEVA
+        $photoUrl = $user->photo;
+        if ($request->hasFile('photo')) {
+            $uploadedPhoto = $request->file('photo');
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
+
+            $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                'key' => env('IMGBB_API_KEY'),
+                'image' => $imageData,
+                'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+            ]);
+
+            if (!$response->successful()) {
+                $error = $response->json();
+                \Log::error('ImgBB upload failed', ['response' => $error]);
+
+                $errorMessage = $error['error']['message'] ?? 'Error desconocido al subir la imagen.';
+                return redirect()->back()->withErrors(['photo' => 'Error al subir imagen a Imgbb: ' . $errorMessage])->withInput();
+            }
+
+            $body = $response->json();
+            $photoUrl = $body['data']['url'] ?? null;
+
+            if (!$photoUrl) {
+                return redirect()->back()->withErrors(['photo' => 'No se pudo obtener la URL de Imgbb'])->withInput();
+            }
+        }
+
+        // SI LOS DATOS SON VÁLIDOS (SI EL REGISTRO SE HA REALIZADO CORRECTAMENTE) CARGAR LA VIEW.
+        $datosUsuario = $request->all();
+        $user->name = $datosUsuario['name'];
+        $user->email = $datosUsuario['email'];
+        $user->photo = $photoUrl;
+        $user->save();
+
+        return redirect()->route('home');
     }
 
     /**
