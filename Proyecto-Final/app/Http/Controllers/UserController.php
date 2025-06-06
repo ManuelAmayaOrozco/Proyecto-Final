@@ -141,7 +141,7 @@ class UserController extends Controller
         $photoUrl = null;
         if ($request->hasFile('photo')) {
             $uploadedPhoto = $request->file('photo');
-            $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
 
             $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
                 'key' => env('IMGBB_API_KEY'),
@@ -344,7 +344,7 @@ class UserController extends Controller
         $photoUrl = $user->photo;
         if ($request->hasFile('photo')) {
             $uploadedPhoto = $request->file('photo');
-            $imageData = base64_encode(file_get_contents($uploadedPhoto->getRealPath()));
+            $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
 
             $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
                 'key' => env('IMGBB_API_KEY'),
