@@ -342,15 +342,39 @@ class UserController extends Controller
 
         // ACTUALIZAMOS LA FOTO SI SE SUBE UNA NUEVA
         $photoUrl = $user->photo;
-        if ($request->hasFile('photo')) {
-            $uploadedPhoto = $request->file('photo');
-            $imageData = base64_encode(file_get_contents($uploadedPhoto->getPathname()));
 
-            $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
-                'key' => env('IMGBB_API_KEY'),
-                'image' => $imageData,
-                'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
-            ]);
+        if (!env('IMGBB_API_KEY')) {
+            return redirect()->back()->withErrors(['photo' => 'La clave de API de ImgBB no está configurada.'])->withInput();
+        }
+
+        if ($request->hasFile('photo')) {
+            if (!$uploadedPhoto->isValid()) {
+                return redirect()->back()->withErrors(['photo' => 'La imagen subida no es válida.'])->withInput();
+            }
+
+            $uploadedPhoto = $request->file('photo');
+            $imagePath = $uploadedPhoto->getPathname();
+
+            if (!file_exists($imagePath)) {
+                return redirect()->back()->withErrors(['photo' => 'No se puede acceder al archivo de imagen'])->withInput();
+            }
+
+            $imageData = base64_encode(file_get_contents($imagePath));
+
+            if (!$imageData) {
+                return redirect()->back()->withErrors(['photo' => 'No se pudo leer la imagen para codificarla.'])->withInput();
+            }
+
+            try {
+                $response = Http::asForm()->post('https://api.imgbb.com/1/upload', [
+                    'key' => env('IMGBB_API_KEY'),
+                    'image' => $imageData,
+                    'name' => pathinfo($uploadedPhoto->getClientOriginalName(), PATHINFO_FILENAME),
+                ]);
+            } catch (\Exception $e) {
+                \Log::error('Excepción al subir imagen a ImgBB', ['error' => $e->getMessage()]);
+                return redirect()->back()->withErrors(['photo' => 'Excepción al subir imagen a ImgBB: ' . $e->getMessage()])->withInput();
+            }
 
             if (!$response->successful()) {
                 $error = $response->json();
