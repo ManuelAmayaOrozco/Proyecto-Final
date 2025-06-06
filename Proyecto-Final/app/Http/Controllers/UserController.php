@@ -348,11 +348,13 @@ class UserController extends Controller
         }
 
         if ($request->hasFile('photo')) {
+
+            $uploadedPhoto = $request->file('photo');
+
             if (!$uploadedPhoto->isValid()) {
                 return redirect()->back()->withErrors(['photo' => 'La imagen subida no es válida.'])->withInput();
             }
 
-            $uploadedPhoto = $request->file('photo');
             $imagePath = $uploadedPhoto->getPathname();
 
             if (!file_exists($imagePath)) {
